@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save search-page
+yarn add search-page
 ```
 
 ## Usage

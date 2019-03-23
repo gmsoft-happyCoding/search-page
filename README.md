@@ -10,6 +10,17 @@
 yarn add search-page
 ```
 
+## screenshot
+
+![[example/screenshot.png]](https://raw.githubusercontent.com/gmsoft-happyCoding/search-page/master/example/screenshot.png)
+
+## features
+
+- [x] 自动记住页面状态，刷新或 history.back()，不会丢失页面状态
+- [x] 数据请求自动节流，阈值 300ms
+- [x] 自动显示 loading 状态， 为了避免闪烁默认 delay 500ms
+- [ ] 根据配置自动生成 form (目前只支持 input)
+
 ## Usage
 
 #### Demo.tsx

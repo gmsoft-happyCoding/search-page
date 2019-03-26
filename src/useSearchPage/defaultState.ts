@@ -12,8 +12,8 @@ const pagination: PaginationType = {
 };
 
 export default filtersDefault => ({
-  filters: merge(wrap(filtersDefault), historyHelper.getValue('filters')),
-  pagination: merge(pagination, historyHelper.getValue('pagination')),
+  filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),
+  pagination: merge({}, pagination, historyHelper.getValue('pagination')),
   data: [],
   total: historyHelper.getValue('total'),
   loading: false,

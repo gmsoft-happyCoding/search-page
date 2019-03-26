@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useCallback } from 'react';
+import { useEffect, useReducer, useCallback, useMemo } from 'react';
 import { throttle } from 'lodash';
 import defaultState from './defaultState';
 import actions from './actions';
@@ -11,7 +11,8 @@ const THROTTLE_THRESHOLD = 500;
 let fetchCounting = 0;
 
 export default (filtersDefault, getDataApi) => {
-  const [state, dispatch] = useReducer(reducer, defaultState(filtersDefault));
+  const initState = useMemo(() => defaultState(filtersDefault), [filtersDefault]);
+  const [state, dispatch] = useReducer(reducer, initState);
 
   const throttledGetDataApi = useCallback(
     throttle((storeFilters, storePagination) => {

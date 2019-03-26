@@ -3,7 +3,7 @@ import { Form } from 'antd';
 
 type Field = {
   [key: string]: any;
-  value: any;
+  value?: any;
 };
 
 type Fields = {

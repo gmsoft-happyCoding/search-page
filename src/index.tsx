@@ -1,6 +1,6 @@
 import createSearchPage from './createSearchPage';
-import buildFiltersForm, { Fields } from './buildFiltersForm';
-import { GetDataApi, ApiResult } from './typing';
+import buildFiltersForm from './buildFiltersForm';
+import { GetDataApi, ApiResult, Fields } from './typing';
 
 export default createSearchPage;
 export { GetDataApi, ApiResult, buildFiltersForm, Fields };

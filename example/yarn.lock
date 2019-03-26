@@ -2061,13 +2061,6 @@
   resolved "http://registry.npm.taobao.org/@types/history/download/@types/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha1-DmcOolTVWSQbbus4lPh1SZHnMiA=
 
-"@types/hoist-non-react-statics@^3.3.0":
-  version "3.3.0"
-  resolved "http://registry.npm.taobao.org/@types/hoist-non-react-statics/download/@types/hoist-non-react-statics-3.3.0.tgz#a59c0c995cc885bef1b8ec2241b114f9b35b517b"
-  integrity sha1-pZwMmVzIhb7xuOwiQbEU+bNbUXs=
-  dependencies:
-    "@types/react" "*"
-
 "@types/isomorphic-fetch@^0.0.34":
   version "0.0.34"
   resolved "http://registry.npm.taobao.org/@types/isomorphic-fetch/download/@types/isomorphic-fetch-0.0.34.tgz#3c3483e606c041378438e951464f00e4e60706d6"
@@ -2133,15 +2126,6 @@
   resolved "http://registry.npm.taobao.org/@types/react-redux/download/@types/react-redux-6.0.13.tgz#490ace7b49e57281edf85671bb455b31cdfa7d0b"
   integrity sha1-SQrOe0nlcoHt+FZxu0VbMc36fQs=
   dependencies:
-    "@types/react" "*"
-    redux "^4.0.0"
-
-"@types/react-redux@^7.0.5":
-  version "7.0.5"
-  resolved "http://registry.npm.taobao.org/@types/react-redux/download/@types/react-redux-7.0.5.tgz#4d284f8565cd9f7316086cce50e87f3d201d0880"
-  integrity sha1-TShPhWXNn3MWCGzOUOh/PSAdCIA=
-  dependencies:
-    "@types/hoist-non-react-statics" "^3.3.0"
     "@types/react" "*"
     redux "^4.0.0"
 
@@ -13903,13 +13887,8 @@ scp2@^0.5.0:
     lodash "~4.11.1"
     ssh2 "~0.4.10"
 
-search-page@^0.0.1:
-  version "0.0.1"
-  resolved "http://registry.npm.taobao.org/search-page/download/search-page-0.0.1.tgz#fa669cdf1bf0a8f537bcbdc2014285d7b7504072"
-  integrity sha1-+mac3xvwqPU3vL3CAUKF17dQQHI=
-  dependencies:
-    "@types/lodash" "^4.14.123"
-    "@types/react-redux" "^7.0.5"
+search-page@../:
+  version "0.0.3"
 
 select-hose@^2.0.0:
   version "2.0.0"

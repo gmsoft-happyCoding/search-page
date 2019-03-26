@@ -3,24 +3,28 @@ import { merge, get } from 'lodash';
 // eslint-disable-next-line no-restricted-globals
 const { history } = top;
 
-function setState(state) {
-  history.replaceState(state, '');
-}
+// 持久化搜索条件存放在 history.state[STORE_KEY] 中
+const STORE_KEY = '__sp';
 
-function merageState(...state: object[]) {
-  history.replaceState(merge(history.state, ...state), '');
-}
-
-function clearState() {
-  history.replaceState(null, '');
+function setState(state: any) {
+  history.replaceState(merge({}, history.state, { [STORE_KEY]: state }), '');
 }
 
 function getState(): object {
-  return history.state;
+  return history.state && history.state[STORE_KEY];
+}
+
+function merageState(...state: object[]) {
+  const mergedState = merge({}, ...state);
+  setState(mergedState);
+}
+
+function clearState() {
+  setState(null);
 }
 
 function getValue(path: string, defaultValue: any = null) {
-  return get(history.state, path, defaultValue);
+  return get(getState(), path, defaultValue);
 }
 
 export default {

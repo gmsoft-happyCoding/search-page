@@ -2071,7 +2071,7 @@
   resolved "http://registry.npm.taobao.org/@types/jest/download/@types/jest-23.3.10.tgz#4897974cc317bf99d4fe6af1efa15957fa9c94de"
   integrity sha1-SJeXTMMXv5nU/mrx76FZV/qclN4=
 
-"@types/lodash@^4.14.119", "@types/lodash@^4.14.123":
+"@types/lodash@^4.14.119":
   version "4.14.123"
   resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
   integrity sha1-Ob5dIRR4yN072umO51u37+Sr/k0=
@@ -13887,8 +13887,10 @@ scp2@^0.5.0:
     lodash "~4.11.1"
     ssh2 "~0.4.10"
 
-search-page@../:
-  version "0.0.3"
+search-page@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/search-page/-/search-page-0.1.0.tgz#0f9e7c435657017d0e1a4a19bd583f9f1607263e"
+  integrity sha512-cw/6tT1GlCxL4FEoE3XRJwzG5p86tCjuHrmD4a6ty+fE6h3wJ+zpvhIUJieXA8E6WJJ9AKb1M+pslMwUiV7YrA==
 
 select-hose@^2.0.0:
   version "2.0.0"

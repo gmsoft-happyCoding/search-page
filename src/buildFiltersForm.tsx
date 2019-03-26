@@ -1,21 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useCallback } from 'react';
 import { Form, Row, Col, Input } from 'antd';
 import { map } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-
-export interface FieldConfig {
-  /**
-   * 第一版简单实现, 只支持 input
-   * 复杂的表单还是自己写吧
-   */
-  type: 'input';
-  label: string;
-  placeholder?: string;
-}
-
-export interface Fields {
-  [key: string]: FieldConfig;
-}
+import { Fields, FieldConfig } from './typing';
 
 export default (fields: Fields) => ({ form }: FormComponentProps) => {
   const { resetFields, getFieldDecorator } = form;
@@ -26,7 +16,7 @@ export default (fields: Fields) => ({ form }: FormComponentProps) => {
 
   const getFields = useCallback(
     () =>
-      map(fields, (config, key) => (
+      map(fields, (config: FieldConfig, key: string) => (
         <Col span={8} key={key}>
           <Form.Item label={config.label}>
             {getFieldDecorator(key)(<Input placeholder={config.placeholder} />)}

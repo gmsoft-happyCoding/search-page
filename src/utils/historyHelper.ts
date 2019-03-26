@@ -1,5 +1,6 @@
 import { merge, get } from 'lodash';
 
+// eslint-disable-next-line no-restricted-globals
 const { history } = top;
 
 function setState(state) {

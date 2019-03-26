@@ -1,33 +1,21 @@
-import { bindActions } from './utils';
-import { connect } from 'react-redux';
+import { Dispatch } from 'react';
 import { Form } from 'antd';
 import { fieldHelper } from './utils';
-import { NamespaceActions } from './utils/bindActions';
-import { FiltersForm } from './typing';
+import { FiltersFormType, Fields } from './typing';
+import actions from './useSearchPage/actions';
 
 const { create } = Form;
 
-type Args = {
-  namespace: string;
-  FiltersForm: FiltersForm;
-  actions: NamespaceActions;
+type Props = {
+  dispatch: Dispatch<any>;
+  filters: Fields;
 };
 
-export default ({ namespace, FiltersForm, actions }: Args) => {
-  const mapStateToProps = state => ({
-    filters: state[namespace] ? state[namespace].filters : {},
-  });
+const mapPropsToFields = ({ filters }: Props) => fieldHelper.createFields(filters);
 
-  const mapDispatchToProps = bindActions(actions);
-
-  const mapPropsToFields = ({ filters }) => fieldHelper.createFields(filters);
-
-  const onFieldsChange = (props, changedFields) => {
-    props[`${namespace}BoundActions`].fetchData({ filters: changedFields });
-  };
-
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(create({ mapPropsToFields, onFieldsChange })(FiltersForm));
+const onFieldsChange = ({ dispatch }: Props, changedFields) => {
+  dispatch(actions.storeFilters(changedFields));
 };
+
+export default (FiltersForm: FiltersFormType) =>
+  create<Props>({ mapPropsToFields, onFieldsChange })(FiltersForm);

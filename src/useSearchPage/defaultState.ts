@@ -1,18 +1,20 @@
+import { merge } from 'lodash';
 import fieldHelper from '../utils/fieldHelper';
 import historyHelper from '../utils/historyHelper';
-import { merge } from 'lodash';
+import { PaginationType } from '../typing';
 
 // ant design form field is object, transform {key: value} to {key: {value}}
 const { wrap } = fieldHelper;
 
-const pagination = {
+const pagination: PaginationType = {
   current: 1,
   pageSize: 10,
-  total: 0,
 };
 
 export default filtersDefault => ({
   filters: merge(wrap(filtersDefault), historyHelper.getValue('filters')),
   pagination: merge(pagination, historyHelper.getValue('pagination')),
   data: [],
+  total: historyHelper.getValue('total'),
+  loading: false,
 });

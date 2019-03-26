@@ -24,20 +24,16 @@ import Content from './Content';
 
 // 数据请求API
 const getDataApi: GetDataApi = async (filters, pagination) => {
+  await new Promise(resolve => setTimeout(resolve, 1000));
   const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
   return result;
 };
 
-// 创建 model 和 组件
-const [model, SearchPage] = createSearchPage({
-  namespace: demo,
+const SearchPage = createSearchPage({
   filtersDefault: { orgName: 'gmsoft' },
   getDataApi,
   FiltersForm,
 });
-
-// 注入model
-stateContainer.injectModel(model);
 
 const Demo = () => (
   <div style={{ padding: 16 }}>

@@ -7,7 +7,29 @@ import { map } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { Fields, FieldConfig } from './typing';
 
-export default (fields: Fields) => ({ form }: FormComponentProps) => {
+function getActionSpan(fields: Fields) {
+  const fieldsLength = Object.keys(fields).length;
+  switch (fieldsLength % 3) {
+    case 0:
+      return 24;
+    case 1:
+      return 16;
+    case 2:
+      return 8;
+    default:
+      return 8;
+  }
+}
+
+function getActionLabel(fields: Fields) {
+  return Object.keys(fields).length % 3 === 0 ? null : '\u00A0';
+}
+
+function getActionStyle(fields: Fields) {
+  return Object.keys(fields).length % 3 === 0 ? {} : { verticalAlign: -11 };
+}
+
+export default (fields: Fields, needReset: boolean = true) => ({ form }: FormComponentProps) => {
   const { resetFields, getFieldDecorator } = form;
 
   const reset = useCallback(() => {
@@ -30,12 +52,14 @@ export default (fields: Fields) => ({ form }: FormComponentProps) => {
     <Form layout="vertical">
       <Row gutter={24}>
         {getFields()}
-        <Col span={8} style={{ textAlign: 'right' }}>
-          <Form.Item label="&nbsp;">
-            <a className="action" onClick={reset} role="button">
-              重置筛选条件
-            </a>
-          </Form.Item>
+        <Col span={getActionSpan(fields)} style={{ textAlign: 'right' }}>
+          {needReset ? (
+            <Form.Item label={getActionLabel(fields)}>
+              <a className="action" onClick={reset} role="button" style={getActionStyle(fields)}>
+                重置筛选条件
+              </a>
+            </Form.Item>
+          ) : null}
         </Col>
       </Row>
     </Form>

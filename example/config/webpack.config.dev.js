@@ -384,7 +384,7 @@ module.exports = {
           module: 'esnext',
           moduleResolution: 'node',
           resolveJsonModule: true,
-          isolatedModules: true,
+          isolatedModules: false,
           noEmit: true,
           jsx: 'preserve',
         },

@@ -15,6 +15,8 @@ const App = () => (
   </LocaleProvider>
 );
 
+export default App;
+
 // @ts-ignore
-setConfig({ pureSFC: true });
-export default hot(module)(App);
+// setConfig({ pureSFC: true });
+// export default hot(module)(App);

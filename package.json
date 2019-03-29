@@ -13,19 +13,15 @@
     "npm": ">=5"
   },
   "scripts": {
-    "test": "cross-env CI=1 react-scripts-ts test --env=jsdom",
-    "test:watch": "react-scripts-ts test --env=jsdom",
     "build": "rollup -c",
-    "start": "rollup -c -w",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "start": "rollup -c -w"
   },
   "dependencies": {},
   "peerDependencies": {
     "antd": "^3.15.1",
     "lodash": "^4.17.11",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "styled-components": "^4.2.0"
   },
   "devDependencies": {
@@ -53,8 +49,8 @@
     "history": "^4.9.0",
     "lodash": "^4.17.11",
     "ramda": "^0.26.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "react-scripts-ts": "latest",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^4.3.0",

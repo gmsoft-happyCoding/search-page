@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { map, compact, filter } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { Fields, FieldConfig, ClearModel } from './typing';
+import actions from './useSearchPage/actions';
+import { historyHelper } from './utils';
 
 const RootLayout = styled.div`
   margin-bottom: 10px;
@@ -30,6 +32,9 @@ const RootLayout = styled.div`
     width: 100%;
     height: 100%;
   }
+`;
+const Label = styled.span`
+  margin-right: 4px;
 `;
 
 function getActionSpan(fields: Fields, showKeys: Array<string>, simpleModel: boolean) {
@@ -97,12 +102,19 @@ function handleCondition(
         resetFields();
         break;
       case ClearModel.MODEL_RETAIN:
-        break;
-      case ClearModel.MODEL_DEFAULT:
       default:
         resetFields(getInVisibleKeys(fields, showKeys));
     }
   }
+}
+
+interface Props {
+  dispatch: Function;
+  state: any;
+  children?: React.ReactNode[];
+  needReset?: boolean;
+  needMore?: boolean;
+  clearModel?: ClearModel;
 }
 
 /**
@@ -117,7 +129,7 @@ function buildFiltersForm({
   showKeys = [],
   needReset = true,
   needMore = true,
-  clearModel = ClearModel.MODEL_DEFAULT,
+  clearModel = ClearModel.MODEL_RETAIN,
 }: {
   fields: Fields;
   showKeys?: Array<string>;
@@ -125,14 +137,15 @@ function buildFiltersForm({
   needMore?: boolean;
   clearModel?: ClearModel;
 }) {
-  return ({ form }: FormComponentProps) => {
+  return (props: Props & FormComponentProps) => {
+    const { form, dispatch, state } = props;
     const { resetFields, getFieldDecorator } = form;
-    const [simpleModel, setModel] = useState(true);
+    const [simpleModel, setModel] = useState(state.status && state.status.simpleModel);
 
     // 如果不指定精简模式下显示的搜索字段则默认显示前两个搜索条件
     if (showKeys.length === 0) {
       Object.keys(fields)
-        .slice(0, 2)
+        .slice(0, 3)
         .map(key => showKeys.push(key));
     }
 
@@ -143,6 +156,8 @@ function buildFiltersForm({
     const switchModal = () => {
       // 处理搜索条件变化
       handleCondition(!simpleModel, resetFields, fields, showKeys, clearModel);
+      dispatch(actions.storeStatus({ simpleModel: !simpleModel }));
+      historyHelper.merageState(state, { status: { simpleModel: !simpleModel } });
       setModel(!simpleModel);
     };
 
@@ -150,7 +165,7 @@ function buildFiltersForm({
       compact(
         map(fields, (config: FieldConfig, key: string) => {
           // 判断模式，精简模式根据showIndex进行渲染，高级模式下渲染全部搜索条件
-          if ((simpleModel && showKeys.includes(key)) || !simpleModel) {
+          if ((simpleModel && showKeys.includes(key)) || !simpleModel || !needMore) {
             return (
               <Col span={8} key={key}>
                 <Form.Item label={config.label}>
@@ -195,13 +210,13 @@ function buildFiltersForm({
                       style={getActionStyle(fields, showKeys, simpleModel)}
                     >
                       <span className={simpleModel ? 'more' : 'more active'}>
-                        展开
+                        <Label>展开</Label>
                         <Icon type="down" />
                       </span>
                       <span
                         className={simpleModel ? 'more more-absolute active' : 'more more-absolute'}
                       >
-                        收起
+                        <Label>收起</Label>
                         <Icon type="up" />
                       </span>
                     </a>
@@ -217,7 +232,3 @@ function buildFiltersForm({
 }
 
 export default buildFiltersForm;
-
-// 1、收起时清除高级搜索条件
-// 2、收起时不清除高级搜索条件，但实际搜索不携带高级搜索条件 [默认]
-// 3、切换模式时清除全部搜索条件

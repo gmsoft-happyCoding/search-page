@@ -10,6 +10,7 @@ interface Args {
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
   loadingDelay?: number;
+  showKeys?: Array<string>;
 }
 
 interface Props {
@@ -21,15 +22,14 @@ const createSearchPage = ({
   FiltersForm,
   getDataApi,
   loadingDelay = 500,
+  showKeys,
 }: Args) => {
   const SearchPage: React.FC<Props> = ({ children }) => {
     const [state, dispatch] = useSearchPage(filtersDefault, getDataApi);
-
     const Filters = useMemo(() => createFilters(FiltersForm), []);
-
     return (
       <>
-        <Filters filters={state.filters} dispatch={dispatch} />
+        <Filters filters={state.filters} dispatch={dispatch} state={state} showKeys={showKeys} />
         <ContentWrap data={state.data} loading={state.loading} loadingDelay={loadingDelay}>
           {children}
         </ContentWrap>

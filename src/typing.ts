@@ -11,19 +11,28 @@ export interface ApiResult {
   total: number;
 }
 
+export interface Filters {
+  [key: string]: any;
+}
+
 export interface State {
-  filters: object;
+  filters: Filters;
   pagination: PaginationType;
 }
 
 export interface GetDataApi {
-  (filters: object, pagination: PaginationType): Promise<ApiResult>;
+  (filters: Filters, pagination: PaginationType): Promise<ApiResult>;
 }
 
 export type FiltersFormType = React.ComponentType<
   FormComponentProps<any> & {
     dispatch: Dispatch<any>;
     filters: Fields;
+    state: any;
+    showKeys?: Array<string>;
+    needReset?: boolean;
+    needMore?: boolean;
+    rows?: number;
   }
 >;
 
@@ -39,6 +48,7 @@ export interface FieldConfig {
   type: 'input';
   label: string;
   placeholder?: string;
+  value?: any;
 }
 
 export interface Fields {
@@ -47,9 +57,9 @@ export interface Fields {
 
 export enum ClearModel {
   /**
-   * 默认模式：保留高级搜索条件，但搜索时不会携带高级搜索条件进行搜索，仅保留下次待用
+   * [暂未实现]保留高级搜索条件，但搜索时不会携带高级搜索条件进行搜索，仅保留下次待用
    */
-  MODEL_DEFAULT = 'default',
+  MODEL_COMPATIBLE = 'COMPATIBLE',
   /**
    * 清除高级搜索条件
    */
@@ -58,4 +68,11 @@ export enum ClearModel {
    * 清除所有条件
    */
   MODEL_CLEAR_ALL = 'clear_all',
+}
+
+export interface ComponentState {
+  /**
+   * 高级搜索是否打开
+   */
+  openAdvanced: boolean;
 }

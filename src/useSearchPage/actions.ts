@@ -4,6 +4,7 @@ export enum Types {
   storeData = 'STORE_DATA',
   storeFilters = 'STORE_FILTERS',
   storePagination = 'STORE_PAGINATION',
+  storeStatus = 'STORE_STATUS',
   resetState = 'RESET_STATE',
   loading = 'LOADING',
 }

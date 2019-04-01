@@ -19,5 +19,8 @@ export default (state, { type, payload }) => {
     case Types.loading: {
       return { ...state, loading: payload };
     }
+    case Types.storeStatus: {
+      return { ...state, status: payload };
+    }
   }
 };

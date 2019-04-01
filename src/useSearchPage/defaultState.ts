@@ -17,4 +17,5 @@ export default filtersDefault => ({
   data: [],
   total: historyHelper.getValue('total'),
   loading: false,
+  status: merge({}, historyHelper.getValue('status')),
 });

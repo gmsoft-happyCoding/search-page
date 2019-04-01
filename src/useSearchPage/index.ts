@@ -13,7 +13,6 @@ let fetchCounting = 0;
 export default (filtersDefault, getDataApi) => {
   const initState = useMemo(() => defaultState(filtersDefault), [filtersDefault]);
   const [state, dispatch] = useReducer(reducer, initState);
-
   const throttledGetDataApi = useCallback(
     throttle((storeFilters, storePagination) => {
       // show loading

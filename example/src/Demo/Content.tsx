@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,4 +11,11 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-export default data => <Wrap>{JSON.stringify(data)}</Wrap>;
+export default (data, forceUpdate) => (
+  <Wrap>
+    {JSON.stringify(data)}
+    <a style={{ float: 'right' }} onClick={forceUpdate}>
+      强制刷新
+    </a>
+  </Wrap>
+);

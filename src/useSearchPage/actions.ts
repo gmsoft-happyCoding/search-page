@@ -6,6 +6,7 @@ export enum Types {
   storePagination = 'STORE_PAGINATION',
   resetState = 'RESET_STATE',
   loading = 'LOADING',
+  forceUpdate = 'FORCE_UPDATE',
 }
 
 const actionCreator = (type: Types) => (payload: any) => ({ type, payload });

@@ -39,4 +39,4 @@ const onFieldsChange = ({ dispatch }: Props, changedFields) => {
 };
 
 export default (FiltersForm: FiltersFormType) =>
-  create<Props>({ mapPropsToFields, onFieldsChange })(FiltersForm);
+  create({ mapPropsToFields, onFieldsChange })(FiltersForm) as React.ComponentType<Props>;

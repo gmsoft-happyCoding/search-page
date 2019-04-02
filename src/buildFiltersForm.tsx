@@ -6,7 +6,7 @@ import { Form, Row, Col, Input, Icon, Divider } from 'antd';
 import styled from 'styled-components';
 import { map, compact, filter } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-import { Fields, FieldConfig, ClearModel } from './typing';
+import { Fields, FieldConfig, ClearModel, FiltersFormType } from './typing';
 import actions from './useSearchPage/actions';
 import { historyHelper } from './utils';
 
@@ -117,6 +117,17 @@ interface Props {
   clearModel?: ClearModel;
 }
 
+type Options = {
+  showKeys?: Array<string>;
+  needReset?: boolean;
+  needMore?: boolean;
+  clearModel?: ClearModel;
+};
+
+interface BuildFiltersForm {
+  (fields: Fields, options: Options): FiltersFormType;
+}
+
 /**
  * 渲染搜索Form表单
  * @param fields
@@ -124,21 +135,11 @@ interface Props {
  * @param needReset
  * @param needMore
  */
-function buildFiltersForm(
-  fields: Fields,
-  {
-    showKeys = [],
-    needReset = true,
-    needMore = true,
-    clearModel = ClearModel.MODEL_RETAIN,
-  }: {
-    showKeys?: Array<string>;
-    needReset?: boolean;
-    needMore?: boolean;
-    clearModel?: ClearModel;
-  }
+const buildFiltersForm: BuildFiltersForm = function(
+  fields,
+  { showKeys = [], needReset = true, needMore = true, clearModel = ClearModel.MODEL_RETAIN }
 ) {
-  return (props: Props & FormComponentProps) => {
+  return (props: Props & FormComponentProps<any>) => {
     const { form, dispatch, state } = props;
     const { resetFields, getFieldDecorator } = form;
     const [simpleModel, setModel] = useState(state.status && state.status.simpleModel);
@@ -230,6 +231,6 @@ function buildFiltersForm(
       </RootLayout>
     );
   };
-}
+};
 
 export default buildFiltersForm;

@@ -1,6 +1,5 @@
 import { FormComponentProps } from 'antd/lib/form';
-import { Dispatch } from 'react';
-
+import { WrapperProps } from './buildFiltersCustom';
 export interface PaginationType {
   current: number;
   pageSize: number;
@@ -24,18 +23,9 @@ export interface GetDataApi {
   (filters: Filters, pagination: PaginationType): Promise<ApiResult>;
 }
 
-export type FiltersFormType = React.ComponentType<
-  FormComponentProps<any> & {
-    dispatch: Dispatch<any>;
-    filters: Fields;
-    children: React.ReactNode;
-    state: any;
-    showKeys?: Array<string>;
-    needReset?: boolean;
-    needMore?: boolean;
-    rows?: number;
-  }
->;
+export type FiltersFormType =
+  | React.ComponentType<FormComponentProps>
+  | React.ComponentType<FormComponentProps & WrapperProps>;
 
 export interface ContentFunction {
   (data?: any, loading?: boolean): React.ReactNode;

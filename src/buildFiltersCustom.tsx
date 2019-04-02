@@ -38,19 +38,26 @@ const Label = styled.span`
   margin-right: 4px;
 `;
 
-function getVisibleCountEx(fields: React.ReactNode[], rows: number, simpleModel: boolean) {
+/**
+ * 获取可见的搜索条件个数，依据模式和精简模式下配置显示的行数确定
+ * @param fields  全部搜索条件
+ * @param rows  当前显示的行数
+ * @param simpleModel  精简模式标志
+ */
+function getVisibleCountEx(fields: React.ReactNode, rows: number, simpleModel: boolean) {
+  const count = React.Children.count(fields);
   if (simpleModel) {
-    return fields.length < rows * 3 ? fields.length : rows * 3;
+    return count < rows * 3 ? count : rows * 3;
   }
-  return fields.length;
+  return count;
 }
 
 /**
- * 获取在
- * @param fields
- * @param simpleModel
+ * 获取在当前模式下操作区所占栅格比重
+ * @param fields  全部搜索条件
+ * @param simpleModel 模式标志
  */
-function getActionSpanEx(fields: React.ReactNode[], rows: number, simpleModel: boolean) {
+function getActionSpanEx(fields: React.ReactNode, rows: number, simpleModel: boolean) {
   const fieldsLength = getVisibleCountEx(fields, rows, simpleModel);
   switch (fieldsLength % 3) {
     case 0:
@@ -64,14 +71,36 @@ function getActionSpanEx(fields: React.ReactNode[], rows: number, simpleModel: b
   }
 }
 
-function getActionLabelEx(fields: React.ReactNode[], rows: number, simpleModel: boolean) {
+/**
+ * 生成lable占位，布局需要，条件同操作区生成判定条件
+ * @param fields
+ * @param rows
+ * @param simpleModel
+ */
+function getActionLabelEx(fields: React.ReactNode, rows: number, simpleModel: boolean) {
   return getVisibleCountEx(fields, rows, simpleModel) % 3 === 0 ? null : '\u00A0';
 }
-function getActionStyleEx(fields: React.ReactNode[], rows: number, simpleModel: boolean) {
+/**
+ * 操作区布局hack，根据不同模式进行不同的marginTop hack，布局需要
+ * @param fields
+ * @param rows
+ * @param simpleModel
+ */
+function getActionStyleEx(fields: React.ReactNode, rows: number, simpleModel: boolean) {
   return getVisibleCountEx(fields, rows, simpleModel) % 3 === 0 ? {} : { marginTop: 11 };
 }
-function handleConditionEx(model: boolean, resetFields: Function, advancedKeys: Array<String>) {
-  if (model) {
+/**
+ * 处理模式变化时的数据变化，如果模式为精简模式则清除高级搜索部分的查询条件
+ * @param simpleModel
+ * @param resetFields
+ * @param advancedKeys
+ */
+function handleConditionEx(
+  simpleModel: boolean,
+  resetFields: Function,
+  advancedKeys: Array<String>
+) {
+  if (simpleModel) {
     resetFields(advancedKeys);
   }
 }
@@ -79,7 +108,7 @@ function handleConditionEx(model: boolean, resetFields: Function, advancedKeys: 
 export interface WrapperProps {
   dispatch: Function;
   state: any;
-  children?: React.ReactNode[];
+  children: React.ReactNode;
   needReset?: boolean;
   needMore?: boolean;
   rows?: number;
@@ -94,7 +123,6 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
   const getFields = () =>
     compact(
       React.Children.map(children, (child: any, i) => {
-        // 如果是精简模式，且渲染个数超过两个，就不再渲染
         if (i >= rows! * 3) {
           try {
             advancedKeys.push(child.props.children.props.id);
@@ -111,11 +139,13 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
       })
     );
 
+  // 清除所有的搜索条件，返回已经清除的val的field数据对象
   const clearFilter = filter =>
     mapValues(filter, val => {
       return { ...val, value: null };
     });
 
+  // reset回调
   const reset = useCallback(() => {
     resetFields();
     historyHelper.setState({
@@ -123,6 +153,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
     });
   }, [resetFields]);
 
+  // 根据搜索模式获取对应的搜索条件数据结构
   const getCurrentFilter = (filters: Object, simpleModel: boolean, advancedKeys: string[]) =>
     mapValues(filters, (val, key) => {
       if (!advancedKeys.includes(key) || !simpleModel) {
@@ -131,6 +162,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
       return { ...val, value: null }; // 清除使用undefined在合并时不会生效
     });
 
+  // 模式切换
   const switchModal = () => {
     // 处理搜索条件变化
     handleConditionEx(!simpleModel, resetFields, advancedKeys);
@@ -149,14 +181,11 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
       <Form layout="vertical">
         <Row gutter={24}>
           {getFields()}
-          <Col
-            span={getActionSpanEx(children || [], rows!, simpleModel)}
-            style={{ textAlign: 'right' }}
-          >
+          <Col span={getActionSpanEx(children, rows!, simpleModel)} style={{ textAlign: 'right' }}>
             {needReset || needMore ? (
               <Form.Item
-                label={getActionLabelEx(children || [], rows!, simpleModel)}
-                style={getActionStyleEx(props.children || [], rows!, simpleModel)}
+                label={getActionLabelEx(children, rows!, simpleModel)}
+                style={getActionStyleEx(props.children, rows!, simpleModel)}
               >
                 {/* 是否需要重置操作 */}
                 {needReset ? (
@@ -165,7 +194,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
                   </a>
                 ) : null}
                 {/* 是否需要更多操作 */}
-                {needMore && (children || []).length > rows! * 3 ? (
+                {needMore && React.Children.count(children) > rows! * 3 ? (
                   <>
                     {/* 分割线 */}
                     {needReset && needMore ? <Divider type="vertical" /> : null}

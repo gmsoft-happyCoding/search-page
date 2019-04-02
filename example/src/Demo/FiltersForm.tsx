@@ -4,35 +4,36 @@
  */
 import React from 'react';
 import { Form, Input, Select } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
-import { FormWrapper, WrapperProps } from 'search-page';
-// import { FormWrapper, Fields, buildFiltersForm } from 'search-page';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
+// import { FormWrapper, WrapperProps, FiltersFormType } from 'search-page';
+import { FormWrapper, Fields, buildFiltersForm } from 'search-page';
 
-// const fields: Fields = {
-//   orgName: { type: 'input', label: '单位名称' },
-//   orgCode: { type: 'input', label: '组织机构代码' },
-//   orgCode2: { type: 'input', label: '组织机构代码222' },
-//   orgCode3: { type: 'input', label: '组织机构代码' },
-//   orgCode4: { type: 'input', label: '组织机构代码' },
-// };
+const fields: Fields = {
+  orgName: { type: 'input', label: '单位名称' },
+  orgCode: { type: 'input', label: '组织机构代码' },
+  orgCode2: { type: 'input', label: '组织机构代码222' },
+  orgCode3: { type: 'input', label: '组织机构代码' },
+  orgCode4: { type: 'input', label: '组织机构代码' },
+};
 
 // build模式
-// export default buildFiltersForm({
-//   fields,    //渲染配置
-//   showKeys,  //可选，精简模式下要显示的搜索条件的key,数组,默认渲染前两个
-//   needReset, //可选，是否需要清空操作
-//   needMore,  //可选，是否需要更多操作，如果为false，将渲染全部搜索条件
-// });
+export default buildFiltersForm(
+  fields, // 渲染配置
+  {
+    showKeys: ['orgName', 'orgCode'], // 可选，精简模式下要显示的搜索条件的key,数组,默认渲染前两个
+    needReset: false, // 可选，是否需要清空操作
+    needMore: true, // 可选，是否需要更多操作，如果为false，将渲染全部搜索条件
+  }
+);
 
 // 自定义模式
-const { Option } = Select;
+/* const { Option } = Select;
 
-interface Props extends FormComponentProps {
-  dispatch: Function;
-  state: any;
+interface Props extends WrapperProps {
+  form: WrappedFormUtils;
 }
 
-const ConditionNode = (props: Props) => {
+const FiltersForm = (props: Props) => {
   const {
     form: { getFieldDecorator },
   } = props;
@@ -60,4 +61,4 @@ const ConditionNode = (props: Props) => {
   );
 };
 
-export default ConditionNode;
+export default FiltersForm; */

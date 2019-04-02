@@ -111,7 +111,7 @@ function handleCondition(
 interface Props {
   dispatch: Function;
   state: any;
-  children?: React.ReactNode[];
+  children: React.ReactNode;
   needReset?: boolean;
   needMore?: boolean;
   clearModel?: ClearModel;
@@ -124,19 +124,20 @@ interface Props {
  * @param needReset
  * @param needMore
  */
-function buildFiltersForm({
-  fields,
-  showKeys = [],
-  needReset = true,
-  needMore = true,
-  clearModel = ClearModel.MODEL_RETAIN,
-}: {
-  fields: Fields;
-  showKeys?: Array<string>;
-  needReset?: boolean;
-  needMore?: boolean;
-  clearModel?: ClearModel;
-}) {
+function buildFiltersForm(
+  fields: Fields,
+  {
+    showKeys = [],
+    needReset = true,
+    needMore = true,
+    clearModel = ClearModel.MODEL_RETAIN,
+  }: {
+    showKeys?: Array<string>;
+    needReset?: boolean;
+    needMore?: boolean;
+    clearModel?: ClearModel;
+  }
+) {
   return (props: Props & FormComponentProps) => {
     const { form, dispatch, state } = props;
     const { resetFields, getFieldDecorator } = form;

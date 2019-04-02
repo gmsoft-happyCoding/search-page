@@ -7,12 +7,16 @@ import { keys } from 'lodash';
 
 const { create } = Form;
 
-type Props = {
+interface Props {
   dispatch: Dispatch<any>;
   state: any;
   filters: Fields;
   showKeys?: Array<string>;
-};
+  children?: React.ReactNode;
+  needReset?: boolean;
+  needMore?: boolean;
+  rows?: number;
+}
 
 // 根据模式进行过滤性初始化，只初始化当前模式下显示的表单部分，多余的部分不初始化
 const mapPropsToFields = (props: Props) => {
@@ -36,4 +40,3 @@ const onFieldsChange = ({ dispatch }: Props, changedFields) => {
 
 export default (FiltersForm: FiltersFormType) =>
   create<Props>({ mapPropsToFields, onFieldsChange })(FiltersForm);
-3;

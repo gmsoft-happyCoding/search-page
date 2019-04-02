@@ -29,7 +29,9 @@ const createSearchPage = ({
     const Filters = useMemo(() => createFilters(FiltersForm), []);
     return (
       <>
-        <Filters filters={state.filters} dispatch={dispatch} state={state} showKeys={showKeys} />
+        <Filters filters={state.filters} dispatch={dispatch} state={state} showKeys={showKeys}>
+          {null}
+        </Filters>
         <ContentWrap data={state.data} loading={state.loading} loadingDelay={loadingDelay}>
           {children}
         </ContentWrap>

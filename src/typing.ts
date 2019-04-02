@@ -28,6 +28,7 @@ export type FiltersFormType = React.ComponentType<
   FormComponentProps<any> & {
     dispatch: Dispatch<any>;
     filters: Fields;
+    children: React.ReactNode;
     state: any;
     showKeys?: Array<string>;
     needReset?: boolean;

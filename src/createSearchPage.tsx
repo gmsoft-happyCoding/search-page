@@ -11,6 +11,7 @@ interface Args {
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
   loadingDelay?: number;
+  showKeys?: Array<string>;
 }
 
 interface Props {
@@ -22,10 +23,10 @@ const createSearchPage = ({
   FiltersForm,
   getDataApi,
   loadingDelay = 500,
+  showKeys,
 }: Args) => {
   const SearchPage: React.FC<Props> = ({ children }, ref) => {
     const [state, dispatch] = useSearchPage(filtersDefault, getDataApi);
-
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部
@@ -35,7 +36,7 @@ const createSearchPage = ({
 
     return (
       <>
-        <Filters filters={state.filters} dispatch={dispatch} />
+        <Filters filters={state.filters} dispatch={dispatch} state={state} showKeys={showKeys} />
         <ContentWrap
           data={state.data}
           loading={state.loading}

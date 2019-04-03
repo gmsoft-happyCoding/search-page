@@ -17,6 +17,7 @@ export default filtersDefault => ({
   data: [],
   total: historyHelper.getValue('total'),
   loading: false,
+  status: merge({}, historyHelper.getValue('status')),
   // 强制刷新的计数器
   forceUpdate: 0,
 });

@@ -3,10 +3,10 @@ import { mapValues } from 'lodash';
 export enum Types {
   storeData = 'STORE_DATA',
   storeFilters = 'STORE_FILTERS',
+  setFilters = 'SET_FILTERS',
   storePagination = 'STORE_PAGINATION',
-  storeStatus = 'STORE_STATUS',
-  resetState = 'RESET_STATE',
-  loading = 'LOADING',
+  switchModel = 'SWITCH_MODEL',
+  loadingCount = 'LOADING_COUNT',
   forceUpdate = 'FORCE_UPDATE',
 }
 

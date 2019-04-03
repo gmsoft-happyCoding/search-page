@@ -12,15 +12,22 @@ export default (state, { type, payload }) => {
       const pagination = { ...state.pagination, current: 1 };
       return { ...state, filters, pagination };
     }
+    case Types.setFilters: {
+      const filters = payload;
+      // 搜索条件改变时重置分页到第一页
+      const pagination = { ...state.pagination, current: 1 };
+      return { ...state, filters, pagination };
+    }
     case Types.storePagination: {
       const pagination = { ...state.pagination, ...payload };
       return { ...state, pagination };
     }
-    case Types.loading: {
-      return { ...state, loading: payload };
+    case Types.loadingCount: {
+      const count = payload === '+' ? state.loadingCount + 1 : state.loadingCount - 1;
+      return { ...state, loadingCount: count };
     }
-    case Types.storeStatus: {
-      return { ...state, status: payload };
+    case Types.switchModel: {
+      return { ...state, simpleModel: !state.simpleModel };
     }
     case Types.forceUpdate: {
       return { ...state, forceUpdate: state.forceUpdate + 1 };

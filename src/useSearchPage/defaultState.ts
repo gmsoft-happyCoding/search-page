@@ -15,9 +15,10 @@ export default filtersDefault => ({
   filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),
   pagination: merge({}, pagination, historyHelper.getValue('pagination')),
   data: [],
-  total: historyHelper.getValue('total'),
-  loading: false,
-  status: merge({}, historyHelper.getValue('status')),
+  total: historyHelper.getValue('total', 0),
+  simpleModel: historyHelper.getValue('simpleModel', true),
+  // 请求计数器
+  loadingCount: 0,
   // 强制刷新的计数器
   forceUpdate: 0,
 });

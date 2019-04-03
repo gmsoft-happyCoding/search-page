@@ -36,6 +36,7 @@
     "reselect": "4.0.0",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
+    "styled-components": "link:../node_modules/styled-components",
     "search-page": "link:../",
     "state-container": "https://github.com/gmsoft-happyCoding/state-container",
     "systemjs": "0.21.5"

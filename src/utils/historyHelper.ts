@@ -7,15 +7,17 @@ const { history } = top;
 const STORE_KEY = '__sp';
 
 function setState(state: any) {
-  history.replaceState(merge({}, history.state, { [STORE_KEY]: state }), '');
+  const historyState = history.state || {};
+  historyState[STORE_KEY] = state;
+  history.replaceState(historyState, '');
 }
 
 function getState(): object {
   return history.state && history.state[STORE_KEY];
 }
 
-function merageState(...state: object[]) {
-  const mergedState = merge({}, ...state);
+function mergeState(...state: object[]) {
+  const mergedState = merge({}, ...history.state[STORE_KEY], ...state);
   setState(mergedState);
 }
 
@@ -29,7 +31,7 @@ function getValue(path: string, defaultValue: any = null) {
 
 export default {
   setState,
-  merageState,
+  mergeState,
   getValue,
   clearState,
   getState,

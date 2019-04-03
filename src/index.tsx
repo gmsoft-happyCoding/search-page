@@ -1,7 +1,7 @@
 import createSearchPage from './createSearchPage';
-import buildFiltersForm from './buildFiltersForm';
-import FormWrapper, { WrapperProps } from './buildFiltersCustom';
+import buildFiltersForm from './filters/buildFiltersForm';
+import FormWrapper from './filters/FormWapper';
 
 export * from './typing';
-export { buildFiltersForm, FormWrapper, WrapperProps };
+export { buildFiltersForm, FormWrapper };
 export default createSearchPage;

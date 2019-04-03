@@ -7,8 +7,6 @@ import { historyHelper, fieldHelper } from '../utils';
 
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
-// 请求计数器, 清零时才清除loading状态
-let fetchCounting = 0;
 
 export default (filtersDefault, getDataApi) => {
   const initState = useMemo(() => defaultState(filtersDefault), [filtersDefault]);
@@ -16,10 +14,9 @@ export default (filtersDefault, getDataApi) => {
 
   const debouncedGetDataApi = useCallback(
     debounce(
-      (storeFilters, storePagination) => {
-        // show loading
-        dispatch(actions.loading(true));
-        fetchCounting += 1;
+      (storeFilters, storePagination, storeSimpleModel) => {
+        // 请求发起, 计数+1
+        dispatch(actions.loadingCount('+'));
         // 请求数据
         getDataApi(fieldHelper.unwrap(storeFilters), storePagination)
           .then(data => {
@@ -30,14 +27,12 @@ export default (filtersDefault, getDataApi) => {
               filters: storeFilters,
               pagination: storePagination,
               total: data.total,
+              simpleModel: storeSimpleModel,
             });
           })
           .finally(() => {
-            fetchCounting -= 1;
-            if (fetchCounting === 0) {
-              // hide loading
-              dispatch(actions.loading(false));
-            }
+            // 请求完成, 计数-1
+            dispatch(actions.loadingCount('-'));
           });
       },
       DEBOUNCE_WAIT,
@@ -51,7 +46,7 @@ export default (filtersDefault, getDataApi) => {
 
   useEffect(() => {
     // 加载数据
-    debouncedGetDataApi(state.filters, state.pagination);
+    debouncedGetDataApi(state.filters, state.pagination, state.simpleModel);
   }, [state.filters, state.pagination, state.forceUpdate, debouncedGetDataApi]);
 
   return [state, dispatch];

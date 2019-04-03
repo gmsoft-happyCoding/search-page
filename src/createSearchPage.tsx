@@ -1,17 +1,16 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
 import ContentWrap from './ContentWrap';
-import createFilters from './createFilters';
+import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
-import { FiltersFormType, GetDataApi, ContentFunction } from './typing';
+import { FiltersFormType, GetDataApi, ContentFunction, FiltersDefault } from './typing';
 
 interface Args {
-  filtersDefault?: object;
+  filtersDefault?: FiltersDefault;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
   loadingDelay?: number;
-  showKeys?: Array<string>;
 }
 
 interface Props {
@@ -19,11 +18,10 @@ interface Props {
 }
 
 const createSearchPage = ({
-  filtersDefault,
+  filtersDefault = {},
   FiltersForm,
   getDataApi,
   loadingDelay = 500,
-  showKeys,
 }: Args) => {
   const SearchPage: React.FC<Props> = ({ children }, ref) => {
     const [state, dispatch] = useSearchPage(filtersDefault, getDataApi);
@@ -36,10 +34,15 @@ const createSearchPage = ({
 
     return (
       <>
-        <Filters filters={state.filters} dispatch={dispatch} state={state} showKeys={showKeys} />
+        <Filters
+          filters={state.filters}
+          dispatch={dispatch}
+          simpleModel={state.simpleModel}
+          filtersDefault={filtersDefault}
+        />
         <ContentWrap
           data={state.data}
-          loading={state.loading}
+          loadingCount={state.loadingCount}
           loadingDelay={loadingDelay}
           forceUpdate={forceUpdate}
         >

@@ -1,20 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Form, Row, Col, Icon, Divider } from 'antd';
 import styled from 'styled-components';
-import { compact } from 'lodash';
+import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-import { mapValues } from 'lodash';
-import { ClearModel } from './typing';
-import actions from './useSearchPage/actions';
-import { historyHelper } from './utils';
+import { Filters, FiltersDefault } from '../typing';
+import actions from '../useSearchPage/actions';
+import { historyHelper } from '../utils';
+import fieldHelper from '../utils/fieldHelper';
+
+const { wrap } = fieldHelper;
 
 const RootLayout = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   & .ant-form-vertical .ant-form-item {
-    margin: 0;
+    margin-bottom: 8px;
   }
   .more-wrapper {
     position: relative;
@@ -89,103 +91,63 @@ function getActionLabelEx(fields: React.ReactNode, rows: number, simpleModel: bo
 function getActionStyleEx(fields: React.ReactNode, rows: number, simpleModel: boolean) {
   return getVisibleCountEx(fields, rows, simpleModel) % 3 === 0 ? {} : { marginTop: 11 };
 }
-/**
- * 处理模式变化时的数据变化，如果模式为精简模式则清除高级搜索部分的查询条件
- * @param simpleModel
- * @param resetFields
- * @param advancedKeys
- */
-function handleConditionEx(
-  simpleModel: boolean,
-  resetFields: Function,
-  advancedKeys: Array<String>
-) {
-  if (simpleModel) {
-    resetFields(advancedKeys);
-  }
-}
 
 export interface WrapperProps {
   dispatch: Function;
-  state: any;
-  children: React.ReactNode;
+  children: React.ReactNodeArray;
+  filters: Filters;
+  filtersDefault: FiltersDefault;
+  simpleModel: boolean;
   needReset?: boolean;
   needMore?: boolean;
-  rows?: number;
+  rows: number;
 }
 
 export default function FormWrapper(props: WrapperProps & FormComponentProps) {
-  const { form, dispatch, state, children, needReset, needMore, rows } = props;
-  const { resetFields } = form;
-  const [simpleModel, setModel] = useState(state.status && state.status.simpleModel);
+  const { dispatch, children, needReset, needMore, rows, filtersDefault, simpleModel } = props;
 
-  const advancedKeys = Array<string>();
+  const advancedKeys = children
+    .slice(rows * 3)
+    .map(children => get(children, 'props.children.props.id'));
+
   const getFields = () =>
     compact(
       React.Children.map(children, (child: any, i) => {
-        if (i >= rows! * 3) {
-          try {
-            advancedKeys.push(child.props.children.props.id);
-          } catch (e) {
-            console.error(
-              'FormItem获取ID的key路径上存在空指针，获取ID失败，请检查JSX结构是否符合要求'
-            );
-          }
-          if (simpleModel) {
-            return null;
-          }
+        if (simpleModel && i >= rows * 3) {
+          return null;
         }
         return <Col span={8}>{child}</Col>;
       })
     );
 
-  // 清除所有的搜索条件，返回已经清除的val的field数据对象
-  const clearFilter = filter =>
-    mapValues(filter, val => {
-      return { ...val, value: null };
-    });
-
   // reset回调
   const reset = useCallback(() => {
-    resetFields();
-    historyHelper.setState({
-      filters: clearFilter(state.filters),
-    });
-  }, [resetFields]);
-
-  // 根据搜索模式获取对应的搜索条件数据结构
-  const getCurrentFilter = (filters: Object, simpleModel: boolean, advancedKeys: string[]) =>
-    mapValues(filters, (val, key) => {
-      if (!advancedKeys.includes(key) || !simpleModel) {
-        return val;
-      }
-      return { ...val, value: null }; // 清除使用undefined在合并时不会生效
-    });
+    dispatch(actions.setFilters(wrap(filtersDefault)));
+  }, [dispatch, filtersDefault]);
 
   // 模式切换
-  const switchModal = () => {
-    // 处理搜索条件变化
-    handleConditionEx(!simpleModel, resetFields, advancedKeys);
-    // 存储业务状态redux
-    dispatch(actions.storeStatus({ simpleModel: !simpleModel }));
-    // 状态持久化
-    historyHelper.setState({
-      status: { simpleModel: !simpleModel },
-      filters: getCurrentFilter(state.filters, !simpleModel, advancedKeys),
-    });
-    // 变更搜索模式，局部状态
-    setModel(!simpleModel);
-  };
+  const switchModel = useCallback(() => {
+    const prevSimpleModel = simpleModel;
+    // 存储模式状态
+    dispatch(actions.switchModel());
+    // 持久化模式状态
+    historyHelper.mergeState({ simpleModel: !prevSimpleModel });
+    // 重置更多部分的筛选条件
+    const advanceDefault = pick(filtersDefault, advancedKeys);
+    const advanceNull = zipObject(advancedKeys);
+    if (!prevSimpleModel) dispatch(actions.storeFilters(wrap(merge(advanceNull, advanceDefault))));
+  }, [simpleModel]);
+
   return (
     <RootLayout>
       <Form layout="vertical">
         <Row gutter={24}>
           {getFields()}
-          <Col span={getActionSpanEx(children, rows!, simpleModel)} style={{ textAlign: 'right' }}>
+          <Col span={getActionSpanEx(children, rows, simpleModel)} style={{ textAlign: 'right' }}>
             {needReset || needMore ? (
               <Form.Item
-                label={getActionLabelEx(children, rows!, simpleModel)}
-                style={getActionStyleEx(props.children, rows!, simpleModel)}
+                label={getActionLabelEx(children, rows, simpleModel)}
+                style={getActionStyleEx(props.children, rows, simpleModel)}
               >
                 {/* 是否需要重置操作 */}
                 {needReset ? (
@@ -194,11 +156,11 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
                   </a>
                 ) : null}
                 {/* 是否需要更多操作 */}
-                {needMore && React.Children.count(children) > rows! * 3 ? (
+                {needMore && React.Children.count(children) > rows * 3 ? (
                   <>
                     {/* 分割线 */}
                     {needReset && needMore ? <Divider type="vertical" /> : null}
-                    <a className="more-wrapper action" onClick={switchModal} role="button">
+                    <a className="more-wrapper action" onClick={switchModel} role="button">
                       <span className={simpleModel ? 'more' : 'more active'}>
                         <Label>展开</Label>
                         <Icon type="down" />
@@ -222,8 +184,8 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
 }
 
 FormWrapper.defaultProps = {
+  simpleModel: true,
   needReset: true,
   needMore: true,
-  clearModel: ClearModel.MODEL_RETAIN,
   rows: 1,
 };

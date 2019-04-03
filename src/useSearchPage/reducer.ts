@@ -22,5 +22,8 @@ export default (state, { type, payload }) => {
     case Types.storeStatus: {
       return { ...state, status: payload };
     }
+    case Types.forceUpdate: {
+      return { ...state, forceUpdate: state.forceUpdate + 1 };
+    }
   }
 };

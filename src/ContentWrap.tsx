@@ -7,13 +7,14 @@ type Props = {
   data: any;
   loading: boolean;
   loadingDelay: number;
+  forceUpdate: () => void;
 };
 
-const ContentWrap = ({ children, data, loading, loadingDelay }: Props) => {
+const ContentWrap = ({ children, data, loading, loadingDelay, forceUpdate }: Props) => {
   if (children && typeof children === 'function') {
     return (
       <Spin spinning={loading} delay={loadingDelay} tip="数据加载中...">
-        {children(data, loading)}
+        {children(data, forceUpdate, loading)}
       </Spin>
     );
   }

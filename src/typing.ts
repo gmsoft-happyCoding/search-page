@@ -28,7 +28,7 @@ export type FiltersFormType =
   | React.ComponentType<FormComponentProps & WrapperProps>;
 
 export interface ContentFunction {
-  (data?: any, loading?: boolean): React.ReactNode;
+  (data?: any, forceUpdate?: () => void, loading?: boolean): React.ReactNode;
 }
 
 export interface FieldConfig {

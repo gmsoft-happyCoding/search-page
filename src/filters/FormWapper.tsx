@@ -233,4 +233,8 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
 
 FormWrapper.defaultProps = {
   needReset: true,
+  simpleMode: {
+    enable: true,
+    rows: 2 / 3,
+  },
 };

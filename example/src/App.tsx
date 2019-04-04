@@ -13,8 +13,8 @@ const App = () => (
   <LocaleProvider locale={zhCN}>
     <Provider store={stateContainer._store}>
       <BuildFiltersFormDemo />
-      {/* <FormWrapperDemo /> */}
-      {/* <HandwrittenFormDemo /> */}
+      <FormWrapperDemo />
+      <HandwrittenFormDemo />
     </Provider>
   </LocaleProvider>
 );

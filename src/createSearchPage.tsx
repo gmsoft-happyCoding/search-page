@@ -37,7 +37,7 @@ const createSearchPage = ({
         <Filters
           filters={state.filters}
           dispatch={dispatch}
-          simpleModel={state.simpleModel}
+          mode={state.mode}
           filtersDefault={filtersDefault}
         />
         <ContentWrap

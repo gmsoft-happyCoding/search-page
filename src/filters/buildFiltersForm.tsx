@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { map } from 'lodash';
 import { Fields, FieldConfig, FiltersFormType } from '../typing';
-import FormWapper from './FormWapper';
+import FormWapper, { SimpleMode } from './FormWapper';
 
 type Options = {
   /**
@@ -12,18 +12,13 @@ type Options = {
   /**
    * 是否需要更多按钮
    */
-  needMore?: boolean;
-  /**
-   * 精简模式下显示几行搜索条件
-   */
-  rows?: number;
+  simpleMode?: Partial<SimpleMode>;
 };
 
 export default (
   fields: Fields,
   options: Options = {
     needReset: true,
-    needMore: true,
   }
 ) => {
   const FiltersForm: FiltersFormType = props => {

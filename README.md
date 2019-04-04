@@ -19,8 +19,10 @@ yarn add search-page
 - [x] 自动记住页面状态，刷新或 history.back()，不会丢失页面状态
 - [x] 数据请求自动节流，阈值 300ms
 - [x] 自动显示 loading 状态， 为了避免闪烁默认 delay 500ms
-- [x] 支持高级搜索，展开收起，收起时清除高级搜索部分的限制条件
+- [x] 支持高级搜索，展开收起，收起时重置高级搜索部分的条件为默认值(filtersDefault)
 - [x] 根据配置自动生成 form (目前只支持 input),非 input 组件或自定义组件使用 [FormWrapper](<#FiltersForm.tsx-(使用-FormWrapper)>)
+
+---
 
 ## Usage
 
@@ -105,14 +107,17 @@ const fields: Fields = {
   orgCode4: { type: 'input', label: '组织机构代码4' },
 };
 
-// build模式
-export default buildFiltersForm(
-  fields, // 渲染配置
-  {
-    needReset: true, // 可选，是否需要清空操作
-    needMore: true, // 可选，是否需要更多操作，如果为false，将渲染全部搜索条件
-  }
-);
+export default buildFiltersForm(fields, {
+  // 可选，是否需要重置操作
+  needReset: true,
+  // 精简模式配置
+  simpleMode: {
+    enable: true,
+    count: 2,
+    // count 优先级高于 rows
+    // row: 1
+  },
+});
 ```
 
 ---
@@ -132,7 +137,7 @@ const FiltersForm: FiltersFormType = props => {
   } = props;
 
   return (
-    <FormWrapper {...props} rows={1}>
+    <FormWrapper {...props} simpleMode={{ rows: 1 }}>
       <Form.Item label="Name0">
         {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
       </Form.Item>

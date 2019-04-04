@@ -5,7 +5,7 @@ export enum Types {
   storeFilters = 'STORE_FILTERS',
   setFilters = 'SET_FILTERS',
   storePagination = 'STORE_PAGINATION',
-  switchModel = 'SWITCH_MODEL',
+  switchMode = 'SWITCH_MODE',
   loadingCount = 'LOADING_COUNT',
   forceUpdate = 'FORCE_UPDATE',
 }

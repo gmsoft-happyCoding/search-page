@@ -2,6 +2,7 @@ import { merge } from 'lodash';
 import fieldHelper from '../utils/fieldHelper';
 import historyHelper from '../utils/historyHelper';
 import { PaginationType } from '../typing';
+import Mode from '../filters/mode.enum';
 
 // ant design form field is object, transform {key: value} to {key: {value}}
 const { wrap } = fieldHelper;
@@ -16,7 +17,7 @@ export default filtersDefault => ({
   pagination: merge({}, pagination, historyHelper.getValue('pagination')),
   data: [],
   total: historyHelper.getValue('total', 0),
-  simpleModel: historyHelper.getValue('simpleModel', true),
+  mode: historyHelper.getValue('mode', Mode.Simple),
   // 请求计数器
   loadingCount: 0,
   // 强制刷新的计数器

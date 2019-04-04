@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import { fieldHelper } from '../utils';
 import { FiltersFormType, Fields, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
+import Mode from './mode.enum';
 
 const { create } = Form;
 
@@ -10,7 +11,7 @@ interface Props {
   dispatch: Dispatch<any>;
   filters: Fields;
   filtersDefault: FiltersDefault;
-  simpleModel?: boolean;
+  mode?: Mode;
   children?: React.ReactNode;
   needReset?: boolean;
   needMore?: boolean;

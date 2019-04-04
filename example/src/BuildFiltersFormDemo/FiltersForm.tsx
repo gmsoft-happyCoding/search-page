@@ -17,6 +17,8 @@ export default buildFiltersForm(
   fields, // 渲染配置
   {
     needReset: true, // 可选，是否需要清空操作
-    needMore: true, // 可选，是否需要更多操作，如果为false，将渲染全部搜索条件
+    simpleMode: {
+      count: 2,
+    },
   }
 );

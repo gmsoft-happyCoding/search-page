@@ -14,7 +14,7 @@ export default (filtersDefault, getDataApi) => {
 
   const debouncedGetDataApi = useCallback(
     debounce(
-      (storeFilters, storePagination, storeSimpleModel) => {
+      (storeFilters, storePagination, storeMode) => {
         // 请求发起, 计数+1
         dispatch(actions.loadingCount('+'));
         // 请求数据
@@ -27,7 +27,7 @@ export default (filtersDefault, getDataApi) => {
               filters: storeFilters,
               pagination: storePagination,
               total: data.total,
-              simpleModel: storeSimpleModel,
+              mode: storeMode,
             });
           })
           .finally(() => {
@@ -46,7 +46,7 @@ export default (filtersDefault, getDataApi) => {
 
   useEffect(() => {
     // 加载数据
-    debouncedGetDataApi(state.filters, state.pagination, state.simpleModel);
+    debouncedGetDataApi(state.filters, state.pagination, state.mode);
   }, [state.filters, state.pagination, state.forceUpdate, debouncedGetDataApi]);
 
   return [state, dispatch];

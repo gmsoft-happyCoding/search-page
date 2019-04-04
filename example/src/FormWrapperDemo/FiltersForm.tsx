@@ -10,7 +10,7 @@ const FiltersForm: FiltersFormType = props => {
   } = props;
 
   return (
-    <FormWrapper {...props} rows={1}>
+    <FormWrapper {...props} simpleMode={{ rows: 1 }}>
       <Form.Item label="Name0">
         {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
       </Form.Item>

@@ -184,7 +184,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
   return (
     <RootLayout>
       <Form layout="vertical">
-        <Row gutter={24}>
+        <Row type="flex" justify="start" gutter={24}>
           {getFields()}
           <Col
             span={getActionSpanEx(children, simpleModeCount, mode)}

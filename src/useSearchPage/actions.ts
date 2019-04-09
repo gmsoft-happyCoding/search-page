@@ -8,6 +8,7 @@ export enum Types {
   switchMode = 'SWITCH_MODE',
   loadingCount = 'LOADING_COUNT',
   forceUpdate = 'FORCE_UPDATE',
+  removeFilters = 'REMOVE_FILTERS',
 }
 
 const actionCreator = (type: Types) => (payload: any) => ({ type, payload });

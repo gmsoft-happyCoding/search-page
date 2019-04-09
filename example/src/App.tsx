@@ -12,8 +12,8 @@ import 'antd/dist/antd.css';
 const App = () => (
   <LocaleProvider locale={zhCN}>
     <Provider store={stateContainer._store}>
-      <BuildFiltersFormDemo />
-      {/* <FormWrapperDemo /> */}
+      {/* <BuildFiltersFormDemo /> */}
+      <FormWrapperDemo />
       {/* <HandwrittenFormDemo /> */}
     </Provider>
   </LocaleProvider>

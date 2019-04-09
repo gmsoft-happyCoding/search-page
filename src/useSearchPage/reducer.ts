@@ -19,6 +19,20 @@ export default (state, { type, payload }) => {
       const pagination = { ...state.pagination, current: 1 };
       return { ...state, filters, pagination };
     }
+    case Types.removeFilters: {
+      // 移除filters中的部分，不传入payload 则全部移除
+      let newFilters = { ...state.filters };
+      if (payload && payload.length) {
+        payload.map(key => {
+          delete newFilters[key];
+        });
+      } else {
+        newFilters = {};
+      }
+      // 搜索条件改变时重置分页到第一页
+      const pagination = { ...state.pagination, current: 1 };
+      return { ...state, filters: newFilters, pagination };
+    }
     case Types.storePagination: {
       const pagination = { ...state.pagination, ...payload };
       return { ...state, pagination };

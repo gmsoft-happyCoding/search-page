@@ -8,7 +8,7 @@ import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
-import { historyHelper } from '../utils';
+import { historyHelper, useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
 import Mode from './mode.enum';
 
@@ -107,6 +107,28 @@ function switchModeIsEnable(enable) {
   return enable === false ? false : true;
 }
 
+/**
+ * 过滤无效的chilrd
+ */
+function getValidChidren(children) {
+  const validChidren: any[] = [];
+  if (children) {
+    // 去除无效元素 @like false|null|undefined
+    React.Children.forEach(children, child => {
+      if (React.isValidElement(child)) {
+        validChidren.push(child);
+      }
+    });
+  }
+  return validChidren;
+}
+
+/**
+ * 获取子项的key
+ * props.children.props.id
+ */
+const getChildKey = child => get(child, 'props.children.props.id');
+
 export interface SimpleMode {
   /**
    * 是否启用
@@ -138,23 +160,37 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
   const smEnable = switchModeIsEnable(simpleMode.enable);
-
-  let simpleModeCount = children.length;
+  let validChidren = getValidChidren(children);
+  let simpleModeCount = validChidren.length;
   let advancedKeys: Array<string> = [];
   if (smEnable) {
     // 默认显示 2 个搜索条件
-    simpleModeCount = Math.min(children.length, simpleMode.count || (simpleMode.rows || 2 / 3) * 3);
+    simpleModeCount = Math.min(
+      validChidren.length,
+      simpleMode.count || (simpleMode.rows || 2 / 3) * 3
+    );
     // 检查children的结构是否满足要求
-    checkChildren(children);
+    checkChildren(validChidren);
     // 获取高级模式的keys
-    advancedKeys = children
-      .slice(simpleModeCount)
-      .map(children => get(children, 'props.children.props.id'));
+    advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
   }
+  useWatch(
+    [children],
+    (preChildren, children) => {
+      // 子项个数变化时，将原有filters中对应缺失的值清空
+      const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
+      const currentValidChildKeys = getValidChidren(children).map(getChildKey);
+      const removeKeys = preValidChildKeys.filter(key => !currentValidChildKeys.includes(key));
+      if (removeKeys.length) {
+        dispatch(actions.removeFilters(removeKeys));
+      }
+    },
+    true
+  );
 
   const getFields = () =>
     compact(
-      React.Children.map(children, (child: any, i) => {
+      React.Children.map(validChidren, (child: any, i) => {
         if (mode === Mode.Simple && i >= simpleModeCount) {
           return null;
         }
@@ -187,13 +223,13 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
         <Row type="flex" justify="start" gutter={24}>
           {getFields()}
           <Col
-            span={getActionSpanEx(children, simpleModeCount, mode)}
+            span={getActionSpanEx(validChidren, simpleModeCount, mode)}
             style={{ textAlign: 'right' }}
           >
             {needReset || smEnable ? (
               <Form.Item
-                label={getActionLabelEx(children, simpleModeCount, mode)}
-                style={getActionStyleEx(props.children, simpleModeCount, mode)}
+                label={getActionLabelEx(validChidren, simpleModeCount, mode)}
+                style={getActionStyleEx(validChidren, simpleModeCount, mode)}
               >
                 {/* 是否需要重置操作 */}
                 {needReset ? (
@@ -202,7 +238,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
                   </a>
                 ) : null}
                 {/* 是否需要更多操作 */}
-                {smEnable && React.Children.count(children) > simpleModeCount ? (
+                {smEnable && React.Children.count(validChidren) > simpleModeCount ? (
                   <>
                     {/* 分割线 */}
                     {needReset && smEnable ? <Divider type="vertical" /> : null}

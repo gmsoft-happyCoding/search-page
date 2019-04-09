@@ -1,10 +1,11 @@
 import React from 'react';
 import { Form, Input, Select } from 'antd';
 import { FormWrapper, FiltersFormType } from 'search-page';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 const { Option } = Select;
 
-const FiltersForm: FiltersFormType = props => {
+const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
   const {
     form: { getFieldDecorator, getFieldValue },
   } = props;
@@ -34,4 +35,4 @@ const FiltersForm: FiltersFormType = props => {
   );
 };
 
-export default FiltersForm;
+export default withRouter(FiltersForm);

@@ -6,7 +6,7 @@ type Field = {
   value?: any;
 };
 
-type Fields = {
+export type Fields = {
   [key: string]: Field;
 };
 

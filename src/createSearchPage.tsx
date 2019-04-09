@@ -43,6 +43,7 @@ const createSearchPage = ({
         <ContentWrap
           data={state.data}
           loadingCount={state.loadingCount}
+          filters={state.filters}
           loadingDelay={loadingDelay}
           forceUpdate={forceUpdate}
         >

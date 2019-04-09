@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import styled from 'styled-components';
+import { ContentFunction } from 'search-page';
 
 const Wrap = styled.div`
   padding: 16px;
@@ -11,11 +12,15 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-export default (data, forceUpdate) => (
+const content: ContentFunction = (data, forceUpdate, loading, filters) => (
   <Wrap>
-    {JSON.stringify(data)}
+    data: {JSON.stringify(data)}
+    <br />
+    filters: {JSON.stringify(filters)}
     <a style={{ float: 'right' }} onClick={forceUpdate}>
       强制刷新
     </a>
   </Wrap>
 );
+
+export default content;

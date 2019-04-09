@@ -175,7 +175,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
     advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
   }
   useWatch(
-    [children],
+    children,
     (preChildren, children) => {
       // 子项个数变化时，将原有filters中对应缺失的值清空
       const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);

@@ -138,14 +138,16 @@ const { Option } = Select;
 
 const FiltersForm: FiltersFormType = props => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, getFieldValue },
   } = props;
 
   return (
     <FormWrapper {...props} simpleMode={{ rows: 1 }}>
-      <Form.Item label="Name0">
-        {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
-      </Form.Item>
+      {getFieldValue('name1') === '2' && (
+        <Form.Item label="Name0">
+          {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
+        </Form.Item>
+      )}
       <Form.Item label="Name1">
         {getFieldDecorator('name1')(
           <Select>

@@ -8,7 +8,7 @@ import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
-import { historyHelper, useEffectWithPrev } from '../utils';
+import { historyHelper, useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
 import Mode from './mode.enum';
 
@@ -174,7 +174,8 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
     // 获取高级模式的keys
     advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
   }
-  useEffectWithPrev(
+  useWatch(
+    [children],
     (preChildren, children) => {
       // 子项个数变化时，将原有filters中对应缺失的值清空
       const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
@@ -184,7 +185,6 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
         dispatch(actions.removeFilters(removeKeys));
       }
     },
-    [children],
     true
   );
 

@@ -1,5 +1,5 @@
 import historyHelper from './historyHelper';
 import fieldHelper from './fieldHelper';
-import useEffectWithPrev from './useEffectWithPrev';
+import useWatch from './useWatch';
 
-export { historyHelper, fieldHelper, useEffectWithPrev };
+export { historyHelper, fieldHelper, useWatch };

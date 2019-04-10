@@ -155,7 +155,7 @@ export interface WrapperProps {
   simpleMode: SimpleMode;
 }
 
-export default function FormWrapper(props: WrapperProps & FormComponentProps) {
+const FormWrapper = function(props: WrapperProps & FormComponentProps) {
   const { dispatch, children, needReset, simpleMode, filtersDefault, mode } = props;
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
@@ -265,7 +265,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
       </Form>
     </RootLayout>
   );
-}
+};
 
 FormWrapper.defaultProps = {
   needReset: true,
@@ -274,3 +274,5 @@ FormWrapper.defaultProps = {
     rows: 2 / 3,
   },
 };
+
+export default FormWrapper;

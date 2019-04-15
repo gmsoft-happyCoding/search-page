@@ -17,7 +17,8 @@ const { wrap } = fieldHelper;
 const RootLayout = styled.div`
   margin-bottom: 8px;
   & .ant-form-vertical .ant-form-item {
-    margin-bottom: 8px;
+    padding-bottom: 0;
+    margin-bottom: 16px;
   }
   .more-wrapper {
     position: relative;

@@ -175,19 +175,15 @@ const FormWrapper = function(props: WrapperProps & FormComponentProps) {
     // 获取高级模式的keys
     advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
   }
-  useWatch(
-    children,
-    (preChildren, children) => {
-      // 子项个数变化时，将原有filters中对应缺失的值清空
-      const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
-      const currentValidChildKeys = getValidChidren(children).map(getChildKey);
-      const removeKeys = preValidChildKeys.filter(key => !currentValidChildKeys.includes(key));
-      if (removeKeys.length) {
-        dispatch(actions.removeFilters(removeKeys));
-      }
-    },
-    true
-  );
+  useWatch(children, (preChildren, children) => {
+    // 子项个数变化时，将原有filters中对应缺失的值清空
+    const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
+    const currentValidChildKeys = getValidChidren(children).map(getChildKey);
+    const removeKeys = preValidChildKeys.filter(key => !currentValidChildKeys.includes(key));
+    if (removeKeys.length) {
+      dispatch(actions.removeFilters(removeKeys));
+    }
+  });
 
   const getFields = () =>
     compact(

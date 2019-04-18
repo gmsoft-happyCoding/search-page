@@ -30,6 +30,10 @@ export default (filtersDefault, getDataApi) => {
               mode: storeMode,
             });
           })
+          .catch(error => {
+            // 捕获异常, 什么都不做, 避免UI崩溃
+            console && console.log && console.log(error);
+          })
           .finally(() => {
             // 请求完成, 计数-1
             dispatch(actions.loadingCount('-'));

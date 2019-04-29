@@ -210,19 +210,18 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
                   <>
                     {/* 分割线 */}
                     {needReset && smEnable ? <Divider type="vertical" /> : null}
-                    <a href="#" className="more-wrapper action" onClick={switchMode} role="button">
-                      <span className={mode === Mode.Simple ? 'more' : 'more active'}>
-                        <Label>展开</Label>
-                        <Icon type="down" />
-                      </span>
-                      <span
-                        className={
-                          mode === Mode.Simple ? 'more more-absolute active' : 'more more-absolute'
-                        }
-                      >
-                        <Label>收起</Label>
-                        <Icon type="up" />
-                      </span>
+                    <a className="more-wrapper action" onClick={switchMode} role="button">
+                      {mode === Mode.Simple ? (
+                        <span className={mode === Mode.Simple ? 'more' : 'more active'}>
+                          <Label>展开</Label>
+                          <Icon type="down" />
+                        </span>
+                      ) : (
+                        <span className="more">
+                          <Label>收起</Label>
+                          <Icon type="up" />
+                        </span>
+                      )}
                     </a>
                   </>
                 ) : null}

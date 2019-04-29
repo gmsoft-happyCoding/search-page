@@ -168,18 +168,22 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
   }, [dispatch, filtersDefault]);
 
   // 模式切换
-  const switchMode = useCallback(() => {
-    const prevMode = mode;
-    // 存储模式状态
-    dispatch(actions.switchMode());
-    // 持久化模式状态
-    historyHelper.mergeState({ mode: prevMode === Mode.Simple ? Mode.Advance : Mode.Simple });
-    // 重置更多部分的筛选条件
-    const advanceDefault = pick(filtersDefault, advancedKeys);
-    const advanceNull = zipObject(advancedKeys);
-    if (prevMode === Mode.Advance)
-      dispatch(actions.storeFilters(wrap(merge(advanceNull, advanceDefault))));
-  }, [mode]);
+  const switchMode = useCallback(
+    e => {
+      e.preventDefault();
+      const prevMode = mode;
+      // 存储模式状态
+      dispatch(actions.switchMode());
+      // 持久化模式状态
+      historyHelper.mergeState({ mode: prevMode === Mode.Simple ? Mode.Advance : Mode.Simple });
+      // 重置更多部分的筛选条件
+      const advanceDefault = pick(filtersDefault, advancedKeys);
+      const advanceNull = zipObject(advancedKeys);
+      if (prevMode === Mode.Advance)
+        dispatch(actions.storeFilters(wrap(merge(advanceNull, advanceDefault))));
+    },
+    [mode]
+  );
 
   return (
     <RootLayout>
@@ -206,7 +210,7 @@ export default function FormWrapper(props: WrapperProps & FormComponentProps) {
                   <>
                     {/* 分割线 */}
                     {needReset && smEnable ? <Divider type="vertical" /> : null}
-                    <a className="more-wrapper action" onClick={switchMode} role="button">
+                    <a href="#" className="more-wrapper action" onClick={switchMode} role="button">
                       <span className={mode === Mode.Simple ? 'more' : 'more active'}>
                         <Label>展开</Label>
                         <Icon type="down" />

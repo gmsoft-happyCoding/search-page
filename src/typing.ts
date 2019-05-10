@@ -29,9 +29,14 @@ export interface GetDataApi {
 
 export type FiltersFormType<p = {}> = React.ComponentType<FormComponentProps & WrapperProps & p>;
 
-export interface ContentFunction {
-  (data?: any, forceUpdate?: () => void, loading?: boolean, filters?: Filters): React.ReactNode;
+export interface ContentProps {
+  data: any;
+  forceUpdate: () => void;
+  loading: boolean;
+  filters: Filters;
 }
+
+export type Content = React.ComponentType<ContentProps>;
 
 export interface FieldConfig {
   /**

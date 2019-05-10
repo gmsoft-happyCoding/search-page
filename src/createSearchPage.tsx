@@ -4,7 +4,7 @@ import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
-import { FiltersFormType, GetDataApi, ContentFunction, FiltersDefault } from './typing';
+import { FiltersFormType, GetDataApi, Content, FiltersDefault } from './typing';
 
 interface Args {
   filtersDefault?: FiltersDefault;
@@ -14,7 +14,7 @@ interface Args {
 }
 
 interface Props {
-  children?: ContentFunction;
+  children?: Content;
 }
 
 const createSearchPage = ({

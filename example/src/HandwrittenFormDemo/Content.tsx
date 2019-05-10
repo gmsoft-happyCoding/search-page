@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import styled from 'styled-components';
+import { ContentProps } from 'search-page';
 
 const Wrap = styled.div`
   padding: 16px;
@@ -11,7 +12,7 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-export default (data, forceUpdate) => (
+export default ({ data, forceUpdate }: ContentProps) => (
   <Wrap>
     {JSON.stringify(data)}
     <a style={{ float: 'right' }} onClick={forceUpdate}>

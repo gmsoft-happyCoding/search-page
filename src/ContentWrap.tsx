@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Spin } from 'antd';
-import { ContentFunction } from './typing';
+import { Content } from './typing';
 import fieldHelper, { Fields } from './utils/fieldHelper';
 
 type Props = {
-  children?: ContentFunction;
+  children?: Content;
   data: any;
   filters: Fields;
   loadingCount: number;
@@ -20,10 +20,18 @@ const ContentWrap = ({
   loadingDelay,
   forceUpdate,
 }: Props) => {
-  if (children && typeof children === 'function') {
+  if (children) {
+    const ContentComponent = children;
+    const memoFilters = useMemo(() => fieldHelper.unwrap(filters), [filters]);
+
     return (
       <Spin spinning={loadingCount !== 0} delay={loadingDelay} tip="数据加载中...">
-        {children(data, forceUpdate, loadingCount !== 0, fieldHelper.unwrap(filters))}
+        <ContentComponent
+          data={data}
+          forceUpdate={forceUpdate}
+          loading={loadingCount !== 0}
+          filters={memoFilters}
+        />
       </Spin>
     );
   }

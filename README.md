@@ -70,7 +70,7 @@ export default Demo;
 ```tsx
 import React from 'react';
 import styled from 'styled-components';
-import { ContentFunction } from 'search-page';
+import { ContentProps } from 'search-page';
 
 const Wrap = styled.div`
   padding: 16px;
@@ -79,7 +79,7 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-const content: ContentFunction = (data, forceUpdate, loading, filters) => (
+const Content = ({ data, forceUpdate, loading, filters }: ContentProps) => (
   <Wrap>
     data: {JSON.stringify(data)}
     <br />
@@ -90,7 +90,7 @@ const content: ContentFunction = (data, forceUpdate, loading, filters) => (
   </Wrap>
 );
 
-export default content;
+export default Content;
 ```
 
 ---

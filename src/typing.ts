@@ -29,8 +29,8 @@ export interface GetDataApi {
 
 export type FiltersFormType<p = {}> = React.ComponentType<FormComponentProps & WrapperProps & p>;
 
-export interface ContentProps {
-  data: any;
+export interface ContentProps<T = any> {
+  data: T;
   forceUpdate: () => void;
   loading: boolean;
   filters: Filters;

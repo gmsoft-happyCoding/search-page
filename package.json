@@ -1,6 +1,6 @@
 {
   "name": "search-page",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "搜索类页面的封装实现, 使用react",
   "author": "angular-moon",
   "license": "MIT",

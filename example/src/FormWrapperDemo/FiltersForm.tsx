@@ -11,7 +11,7 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
   } = props;
 
   return (
-    <FormWrapper {...props} simpleMode={{ rows: 1 }}>
+    <FormWrapper {...props} simpleMode={{ rows: 1 }} storeKey="FormWrapperDemo">
       {getFieldValue('name1') === '2' && (
         <Form.Item label="Name0">
           {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}

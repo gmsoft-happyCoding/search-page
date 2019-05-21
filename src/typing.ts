@@ -34,6 +34,7 @@ export interface ContentProps<T = any> {
   forceUpdate: () => void;
   loading: boolean;
   filters: Filters;
+  pagination: PaginationType;
 }
 
 export type Content = React.ComponentType<ContentProps>;

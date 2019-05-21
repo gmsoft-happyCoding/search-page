@@ -20,5 +20,6 @@ export default buildFiltersForm(
     simpleMode: {
       count: 2,
     },
+    storeKey: 'BuildFiltersFormDemo',
   }
 );

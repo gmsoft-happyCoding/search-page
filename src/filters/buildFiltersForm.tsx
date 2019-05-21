@@ -13,6 +13,10 @@ type Options = {
    * 是否需要更多按钮
    */
   simpleMode?: Partial<SimpleMode>;
+  /**
+   * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+   */
+  storeKey?: string;
 };
 
 export default (

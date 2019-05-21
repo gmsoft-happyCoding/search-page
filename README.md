@@ -206,6 +206,19 @@ const FiltersForm = ({ form }: FormComponentProps) => {
 export default FiltersForm;
 ```
 
+---
+
+####  如果同一个页面有多个SearchPage
+```
+  请在以下方法或组件调用中指定 [storeKey]
+  
+  createSearchPage
+
+  buildFiltersForm
+  or
+  FormWapper
+```
+
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example
 
 ---

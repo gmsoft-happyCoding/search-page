@@ -12,7 +12,7 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-const Content = ({ data, forceUpdate, loading, filters }: ContentProps) => (
+const Content = ({ data, forceUpdate, loading, filters, pagination }: ContentProps) => (
   <Wrap>
     data: {JSON.stringify(data)}
     <br />

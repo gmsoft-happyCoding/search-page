@@ -1,5 +1,5 @@
-import historyHelper from './historyHelper';
+import HistoryHelper from './HistoryHelper';
 import fieldHelper from './fieldHelper';
 import useWatch from './useWatch';
 
-export { historyHelper, fieldHelper, useWatch };
+export { HistoryHelper, fieldHelper, useWatch };

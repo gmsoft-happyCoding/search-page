@@ -16,8 +16,8 @@ const App = () => (
       <Router history={stateContainer._history}>
         <>
           <BuildFiltersFormDemo />
-          {/* <FormWrapperDemo /> */}
-          {/* <HandwrittenFormDemo /> */}
+          <FormWrapperDemo />
+          <HandwrittenFormDemo />
         </>
       </Router>
     </Provider>

@@ -1,6 +1,5 @@
 import { merge } from 'lodash';
 import fieldHelper from '../utils/fieldHelper';
-import historyHelper from '../utils/historyHelper';
 import { PaginationType } from '../typing';
 import Mode from '../filters/mode.enum';
 
@@ -12,10 +11,12 @@ const pagination: PaginationType = {
   pageSize: 10,
 };
 
-export default filtersDefault => ({
+export const NO_DATA = '__no_data__';
+
+export default (filtersDefault, historyHelper) => ({
   filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),
   pagination: merge({}, pagination, historyHelper.getValue('pagination')),
-  data: [],
+  data: NO_DATA,
   total: historyHelper.getValue('total', 0),
   mode: historyHelper.getValue('mode', Mode.Simple),
   // 请求计数器

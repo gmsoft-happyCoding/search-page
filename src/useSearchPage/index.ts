@@ -3,13 +3,16 @@ import { debounce } from 'lodash';
 import defaultState from './defaultState';
 import actions from './actions';
 import reducer from './reducer';
-import { historyHelper, fieldHelper } from '../utils';
+import { fieldHelper } from '../utils';
 
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
 
-export default (filtersDefault, getDataApi) => {
-  const initState = useMemo(() => defaultState(filtersDefault), [filtersDefault]);
+export default (filtersDefault, getDataApi, historyHelper) => {
+  const initState = useMemo(() => defaultState(filtersDefault, historyHelper), [
+    filtersDefault,
+    historyHelper,
+  ]);
   const [state, dispatch] = useReducer(reducer, initState);
 
   const debouncedGetDataApi = useCallback(

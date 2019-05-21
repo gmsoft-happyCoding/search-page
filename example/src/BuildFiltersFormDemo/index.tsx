@@ -11,7 +11,7 @@ const Demo = () => {
   }, []);
 
   const getDataApi: GetDataApi = async (filters, pagination) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
     return result;
   };
@@ -22,6 +22,7 @@ const Demo = () => {
         filtersDefault: { orgName: 'gmsoft', orgCode4: '9527' },
         getDataApi,
         FiltersForm,
+        storeKey: 'BuildFiltersFormDemo',
       }),
     []
   );

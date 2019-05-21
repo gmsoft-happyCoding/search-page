@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { useCallback, Dispatch } from 'react';
+import React, { useCallback, Dispatch, useMemo } from 'react';
 import { Form, Row, Col, Icon, Divider } from 'antd';
 import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
-import { historyHelper, useWatch } from '../utils';
+import { HistoryHelper, useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
 import Mode from './mode.enum';
 
@@ -142,10 +142,16 @@ export interface WrapperProps {
   needReset?: boolean;
   mode: Mode;
   simpleMode: SimpleMode;
+  /**
+   * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+   */
+  storeKey?: string;
 }
 
 const FormWrapper = function(props: WrapperProps & FormComponentProps) {
-  const { dispatch, children, needReset, simpleMode, filtersDefault, mode } = props;
+  const { dispatch, children, needReset, simpleMode, filtersDefault, mode, storeKey } = props;
+
+  const historyHelper = useMemo(() => new HistoryHelper(storeKey), [storeKey]);
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
   const smEnable = switchModeIsEnable(simpleMode.enable);

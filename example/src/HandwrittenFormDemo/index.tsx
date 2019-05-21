@@ -14,6 +14,7 @@ const SearchPage = createSearchPage({
   filtersDefault: { orgName: 'gmsoft' },
   getDataApi,
   FiltersForm,
+  storeKey: 'HandwrittenFormDemo',
 });
 
 const Demo = () => {

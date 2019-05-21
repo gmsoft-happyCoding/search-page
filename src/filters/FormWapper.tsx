@@ -14,30 +14,18 @@ import Mode from './mode.enum';
 
 const { wrap } = fieldHelper;
 
+const MoreSpan = styled.span`
+  display: inline-block;
+`;
+
 const RootLayout = styled.div`
   margin-bottom: 8px;
   & .ant-form-vertical .ant-form-item {
     padding-bottom: 0;
     margin-bottom: 16px;
   }
-  .more-wrapper {
-    position: relative;
-  }
-  .more {
-    display: inline-block;
-    transition: transform 0.3s;
-  }
-  .more.active {
-    transform: rotateX(90deg);
-  }
-  .more-absolute {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
 `;
+
 const Label = styled.span`
   margin-right: 4px;
 `;
@@ -243,17 +231,17 @@ const FormWrapper = function(props: WrapperProps & FormComponentProps) {
                   <>
                     {/* 分割线 */}
                     {needReset && smEnable ? <Divider type="vertical" /> : null}
-                    <a className="more-wrapper action" onClick={switchMode} role="button">
+                    <a onClick={switchMode} role="button">
                       {mode === Mode.Simple ? (
-                        <span className={mode === Mode.Simple ? 'more' : 'more active'}>
+                        <MoreSpan>
                           <Label>展开</Label>
                           <Icon type="down" />
-                        </span>
+                        </MoreSpan>
                       ) : (
-                        <span className="more">
+                        <MoreSpan>
                           <Label>收起</Label>
                           <Icon type="up" />
-                        </span>
+                        </MoreSpan>
                       )}
                     </a>
                   </>

@@ -15,8 +15,8 @@ const App = () => (
     <Provider store={stateContainer._store}>
       <Router history={stateContainer._history}>
         <>
-          {/* <BuildFiltersFormDemo /> */}
-          <FormWrapperDemo />
+          <BuildFiltersFormDemo />
+          {/* <FormWrapperDemo /> */}
           {/* <HandwrittenFormDemo /> */}
         </>
       </Router>

@@ -43,6 +43,8 @@ const getDataApi: GetDataApi = async (filters, pagination) => {
 
 const SearchPage = createSearchPage({
   filtersDefault: { orgName: 'gmsoft' },
+  pageSize: 40,
+  noPagination: false,
   getDataApi,
   FiltersForm,
 });

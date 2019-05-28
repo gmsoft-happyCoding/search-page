@@ -9,6 +9,8 @@ import { FiltersFormType, GetDataApi, Content, FiltersDefault } from './typing';
 
 interface Args {
   filtersDefault?: FiltersDefault;
+  pageSize?: 10 | 20 | 30 | 40;
+  noPagination?: boolean;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
   loadingDelay?: number;
@@ -24,6 +26,8 @@ interface Props {
 
 const createSearchPage = ({
   filtersDefault = {},
+  pageSize = 10,
+  noPagination = false,
   FiltersForm,
   getDataApi,
   loadingDelay = 500,
@@ -32,7 +36,7 @@ const createSearchPage = ({
   const historyHelper = new HistoryHelper(storeKey);
 
   const SearchPage: React.FC<Props> = ({ children }, ref) => {
-    const [state, dispatch] = useSearchPage(filtersDefault, getDataApi, historyHelper);
+    const [state, dispatch] = useSearchPage(filtersDefault, pageSize, getDataApi, historyHelper);
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部
@@ -58,7 +62,9 @@ const createSearchPage = ({
         >
           {children}
         </ContentWrap>
-        <Pagination pagination={state.pagination} dispatch={dispatch} total={state.total} />
+        {noPagination ? null : (
+          <Pagination pagination={state.pagination} dispatch={dispatch} total={state.total} />
+        )}
       </>
     );
   };

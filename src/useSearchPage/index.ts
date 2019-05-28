@@ -8,8 +8,8 @@ import { fieldHelper } from '../utils';
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
 
-export default (filtersDefault, getDataApi, historyHelper) => {
-  const initState = useMemo(() => defaultState(filtersDefault, historyHelper), [
+export default (filtersDefault, pageSize, getDataApi, historyHelper) => {
+  const initState = useMemo(() => defaultState(filtersDefault, pageSize, historyHelper), [
     filtersDefault,
     historyHelper,
   ]);

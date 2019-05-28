@@ -13,9 +13,9 @@ const pagination: PaginationType = {
 
 export const NO_DATA = '__no_data__';
 
-export default (filtersDefault, historyHelper) => ({
+export default (filtersDefault, pageSize, historyHelper) => ({
   filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),
-  pagination: merge({}, pagination, historyHelper.getValue('pagination')),
+  pagination: merge({}, pagination, { pageSize }, historyHelper.getValue('pagination')),
   data: NO_DATA,
   total: historyHelper.getValue('total', 0),
   mode: historyHelper.getValue('mode', Mode.Simple),

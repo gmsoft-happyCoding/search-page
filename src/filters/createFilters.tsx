@@ -1,22 +1,14 @@
-import { Dispatch } from 'react';
 import { Form } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import { fieldHelper } from '../utils';
-import { FiltersFormType, Fields, FiltersDefault } from '../typing';
+import { WrapperProps } from './FormWapper';
+import { FiltersFormType } from '../typing';
 import actions from '../useSearchPage/actions';
-import Mode from './mode.enum';
 
 const { create } = Form;
 
-interface Props {
-  dispatch: Dispatch<any>;
-  filters: Fields;
-  filtersDefault: FiltersDefault;
-  mode?: Mode;
-  children?: React.ReactNode;
-  needReset?: boolean;
-  needMore?: boolean;
-  rows?: number;
-}
+type Props = Pick<WrapperProps, 'filters' | 'dispatch' | 'mode' | 'filtersDefault'> &
+  FormComponentProps;
 
 // 根据模式进行过滤性初始化，只初始化当前模式下显示的表单部分，多余的部分不初始化
 const mapPropsToFields = (props: Props) => {
@@ -29,4 +21,4 @@ const onFieldsChange = ({ dispatch }: Props, changedFields) => {
 };
 
 export default (FiltersForm: FiltersFormType) =>
-  create({ mapPropsToFields, onFieldsChange })(FiltersForm) as React.ComponentType<Props>;
+  create({ mapPropsToFields, onFieldsChange })(FiltersForm);

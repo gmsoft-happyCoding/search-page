@@ -27,7 +27,7 @@ export interface GetDataApi {
   (filters: Filters, pagination: PaginationType): Promise<ApiResult>;
 }
 
-export type FiltersFormType<p = {}> = React.ComponentType<FormComponentProps & WrapperProps & p>;
+export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & WrapperProps & P>;
 
 export interface ContentProps<T = any> {
   data: T;

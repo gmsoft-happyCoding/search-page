@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Spin } from 'antd';
+import { Spin, Empty } from 'antd';
 import { Content, PaginationType } from './typing';
 import fieldHelper, { Fields } from './utils/fieldHelper';
 import { NO_DATA } from './useSearchPage/defaultState';
@@ -27,12 +27,10 @@ const ContentWrap = ({
     const ContentComponent = children;
     const memoFilters = useMemo(() => fieldHelper.unwrap(filters), [filters]);
 
-    // if (data === NO_DATA) return null;
-
     return (
       <Spin spinning={loadingCount !== 0} delay={loadingDelay} tip="数据加载中...">
         {data === NO_DATA ? (
-          <div style={{ height: 100 }} />
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <ContentComponent
             data={data}

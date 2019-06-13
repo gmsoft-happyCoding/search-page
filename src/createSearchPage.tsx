@@ -9,7 +9,7 @@ import { FiltersFormType, GetDataApi, Content, FiltersDefault } from './typing';
 
 interface Args {
   filtersDefault?: FiltersDefault;
-  pageSize?: 10 | 20 | 30 | 40;
+  pageSize?: 5 | 10 | 20 | 30 | 40;
   noPagination?: boolean;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;

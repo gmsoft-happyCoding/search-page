@@ -40,6 +40,7 @@ function Pagination({ dispatch, pagination, total }: Props) {
       style={{ textAlign: 'right', marginTop: 16 }}
       showQuickJumper
       showSizeChanger
+      pageSizeOptions={['5', '10', '20', '30', '40']}
       defaultCurrent={1}
       hideOnSinglePage
       showTotal={showTotal}

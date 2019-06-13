@@ -20,7 +20,7 @@ const Demo = () => {
     () =>
       createSearchPage({
         filtersDefault: { orgName: 'gmsoft', orgCode4: '9527' },
-        pageSize: 40,
+        pageSize: 5,
         noPagination: false,
         getDataApi,
         FiltersForm,

@@ -23,7 +23,7 @@
   "dependencies": {},
   "peerDependencies": {
     "antd": "^3.19.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "styled-components": "^4.2.0"
@@ -51,7 +51,7 @@
     "cross-env": "^5.1.4",
     "gh-pages": "^1.2.0",
     "history": "^4.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "ramda": "^0.26.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",

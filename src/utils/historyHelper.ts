@@ -8,6 +8,7 @@ const STORE_KEY_PREFIX = '__sp';
 
 export default class HistoryHelper {
   private storeKey: string;
+
   constructor(storeKey) {
     this.storeKey = storeKey ? `${STORE_KEY_PREFIX}_${storeKey}` : STORE_KEY_PREFIX;
   }

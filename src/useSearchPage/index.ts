@@ -12,6 +12,7 @@ export default (filtersDefault, pageSize, getDataApi, historyHelper) => {
   const initState = useMemo(() => defaultState(filtersDefault, pageSize, historyHelper), [
     filtersDefault,
     historyHelper,
+    pageSize,
   ]);
   const [state, dispatch] = useReducer(reducer, initState);
 
@@ -35,7 +36,8 @@ export default (filtersDefault, pageSize, getDataApi, historyHelper) => {
           })
           .catch(error => {
             // 捕获异常, 什么都不做, 避免UI崩溃
-            console && console.log && console.log(error);
+            // eslint-disable-next-line no-console
+            console.log(error);
           })
           .finally(() => {
             // 请求完成, 计数-1
@@ -54,7 +56,7 @@ export default (filtersDefault, pageSize, getDataApi, historyHelper) => {
   useEffect(() => {
     // 加载数据
     debouncedGetDataApi(state.filters, state.pagination, state.mode);
-  }, [state.filters, state.pagination, state.forceUpdate, debouncedGetDataApi]);
+  }, [state.filters, state.pagination, state.forceUpdate, debouncedGetDataApi, state.mode]);
 
   return [state, dispatch];
 };

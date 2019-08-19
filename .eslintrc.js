@@ -14,13 +14,6 @@ module.exports = {
   env: {
     browser: true,
   },
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: path.resolve(__dirname, 'config/webpack.config.dev.js'),
-      },
-    },
-  },
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
@@ -60,5 +53,6 @@ module.exports = {
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     'import/prefer-default-export': 'off',
     'implicit-arrow-linebreak': 'off',
+    'import/no-unresolved': 'off',
   },
 };

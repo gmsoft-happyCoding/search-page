@@ -12,6 +12,7 @@ type Props = {
   loadingCount: number;
   loadingDelay: number;
   forceUpdate: () => void;
+  alwaysRenderContent?: boolean;
 };
 
 const ContentWrap = ({
@@ -22,6 +23,7 @@ const ContentWrap = ({
   loadingCount,
   loadingDelay,
   forceUpdate,
+  alwaysRenderContent,
 }: Props) => {
   if (children) {
     const ContentComponent = children;
@@ -29,7 +31,7 @@ const ContentWrap = ({
 
     return (
       <Spin spinning={loadingCount !== 0} delay={loadingDelay} tip="数据加载中...">
-        {data === NO_DATA ? (
+        {data === NO_DATA && !alwaysRenderContent ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           <ContentComponent

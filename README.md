@@ -221,6 +221,17 @@ export default FiltersForm;
   FormWapper
 ```
 
+####  支持指定存储数据使用的history对象
+```
+  请在以下方法或组件调用中指定 [storeHistory]
+  
+  createSearchPage
+
+  buildFiltersForm
+  or
+  FormWapper
+```
+
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example
 
 ---

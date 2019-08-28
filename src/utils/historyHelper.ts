@@ -9,22 +9,25 @@ const STORE_KEY_PREFIX = '__sp';
 export default class HistoryHelper {
   private storeKey: string;
 
-  constructor(storeKey) {
+  private history: History;
+
+  constructor(storeKey?: string, _history?: History) {
     this.storeKey = storeKey ? `${STORE_KEY_PREFIX}_${storeKey}` : STORE_KEY_PREFIX;
+    this.history = _history || history;
   }
 
   setState(state: any) {
-    const historyState = history.state || {};
+    const historyState = this.history.state || {};
     historyState[this.storeKey] = state;
-    history.replaceState(historyState, '');
+    this.history.replaceState(historyState, '');
   }
 
   getState(): object {
-    return history.state && history.state[this.storeKey];
+    return this.history.state && this.history.state[this.storeKey];
   }
 
   mergeState(...state: object[]) {
-    const mergedState = merge({}, ...history.state[this.storeKey], ...state);
+    const mergedState = merge({}, ...this.history.state[this.storeKey], ...state);
     this.setState(mergedState);
   }
 

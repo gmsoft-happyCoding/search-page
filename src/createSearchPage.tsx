@@ -22,6 +22,10 @@ interface Args {
    * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
    */
   storeKey?: string;
+  /**
+   * 存储数据使用的history对象, 默认为 top.history
+   */
+  storeHistory?: History;
 }
 
 interface Props {
@@ -37,8 +41,9 @@ const createSearchPage = ({
   loadingDelay = 500,
   alwaysRenderContent = false,
   storeKey,
+  storeHistory,
 }: Args) => {
-  const historyHelper = new HistoryHelper(storeKey);
+  const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
   const SearchPage: React.FC<Props> = ({ children }, ref) => {
     const [state, dispatch] = useSearchPage(filtersDefault, pageSize, getDataApi, historyHelper);

@@ -32,8 +32,10 @@ const Label = styled.span`
 
 function checkChildren(chlidren) {
   try {
+    // eslint-disable-next-line no-unused-expressions
     chlidren[0].props.children.props.id;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('请确保Form.Item 是 FormWrapper 的 Chlidren!');
   }
 }
@@ -93,7 +95,7 @@ function getActionStyleEx(fields: React.ReactNode, simpleModeCount: number, mode
  * @param enable
  */
 function switchModeIsEnable(enable) {
-  return enable === false ? false : true;
+  return enable !== false;
 }
 
 /**
@@ -146,16 +148,32 @@ export interface WrapperProps {
    * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
    */
   storeKey?: string;
+  /**
+   * 存储数据使用的history对象, 默认为 top.history
+   */
+  storeHistory?: History;
 }
 
-const FormWrapper = function(props: WrapperProps & FormComponentProps) {
-  const { dispatch, children, needReset, simpleMode, filtersDefault, mode, storeKey } = props;
+const FormWrapper = (props: WrapperProps & FormComponentProps) => {
+  const {
+    dispatch,
+    children,
+    needReset,
+    simpleMode,
+    filtersDefault,
+    mode,
+    storeKey,
+    storeHistory,
+  } = props;
 
-  const historyHelper = useMemo(() => new HistoryHelper(storeKey), [storeKey]);
+  const historyHelper = useMemo(() => new HistoryHelper(storeKey, storeHistory), [
+    storeHistory,
+    storeKey,
+  ]);
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
   const smEnable = switchModeIsEnable(simpleMode.enable);
-  let validChidren = getValidChidren(children);
+  const validChidren = getValidChidren(children);
   let simpleModeCount = validChidren.length;
   let advancedKeys: Array<string> = [];
   if (smEnable) {
@@ -169,10 +187,10 @@ const FormWrapper = function(props: WrapperProps & FormComponentProps) {
     // 获取高级模式的keys
     advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
   }
-  useWatch(children, (preChildren, children) => {
+  useWatch(children, (preChildren, currentChildren) => {
     // 子项个数变化时，将原有filters中对应缺失的值清空
     const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
-    const currentValidChildKeys = getValidChidren(children).map(getChildKey);
+    const currentValidChildKeys = getValidChidren(currentChildren).map(getChildKey);
     const removeKeys = preValidChildKeys.filter(key => !currentValidChildKeys.includes(key));
     if (removeKeys.length) {
       dispatch(actions.removeFilters(removeKeys));
@@ -206,10 +224,11 @@ const FormWrapper = function(props: WrapperProps & FormComponentProps) {
       // 重置更多部分的筛选条件
       const advanceDefault = pick(filtersDefault, advancedKeys);
       const advanceNull = zipObject(advancedKeys);
-      if (prevMode === Mode.Advance)
+      if (prevMode === Mode.Advance) {
         dispatch(actions.storeFilters(wrap(merge(advanceNull, advanceDefault))));
+      }
     },
-    [mode]
+    [advancedKeys, dispatch, filtersDefault, historyHelper, mode]
   );
 
   return (

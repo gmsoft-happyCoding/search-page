@@ -17,6 +17,10 @@ type Options = {
    * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
    */
   storeKey?: string;
+  /**
+   * 存储数据使用的history对象, 默认为 top.history
+   */
+  storeHistory?: History;
 };
 
 export default (

@@ -20,7 +20,9 @@
     "start": "rollup -c -w",
     "pub": "yarn build && npm publish"
   },
-  "dependencies": {},
+  "dependencies": {
+    "history-helper": "1.0.2"
+  },
   "peerDependencies": {
     "antd": "^3.19.2",
     "lodash": "^4.17.13",

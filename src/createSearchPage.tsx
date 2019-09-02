@@ -1,10 +1,10 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
+import HistoryHelper from 'history-helper';
 import ContentWrap from './ContentWrap';
 import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
-import { HistoryHelper } from './utils';
 import { FiltersFormType, GetDataApi, Content, FiltersDefault } from './typing';
 
 interface Args {

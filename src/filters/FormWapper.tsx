@@ -6,9 +6,10 @@ import { Form, Row, Col, Icon, Divider } from 'antd';
 import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
+import HistoryHelper from 'history-helper';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
-import { HistoryHelper, useWatch } from '../utils';
+import { useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
 import Mode from './mode.enum';
 

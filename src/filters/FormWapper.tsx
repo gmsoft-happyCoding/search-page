@@ -23,6 +23,14 @@ import {
   getActionSpanEx,
 } from './utils';
 
+function FormItem({ span, ...rest }: WrapperFormItem) {
+  return (
+    <Col span={span || 8}>
+      <Form.Item {...rest} />
+    </Col>
+  );
+}
+
 const { wrap } = fieldHelper;
 
 const MoreSpan = styled.span`
@@ -125,8 +133,6 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
           return null;
         }
 
-        console.log('render child:', child.type);
-
         if (FormItem === get(child, 'type')) {
           return child;
         }
@@ -135,12 +141,9 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     );
 
   // reset回调
-  const reset = useCallback(
-    () => {
-      dispatch(actions.setFilters(wrap(filtersDefault)));
-    },
-    [dispatch, filtersDefault]
-  );
+  const reset = useCallback(() => {
+    dispatch(actions.setFilters(wrap(filtersDefault)));
+  }, [dispatch, filtersDefault]);
 
   // 模式切换
   const switchMode = useCallback(
@@ -215,19 +218,11 @@ interface WrapperFormItem extends FormItemProps {
   children: React.ReactNode;
 }
 
-function FormItem(props: WrapperFormItem) {
-  return (
-    <Col span={props.span || 8}>
-      <Form.Item {...props} />
-    </Col>
-  );
-}
-
 FormWrapper.defaultProps = {
   needReset: true,
   simpleMode: {
     enable: true,
-    rows: 1,
+    rows: 2 / 3,
   },
 };
 

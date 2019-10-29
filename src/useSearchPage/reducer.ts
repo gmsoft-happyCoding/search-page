@@ -1,5 +1,5 @@
 import { Types } from './actions';
-import Mode from '../filters/mode.enum';
+import { Mode } from '../filters/mode.enum';
 
 export default (state, { type, payload }) => {
   // eslint-disable-next-line default-case

@@ -7,11 +7,29 @@ import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import HistoryHelper from 'history-helper';
+import { FormItemProps } from 'antd/lib/form/FormItem';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
 import { useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
-import Mode from './mode.enum';
+import { Mode } from './mode.enum';
+import {
+  checkChildren,
+  getValidChidren,
+  getChildKey,
+  switchModeIsEnable,
+  getActionLabelEx,
+  getActionStyleEx,
+  getActionSpanEx,
+} from './utils';
+
+function FormItem({ span, ...rest }: WrapperFormItem) {
+  return (
+    <Col span={span || 8}>
+      <Form.Item {...rest} />
+    </Col>
+  );
+}
 
 const { wrap } = fieldHelper;
 
@@ -31,96 +49,6 @@ const Label = styled.span`
   margin-right: 4px;
 `;
 
-function checkChildren(chlidren) {
-  try {
-    // eslint-disable-next-line no-unused-expressions
-    chlidren[0].props.children.props.id;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error('请确保Form.Item 是 FormWrapper 的 Chlidren!');
-  }
-}
-
-/**
- * 获取可见的搜索条件个数，依据模式和精简模式下配置显示的行数确定
- * @param fields  全部搜索条件
- * @param simpleModeCount  当前显示的行数
- * @param mode  模式
- */
-function getVisibleCountEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
-  const count = React.Children.count(fields);
-  return mode === Mode.Simple ? simpleModeCount : count;
-}
-
-/**
- * 获取在当前模式下操作区所占栅格比重
- * @param fields  全部搜索条件
- * @param simpleModeCount  当前显示的行数
- * @param mode 模式
- */
-function getActionSpanEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
-  const fieldsLength = getVisibleCountEx(fields, simpleModeCount, mode);
-  switch (fieldsLength % 3) {
-    case 0:
-      return 24;
-    case 1:
-      return 16;
-    case 2:
-      return 8;
-    default:
-      return 8;
-  }
-}
-
-/**
- * 生成lable占位，布局需要，条件同操作区生成判定条件
- * @param fields
- * @param simpleModeCount
- * @param mode
- */
-function getActionLabelEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
-  return getVisibleCountEx(fields, simpleModeCount, mode) % 3 === 0 ? null : '\u00A0';
-}
-/**
- * 操作区布局hack，根据不同模式进行不同的marginTop hack，布局需要
- * @param fields
- * @param simpleModeCount
- * @param mode
- */
-function getActionStyleEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
-  return getVisibleCountEx(fields, simpleModeCount, mode) % 3 === 0 ? {} : { marginTop: 11 };
-}
-
-/**
- * 只要 enable 不为 false 即为真, 主要是为了兼容undefined
- * @param enable
- */
-function switchModeIsEnable(enable) {
-  return enable !== false;
-}
-
-/**
- * 过滤无效的chilrd
- */
-function getValidChidren(children) {
-  const validChidren: any[] = [];
-  if (children) {
-    // 去除无效元素 @like false|null|undefined
-    React.Children.forEach(children, child => {
-      if (React.isValidElement(child)) {
-        validChidren.push(child);
-      }
-    });
-  }
-  return validChidren;
-}
-
-/**
- * 获取子项的key
- * props.children.props.id
- */
-const getChildKey = child => get(child, 'props.children.props.id');
-
 export interface SimpleMode {
   /**
    * 是否启用
@@ -139,7 +67,7 @@ export interface SimpleMode {
 
 export interface WrapperProps {
   dispatch: Dispatch<any>;
-  children: React.ReactNodeArray;
+  children: React.ReactNode | React.ReactNodeArray;
   filters: Filters;
   filtersDefault: FiltersDefault;
   needReset?: boolean;
@@ -203,6 +131,10 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
       React.Children.map(validChidren, (child: any, i) => {
         if (mode === Mode.Simple && i >= simpleModeCount) {
           return null;
+        }
+
+        if (FormItem === get(child, 'type')) {
+          return child;
         }
         return <Col span={8}>{child}</Col>;
       })
@@ -281,6 +213,11 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   );
 };
 
+interface WrapperFormItem extends FormItemProps {
+  span?: number;
+  children: React.ReactNode;
+}
+
 FormWrapper.defaultProps = {
   needReset: true,
   simpleMode: {
@@ -288,5 +225,7 @@ FormWrapper.defaultProps = {
     rows: 2 / 3,
   },
 };
+
+FormWrapper.FormItem = FormItem;
 
 export default FormWrapper;

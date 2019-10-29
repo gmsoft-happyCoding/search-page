@@ -133,24 +133,33 @@ export default buildFiltersForm(fields, {
 
 ```tsx
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, Col } from 'antd';
 import { FormWrapper, FiltersFormType } from 'search-page';
-
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 const { Option } = Select;
-
-const FiltersForm: FiltersFormType = props => {
+// 包装容器，自定义栅格的时候使用
+const { FormItem } = FormWrapper;
+const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
   const {
     form: { getFieldDecorator, getFieldValue },
   } = props;
-
   return (
-    <FormWrapper {...props} simpleMode={{ rows: 1 }}>
-      {getFieldValue('name1') === '2' && (
-        <Form.Item label="Name0">
-          {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
-        </Form.Item>
-      )}
-      <Form.Item label="Name1">
+    <FormWrapper {...props} simpleMode={{ rows: 1 }} storeKey="FormWrapperDemo">
+      {/* 需要自定义栅格时请使用包装容器 */}
+      <FormItem span={8} label="name0">
+        {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
+      </FormItem>
+      {/* 包装容器FormItem的栅格属性span默认为8 */}
+      <FormItem label="name1">
+        {getFieldDecorator('name1')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </FormItem>
+      {/* 与Antd原有FormItem可以混用，原Form.Item占据默认栅格大小：8 */}
+      <Form.Item label="jack">
         {getFieldDecorator('name1')(
           <Select>
             <Option value="1">选项一</Option>
@@ -158,16 +167,17 @@ const FiltersForm: FiltersFormType = props => {
           </Select>
         )}
       </Form.Item>
-      <Form.Item label="Name2">
-        {getFieldDecorator('name2')(<Input placeholder="Please input your name" />)}
-      </Form.Item>
-      <Form.Item label="Name3">
-        {getFieldDecorator('name3')(<Input placeholder="Please input your name" />)}
+      <Form.Item label="jack">
+        {getFieldDecorator('name1')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
       </Form.Item>
     </FormWrapper>
   );
 };
-
 export default FiltersForm;
 ```
 
@@ -183,9 +193,12 @@ import { Row, Col, Input } from 'antd';
 const FiltersForm = ({ form }: FormComponentProps) => {
   const { resetFields, getFieldDecorator } = form;
 
-  const reset = useCallback(() => {
-    resetFields();
-  }, [resetFields]);
+  const reset = useCallback(
+    () => {
+      resetFields();
+    },
+    [resetFields]
+  );
 
   return (
     <Form layout="vertical">
@@ -210,7 +223,8 @@ export default FiltersForm;
 
 ---
 
-####  如果同一个页面有多个SearchPage
+#### 如果同一个页面有多个 SearchPage
+
 ```
   请在以下方法或组件调用中指定 [storeKey]
   
@@ -221,7 +235,8 @@ export default FiltersForm;
   FormWapper
 ```
 
-####  支持指定存储数据使用的history对象
+#### 支持指定存储数据使用的 history 对象
+
 ```
   请在以下方法或组件调用中指定 [storeHistory]
   

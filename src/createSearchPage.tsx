@@ -5,7 +5,17 @@ import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
-import { FiltersFormType, GetDataApi, Content, FiltersDefault } from './typing';
+import fieldHelper from './utils/fieldHelper';
+import {
+  FiltersFormType,
+  GetDataApi,
+  Content,
+  FiltersDefault,
+  forceUpdateArgs,
+  ForceUpdate,
+} from './typing';
+
+const { wrap } = fieldHelper;
 
 interface Args {
   filtersDefault?: FiltersDefault;
@@ -50,7 +60,19 @@ const createSearchPage = ({
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部
-    const forceUpdate = useCallback(() => dispatch(actions.forceUpdate()), [dispatch]);
+    const forceUpdate: ForceUpdate = useCallback(
+      (args?: forceUpdateArgs) => {
+        // 更新filters, 页码会跳转到第一页
+        if (args && args.filters) {
+          return dispatch(actions.storeFilters(wrap(args.filters)));
+        }
+        if (args && args.pagination) {
+          return dispatch(actions.storePagination(args.pagination));
+        }
+        dispatch(actions.forceUpdate());
+      },
+      [dispatch]
+    );
 
     if (ref) ref.current = { forceUpdate };
 

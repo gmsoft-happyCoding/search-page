@@ -1,3 +1,4 @@
+/* eslint-disable import/export */
 import { FormComponentProps } from 'antd/lib/form';
 import { WrapperProps } from './filters/FormWapper';
 
@@ -30,9 +31,22 @@ export interface GetDataApi {
 
 export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & WrapperProps & P>;
 
+export interface forceUpdateArgs {
+  filters?: Filters;
+  pagination?: Partial<PaginationI>;
+}
+
+export interface ForceUpdate {
+  (): void;
+}
+
+export interface ForceUpdate {
+  (args?: forceUpdateArgs): void;
+}
+
 export interface ContentProps<T = any> {
   data: T;
-  forceUpdate: () => void;
+  forceUpdate: ForceUpdate;
   loading: boolean;
   filters: Filters;
   pagination: PaginationI;

@@ -247,6 +247,24 @@ export default FiltersForm;
   FormWapper
 ```
 
+#### forceUpdate 支持传递参数 `forceUpdateArgs`
+
+```ts
+export interface PaginationI {
+  current: number;
+  pageSize: number;
+}
+
+export interface Filters {
+  [key: string]: any;
+}
+
+interface forceUpdateArgs {
+  filters?: Filters;
+  pagination?: Partial<PaginationI>;
+}
+```
+
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example
 
 ---

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Spin, Empty } from 'antd';
-import { Content, PaginationType } from './typing';
+import { Content, PaginationI } from './typing';
 import fieldHelper, { Fields } from './utils/fieldHelper';
 import { NO_DATA } from './useSearchPage/defaultState';
 
@@ -8,7 +8,7 @@ type Props = {
   children?: Content;
   data: any;
   filters: Fields;
-  pagination: PaginationType;
+  pagination: PaginationI;
   loadingCount: number;
   loadingDelay: number;
   forceUpdate: () => void;
@@ -25,10 +25,9 @@ const ContentWrap = ({
   forceUpdate,
   alwaysRenderContent,
 }: Props) => {
+  const memoFilters = useMemo(() => fieldHelper.unwrap(filters), [filters]);
   if (children) {
     const ContentComponent = children;
-    const memoFilters = useMemo(() => fieldHelper.unwrap(filters), [filters]);
-
     return (
       <Spin spinning={loadingCount !== 0} delay={loadingDelay} tip="数据加载中...">
         {data === NO_DATA && !alwaysRenderContent ? (

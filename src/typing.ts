@@ -1,6 +1,7 @@
 import { FormComponentProps } from 'antd/lib/form';
 import { WrapperProps } from './filters/FormWapper';
-export interface PaginationType {
+
+export interface PaginationI {
   current: number;
   pageSize: number;
 }
@@ -20,11 +21,11 @@ export interface FiltersDefault {
 
 export interface State {
   filters: Filters;
-  pagination: PaginationType;
+  pagination: PaginationI;
 }
 
 export interface GetDataApi {
-  (filters: Filters, pagination: PaginationType): Promise<ApiResult>;
+  (filters: Filters, pagination: PaginationI): Promise<ApiResult>;
 }
 
 export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & WrapperProps & P>;
@@ -34,7 +35,7 @@ export interface ContentProps<T = any> {
   forceUpdate: () => void;
   loading: boolean;
   filters: Filters;
-  pagination: PaginationType;
+  pagination: PaginationI;
 }
 
 export type Content = React.ComponentType<ContentProps>;

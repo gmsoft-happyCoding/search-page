@@ -1,12 +1,12 @@
 import { merge } from 'lodash';
 import fieldHelper from '../utils/fieldHelper';
-import { PaginationType } from '../typing';
+import { PaginationI } from '../typing';
 import { Mode } from '../filters/mode.enum';
 
 // ant design form field is object, transform {key: value} to {key: {value}}
 const { wrap } = fieldHelper;
 
-const pagination: PaginationType = {
+const pagination: PaginationI = {
   current: 1,
   pageSize: 10,
 };

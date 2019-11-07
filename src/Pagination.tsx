@@ -2,7 +2,7 @@ import React, { useMemo, Dispatch } from 'react';
 import { Pagination as AntdPagination } from 'antd';
 import styled from 'styled-components';
 import actions from './useSearchPage/actions';
-import { PaginationType } from './typing';
+import { PaginationI } from './typing';
 
 const StyledPagination = styled(AntdPagination)`
   & .ant-pagination-total-text {
@@ -18,7 +18,7 @@ const createsShowTotal = (pageSize: number) => (total: number, range: [number, n
 };
 
 interface StateProps {
-  pagination: PaginationType;
+  pagination: PaginationI;
   total: number;
 }
 

@@ -44,6 +44,7 @@ module.exports = {
     'flowtype/no-types-missing-file-annotation': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/label-has-for': 'off',
+    'linebreak-style': 'off',
     'comma-dangle': [
       'error',
       {

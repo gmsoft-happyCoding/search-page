@@ -1,4 +1,4 @@
-import React, { useMemo, Dispatch } from 'react';
+import React, { useMemo, Dispatch, useCallback } from 'react';
 import { Pagination as AntdPagination } from 'antd';
 import styled from 'styled-components';
 import actions from './useSearchPage/actions';
@@ -31,9 +31,40 @@ type Props = StateProps & DispatchProps;
 function Pagination({ dispatch, pagination, total }: Props) {
   const showTotal = useMemo(() => createsShowTotal(pagination.pageSize), [pagination.pageSize]);
 
-  const onPageChange = (current, pageSize) => {
-    dispatch(actions.storePagination({ current, pageSize }));
-  };
+  const onPageChange = useCallback(
+    (current, pageSize) => {
+      dispatch(actions.storePagination({ current, pageSize }));
+    },
+    [dispatch, pagination]
+  );
+
+  const onShowSizeChange = useCallback(
+    (_, pageSize) => {
+      const prePageSize = pagination.pageSize;
+      const prePage = pagination.current;
+      const preFristPage = (prePage - 1) * prePageSize + 1;
+      switch (true) {
+        case preFristPage > pageSize:
+          dispatch(
+            actions.storePagination({
+              current: Math.floor(preFristPage / pageSize),
+              pageSize,
+            })
+          );
+          break;
+        case preFristPage < pageSize:
+          dispatch(
+            actions.storePagination({
+              current: Math.floor(pageSize / preFristPage),
+              pageSize,
+            })
+          );
+          break;
+        default:
+      }
+    },
+    [dispatch, pagination]
+  );
 
   return (
     <StyledPagination
@@ -48,7 +79,7 @@ function Pagination({ dispatch, pagination, total }: Props) {
       pageSize={pagination.pageSize}
       total={total}
       onChange={onPageChange}
-      onShowSizeChange={onPageChange}
+      onShowSizeChange={onShowSizeChange}
     />
   );
 }

@@ -35,32 +35,41 @@ function Pagination({ dispatch, pagination, total }: Props) {
     (current, pageSize) => {
       dispatch(actions.storePagination({ current, pageSize }));
     },
-    [dispatch, pagination]
+    [dispatch]
   );
 
   const onShowSizeChange = useCallback(
     (_, pageSize) => {
       const prePageSize = pagination.pageSize;
       const prePage = pagination.current;
-      const preFristPage = (prePage - 1) * prePageSize + 1;
+      /**
+       * 当前页(分页改变之前)第一条数据的索引
+       */
+      const preFristIndex = (prePage - 1) * prePageSize + 1;
       switch (true) {
-        case preFristPage > pageSize:
+        case preFristIndex > pageSize:
           dispatch(
             actions.storePagination({
-              current: Math.floor(preFristPage / pageSize),
+              current: Math.ceil(preFristIndex / pageSize),
               pageSize,
             })
           );
           break;
-        case preFristPage < pageSize:
+        case preFristIndex < pageSize:
           dispatch(
             actions.storePagination({
-              current: Math.floor(pageSize / preFristPage),
+              current: Math.floor(pageSize / preFristIndex),
               pageSize,
             })
           );
           break;
         default:
+          dispatch(
+            actions.storePagination({
+              current: 1,
+              pageSize,
+            })
+          );
       }
     },
     [dispatch, pagination]

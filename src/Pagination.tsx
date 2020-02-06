@@ -46,7 +46,16 @@ function Pagination({ dispatch, pagination, total }: Props) {
        * 当前页(分页改变之前)第一条数据的索引
        */
       const preFristIndex = (prePage - 1) * prePageSize + 1;
+
       switch (true) {
+        case preFristIndex === 1:
+          dispatch(
+            actions.storePagination({
+              current: 1,
+              pageSize,
+            })
+          );
+          break;
         case preFristIndex > pageSize:
           dispatch(
             actions.storePagination({

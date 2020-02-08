@@ -48,14 +48,6 @@ function Pagination({ dispatch, pagination, total }: Props) {
       const preFristIndex = (prePage - 1) * prePageSize + 1;
 
       switch (true) {
-        case preFristIndex === 1:
-          dispatch(
-            actions.storePagination({
-              current: 1,
-              pageSize,
-            })
-          );
-          break;
         case preFristIndex > pageSize:
           dispatch(
             actions.storePagination({
@@ -64,15 +56,8 @@ function Pagination({ dispatch, pagination, total }: Props) {
             })
           );
           break;
-        case preFristIndex < pageSize:
-          dispatch(
-            actions.storePagination({
-              current: Math.floor(pageSize / preFristIndex),
-              pageSize,
-            })
-          );
-          break;
         default:
+          // 包含 preFristIndex < 和 ===  pageSize 的情况
           dispatch(
             actions.storePagination({
               current: 1,

@@ -19,7 +19,8 @@ const { wrap } = fieldHelper;
 
 interface Args {
   filtersDefault?: FiltersDefault;
-  pageSize?: 5 | 10 | 20 | 30 | 40;
+  pageSize?: number;
+  pageSizeOptions?: Array<string>;
   noPagination?: boolean;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
@@ -45,6 +46,7 @@ interface Props {
 const createSearchPage = ({
   filtersDefault = {},
   pageSize = 10,
+  pageSizeOptions = ['5', '10', '20', '30', '40'],
   noPagination = false,
   FiltersForm,
   getDataApi,
@@ -96,7 +98,12 @@ const createSearchPage = ({
           {children}
         </ContentWrap>
         {noPagination ? null : (
-          <Pagination pagination={state.pagination} dispatch={dispatch} total={state.total} />
+          <Pagination
+            pagination={state.pagination}
+            pageSizeOptions={pageSizeOptions}
+            dispatch={dispatch}
+            total={state.total}
+          />
         )}
       </>
     );

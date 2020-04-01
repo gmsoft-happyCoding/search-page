@@ -6,6 +6,7 @@ import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
 import fieldHelper from './utils/fieldHelper';
+import { Mode } from './filters/mode.enum';
 import {
   FiltersFormType,
   GetDataApi,
@@ -19,6 +20,7 @@ const { wrap } = fieldHelper;
 
 interface Args {
   filtersDefault?: FiltersDefault;
+  defaultMode?: Mode;
   pageSize?: number;
   pageSizeOptions?: Array<string>;
   noPagination?: boolean;
@@ -45,6 +47,7 @@ interface Props {
 
 const createSearchPage = ({
   filtersDefault = {},
+  defaultMode = Mode.Simple,
   pageSize = 10,
   pageSizeOptions = ['5', '10', '20', '30', '40'],
   noPagination = false,
@@ -58,7 +61,13 @@ const createSearchPage = ({
   const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
   const SearchPage: React.FC<Props> = ({ children }, ref) => {
-    const [state, dispatch] = useSearchPage(filtersDefault, pageSize, getDataApi, historyHelper);
+    const [state, dispatch] = useSearchPage(
+      filtersDefault,
+      pageSize,
+      defaultMode,
+      getDataApi,
+      historyHelper
+    );
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部

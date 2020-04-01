@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from 'react';
-import createSearchPage, { GetDataApi } from 'search-page';
+import createSearchPage, { GetDataApi, Mode } from 'search-page';
 import { Button } from 'antd';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
@@ -12,6 +12,7 @@ const getDataApi: GetDataApi = async (filters, pagination) => {
 
 const SearchPage = createSearchPage({
   filtersDefault: { orgName: 'gmsoft' },
+  defaultMode: Mode.Simple,
   getDataApi,
   FiltersForm,
   storeKey: 'FormWrapperDemo',

@@ -11,7 +11,7 @@ const getDataApi: GetDataApi = async (filters, pagination) => {
 };
 
 const SearchPage = createSearchPage({
-  filtersDefault: { orgName: 'gmsoft' },
+  filtersDefault: { name0: 'gmsoft', name1: '1' },
   defaultMode: Mode.Simple,
   getDataApi,
   FiltersForm,

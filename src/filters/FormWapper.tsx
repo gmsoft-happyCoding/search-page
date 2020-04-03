@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
@@ -70,8 +71,23 @@ export interface WrapperProps {
   children: React.ReactNode | React.ReactNodeArray;
   filters: Filters;
   filtersDefault: FiltersDefault;
+  /**
+   * default true
+   */
   needReset?: boolean;
+  /**
+   * 默认重置筛选条件为 filtersDefault
+   * 通过此配置可以设置要重置时要保留的 filtersDefaultKeys
+   * 如果想全部清空, 请设置为 []
+   */
+  resetRetainFiltersDefaultKeys?: Array<string>;
+  /**
+   * 显示模式
+   */
   mode: Mode;
+  /**
+   * 精简模式的配置
+   */
   simpleMode: SimpleMode;
   /**
    * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
@@ -88,6 +104,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     dispatch,
     children,
     needReset,
+    resetRetainFiltersDefaultKeys,
     simpleMode,
     filtersDefault,
     mode,
@@ -142,8 +159,16 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
 
   // reset回调
   const reset = useCallback(() => {
-    dispatch(actions.setFilters(wrap(filtersDefault)));
-  }, [dispatch, filtersDefault]);
+    dispatch(
+      actions.setFilters(
+        wrap(
+          resetRetainFiltersDefaultKeys
+            ? pick(filtersDefault, resetRetainFiltersDefaultKeys)
+            : filtersDefault
+        )
+      )
+    );
+  }, [dispatch, filtersDefault, resetRetainFiltersDefaultKeys]);
 
   // 模式切换
   const switchMode = useCallback(

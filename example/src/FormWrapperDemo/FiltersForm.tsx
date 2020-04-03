@@ -17,11 +17,11 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
       {...props}
       simpleMode={{ rows: 1 }}
       storeKey="FormWrapperDemo"
-      resetRetainFiltersDefaultKeys={['name0']}
+      resetRetainFiltersDefaultKeys={[]}
     >
       {/* 需要自定义栅格时请使用包装容器 */}
-      <FormItem span={8} label="name0">
-        {getFieldDecorator('name0')(<Input placeholder="Please input your name" />)}
+      <FormItem span={8} label="orgName">
+        {getFieldDecorator('orgName')(<Input placeholder="Please input your name" />)}
       </FormItem>
       {/* 包装容器FormItem的栅格属性span默认为8 */}
       <FormItem label="name1">

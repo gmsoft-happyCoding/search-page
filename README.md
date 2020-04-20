@@ -232,25 +232,13 @@ export default FiltersForm;
 #### 如果同一个页面有多个 SearchPage
 
 ```
-  请在以下方法或组件调用中指定 [storeKey]
-
-  createSearchPage
-
-  buildFiltersForm
-  or
-  FormWapper
+  请在 createSearchPage 中指定 [storeKey]
 ```
 
 #### 支持指定存储数据使用的 history 对象
 
 ```
-  请在以下方法或组件调用中指定 [storeHistory]
-
-  createSearchPage
-
-  buildFiltersForm
-  or
-  FormWapper
+请在 createSearchPage 中指定 [storeHistory]
 ```
 
 #### forceUpdate 支持传递参数 `forceUpdateArgs`

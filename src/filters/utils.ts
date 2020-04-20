@@ -4,9 +4,13 @@ import { Mode } from './mode.enum';
 
 export function checkChildren(chlidren) {
   try {
-    // eslint-disable-next-line no-unused-expressions
-    chlidren[0].props.children.props.id;
+    if (chlidren.length) {
+      // eslint-disable-next-line no-unused-expressions
+      chlidren[0].props.children.props.id;
+    }
   } catch (e) {
+    console.log('chlidren', chlidren);
+
     // eslint-disable-next-line no-console
     console.error('请确保Form.Item 是 FormWrapper 的 Chlidren!');
   }
@@ -92,3 +96,34 @@ export function getValidChidren(children) {
 export function getChildKey(child) {
   return get(child, 'props.children.props.id');
 }
+
+/**
+ * 获取子项的label
+ * props.label
+ */
+export function getChildLabel(child) {
+  return get(child, 'props.label');
+}
+
+const setLocalStorage = (key: string, value: any) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+const getLocalStorage = (key: string) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || 'null');
+  } catch (err) {
+    console.error('getLocalStorage', err);
+  }
+  return null;
+};
+
+const customFiltersLocalStorageKey = (key: string) => `search-page-custom-filters-case-${key}`;
+
+/** 在 localStorage 中缓存 定制化搜索项目数据 */
+export const setCustomFiltersLocalStorage = (key: string, value: any) => {
+  setLocalStorage(customFiltersLocalStorageKey(key), value);
+};
+
+/** 取出 localStorage 中缓存 定制化搜索项目数据 */
+export const getCustomFiltersLocalStorage = (key: string) =>
+  getLocalStorage(customFiltersLocalStorageKey(key));

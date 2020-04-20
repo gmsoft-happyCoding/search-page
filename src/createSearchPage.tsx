@@ -94,6 +94,8 @@ const createSearchPage = ({
           dispatch={dispatch}
           mode={state.mode}
           filtersDefault={filtersDefault}
+          storeKey={storeKey}
+          storeHistory={storeHistory}
         />
         <ContentWrap
           data={state.data}

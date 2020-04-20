@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, Col } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { FormWrapper, FiltersFormType } from 'search-page';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -17,9 +17,9 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
     <FormWrapper
       {...props}
       simpleMode={{ rows: 1 }}
-      customFiltersConf={{
+      defaultCustomFiltersConf={{
         storageKey: 'FormWrapperDemo',
-        disableKeys: ['orgName'],
+        notAllowCustomKeys: ['orgName'],
         labels: { orgName: '组织架构名称' },
       }}
       resetRetainFiltersDefaultKeys={[]}

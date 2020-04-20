@@ -126,4 +126,4 @@ export const setCustomFiltersLocalStorage = (key: string, value: any) => {
 
 /** 取出 localStorage 中缓存 定制化搜索项目数据 */
 export const getCustomFiltersLocalStorage = (key: string) =>
-  getLocalStorage(customFiltersLocalStorageKey(key));
+  getLocalStorage(customFiltersLocalStorageKey(key)) || [];

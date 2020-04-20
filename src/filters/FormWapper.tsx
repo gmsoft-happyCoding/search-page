@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -102,16 +103,18 @@ export interface WrapperProps {
    * 存储数据使用的history对象, 默认为 top.history
    */
   storeHistory?: History;
-  /** 可客制化筛选条件 */
-  customFiltersConf?: {
+  /**
+   * 定制化筛选条件
+   */
+  defaultCustomFiltersConf?: {
     /**
      * 存储在 localStorage 中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
      */
     storageKey: string;
     /**
-     * 禁止定制，项
+     * 禁止定制的项
      */
-    disableKeys?: string[];
+    notAllowCustomKeys?: string[];
     /**
      * 筛选配置面板label定制
      */
@@ -130,26 +133,26 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     mode,
     storeKey,
     storeHistory,
-    customFiltersConf,
+    defaultCustomFiltersConf,
   } = props;
   const [filtersConfig, setFiltersConfig] = useState<
     { key: string; name: string; disabled?: boolean }[]
   >([]);
   const [showFiltersKeys, setShowFiltersKeys] = useState<string[]>(() => {
-    if (get(customFiltersConf, 'storageKey')) {
-      return getCustomFiltersLocalStorage(get(customFiltersConf, 'storageKey')) || [];
+    if (get(defaultCustomFiltersConf, 'storageKey')) {
+      return getCustomFiltersLocalStorage(get(defaultCustomFiltersConf, 'storageKey'));
     }
     return [];
   });
 
   const updateShowFiltersKeys = useCallback(
     (newKeys: string[]) => {
-      if (get(customFiltersConf, 'storageKey')) {
-        setCustomFiltersLocalStorage(get(customFiltersConf, 'storageKey'), newKeys);
+      if (get(defaultCustomFiltersConf, 'storageKey')) {
+        setCustomFiltersLocalStorage(get(defaultCustomFiltersConf, 'storageKey'), newKeys);
         setShowFiltersKeys(() => newKeys);
       }
     },
-    [customFiltersConf]
+    [defaultCustomFiltersConf]
   );
 
   const historyHelper = useMemo(() => new HistoryHelper(storeKey, storeHistory), [
@@ -162,19 +165,20 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
 
   /** 取出有效的 chilrd */
   const validChidren = useMemo(() => {
-    if (customFiltersConf) {
+    if (defaultCustomFiltersConf) {
       return getValidChidren(children).filter(child =>
         showFiltersKeys.includes(getChildKey(child))
       );
     }
     return getValidChidren(children);
-  }, [children, showFiltersKeys, customFiltersConf]);
+  }, [children, showFiltersKeys, defaultCustomFiltersConf]);
   useEffect(() => {
     if (smEnable) {
       // 检查children的结构是否满足要求
       checkChildren(validChidren);
     }
   }, [validChidren, smEnable]);
+
   /** 有效子节点个数 */
   const simpleModeCount = useMemo(() => {
     if (smEnable) {
@@ -183,33 +187,34 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     }
     return validChidren.length;
   }, [validChidren.length, simpleMode, smEnable]);
+
   const advancedKeys = useMemo<string[]>(() => {
     if (smEnable) {
       return validChidren.slice(simpleModeCount).map(getChildKey);
     }
     return [];
-  }, [validChidren, smEnable]);
+  }, [smEnable, validChidren, simpleModeCount]);
 
   useEffect(() => {
-    if (customFiltersConf && customFiltersConf.storageKey) {
+    if (defaultCustomFiltersConf && defaultCustomFiltersConf.storageKey) {
       const allConf = getValidChidren(children).map(item => ({
         id: getChildKey(item),
         label: getChildLabel(item),
       }));
       const defaultKeys = uniq([
-        ...getCustomFiltersLocalStorage(customFiltersConf.storageKey),
+        ...getCustomFiltersLocalStorage(defaultCustomFiltersConf.storageKey),
         ...keys(filtersDefault),
       ]);
-      const { disableKeys, labels } = customFiltersConf;
+      const { notAllowCustomKeys, labels } = defaultCustomFiltersConf;
       setFiltersConfig(() =>
         allConf.map(item => ({
           key: item.id,
           name: get(labels, item.id, item.label),
-          disabled: (disableKeys || []).includes(item.id),
+          disabled: (notAllowCustomKeys || []).includes(item.id),
         }))
       );
-      if (disableKeys) {
-        updateShowFiltersKeys(uniq([...defaultKeys, ...disableKeys]));
+      if (notAllowCustomKeys) {
+        updateShowFiltersKeys(uniq([...defaultKeys, ...notAllowCustomKeys]));
       }
     }
   }, []);
@@ -229,17 +234,17 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     if (removeKeys.length) {
       dispatch(actions.removeFilters(removeKeys));
     }
-    if (customFiltersConf) {
+    if (defaultCustomFiltersConf) {
       const allConf = getValidChidren(children).map(item => ({
         id: getChildKey(item),
         label: getChildLabel(item),
       }));
-      const { disableKeys, labels } = customFiltersConf;
+      const { notAllowCustomKeys, labels } = defaultCustomFiltersConf;
       setFiltersConfig(() =>
         allConf.map(item => ({
           key: item.id,
           name: get(labels, item.id, item.label),
-          disabled: (disableKeys || []).includes(item.id),
+          disabled: (notAllowCustomKeys || []).includes(item.id),
         }))
       );
     }
@@ -323,7 +328,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                     重置筛选条件
                   </a>
                 )}
-                {!!customFiltersConf && (
+                {!!defaultCustomFiltersConf && (
                   <>
                     {/* 分割线 */}
                     <Divider type="vertical" />

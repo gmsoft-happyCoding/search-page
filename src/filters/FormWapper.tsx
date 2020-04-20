@@ -108,7 +108,7 @@ export interface WrapperProps {
    */
   defaultCustomFiltersConf?: {
     /**
-     * 存储在 localStorage 中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+     * 定制配置存储在 localStorage 中 key
      */
     storageKey: string;
     /**

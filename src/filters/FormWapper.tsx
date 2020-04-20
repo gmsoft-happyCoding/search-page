@@ -2,13 +2,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { useCallback, Dispatch, useMemo } from 'react';
+import React, { useCallback, Dispatch, useMemo, useEffect, useState } from 'react';
 import { Form, Row, Col, Icon, Divider } from 'antd';
 import styled from 'styled-components';
-import { compact, get, merge, pick, zipObject } from 'lodash';
+import { compact, get, merge, pick, zipObject, uniq, keys, difference } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import HistoryHelper from 'history-helper';
 import { FormItemProps } from 'antd/lib/form/FormItem';
+
+import CustomFilterController from './CustomFilterController';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
 import { useWatch } from '../utils';
@@ -18,10 +20,13 @@ import {
   checkChildren,
   getValidChidren,
   getChildKey,
+  getChildLabel,
   switchModeIsEnable,
   getActionLabelEx,
   getActionStyleEx,
   getActionSpanEx,
+  getCustomFiltersLocalStorage,
+  setCustomFiltersLocalStorage,
 } from './utils';
 
 function FormItem({ span, ...rest }: WrapperFormItem) {
@@ -97,6 +102,21 @@ export interface WrapperProps {
    * 存储数据使用的history对象, 默认为 top.history
    */
   storeHistory?: History;
+  /** 可客制化筛选条件 */
+  customFiltersConf?: {
+    /**
+     * 存储在 localStorage 中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+     */
+    storageKey: string;
+    /**
+     * 禁止定制，项
+     */
+    disableKeys?: string[];
+    /**
+     * 筛选配置面板label定制
+     */
+    labels?: { [key: string]: string };
+  };
 }
 
 const FormWrapper = (props: WrapperProps & FormComponentProps) => {
@@ -110,7 +130,27 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     mode,
     storeKey,
     storeHistory,
+    customFiltersConf,
   } = props;
+  const [filtersConfig, setFiltersConfig] = useState<
+    { key: string; name: string; disabled?: boolean }[]
+  >([]);
+  const [showFiltersKeys, setShowFiltersKeys] = useState<string[]>(() => {
+    if (get(customFiltersConf, 'storageKey')) {
+      return getCustomFiltersLocalStorage(get(customFiltersConf, 'storageKey')) || [];
+    }
+    return [];
+  });
+
+  const updateShowFiltersKeys = useCallback(
+    (newKeys: string[]) => {
+      if (get(customFiltersConf, 'storageKey')) {
+        setCustomFiltersLocalStorage(get(customFiltersConf, 'storageKey'), newKeys);
+        setShowFiltersKeys(() => newKeys);
+      }
+    },
+    [customFiltersConf]
+  );
 
   const historyHelper = useMemo(() => new HistoryHelper(storeKey, storeHistory), [
     storeHistory,
@@ -118,21 +158,69 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   ]);
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
-  const smEnable = switchModeIsEnable(simpleMode.enable);
-  const validChidren = getValidChidren(children);
-  let simpleModeCount = validChidren.length;
-  let advancedKeys: Array<string> = [];
-  if (smEnable) {
-    // 默认显示 2 个搜索条件
-    simpleModeCount = Math.min(
-      validChidren.length,
-      simpleMode.count || (simpleMode.rows || 2 / 3) * 3
-    );
-    // 检查children的结构是否满足要求
-    checkChildren(validChidren);
-    // 获取高级模式的keys
-    advancedKeys = validChidren.slice(simpleModeCount).map(getChildKey);
-  }
+  const smEnable = useMemo(() => switchModeIsEnable(simpleMode.enable), [simpleMode]);
+
+  /** 取出有效的 chilrd */
+  const validChidren = useMemo(() => {
+    if (customFiltersConf) {
+      return getValidChidren(children).filter(child =>
+        showFiltersKeys.includes(getChildKey(child))
+      );
+    }
+    return getValidChidren(children);
+  }, [children, showFiltersKeys, customFiltersConf]);
+  useEffect(() => {
+    if (smEnable) {
+      // 检查children的结构是否满足要求
+      checkChildren(validChidren);
+    }
+  }, [validChidren, smEnable]);
+  /** 有效子节点个数 */
+  const simpleModeCount = useMemo(() => {
+    if (smEnable) {
+      // 默认显示 2 个搜索条件
+      return Math.min(validChidren.length, simpleMode.count || (simpleMode.rows || 2 / 3) * 3);
+    }
+    return validChidren.length;
+  }, [validChidren.length, simpleMode, smEnable]);
+  const advancedKeys = useMemo<string[]>(() => {
+    if (smEnable) {
+      return validChidren.slice(simpleModeCount).map(getChildKey);
+    }
+    return [];
+  }, [validChidren, smEnable]);
+
+  useEffect(() => {
+    if (customFiltersConf && customFiltersConf.storageKey) {
+      const allConf = getValidChidren(children).map(item => ({
+        id: getChildKey(item),
+        label: getChildLabel(item),
+      }));
+      const defaultKeys = uniq([
+        ...getCustomFiltersLocalStorage(customFiltersConf.storageKey),
+        ...keys(filtersDefault),
+      ]);
+      const { disableKeys, labels } = customFiltersConf;
+      setFiltersConfig(() =>
+        allConf.map(item => ({
+          key: item.id,
+          name: get(labels, item.id, item.label),
+          disabled: (disableKeys || []).includes(item.id),
+        }))
+      );
+      if (disableKeys) {
+        updateShowFiltersKeys(uniq([...defaultKeys, ...disableKeys]));
+      }
+    }
+  }, []);
+
+  useWatch(showFiltersKeys, (preKeys, currentKeys) => {
+    const removeKeys = difference(preKeys, currentKeys);
+    if (removeKeys.length) {
+      dispatch(actions.removeFilters(removeKeys));
+    }
+  });
+
   useWatch(children, (preChildren, currentChildren) => {
     // 子项个数变化时，将原有filters中对应缺失的值清空
     const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
@@ -141,21 +229,38 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     if (removeKeys.length) {
       dispatch(actions.removeFilters(removeKeys));
     }
+    if (customFiltersConf) {
+      const allConf = getValidChidren(children).map(item => ({
+        id: getChildKey(item),
+        label: getChildLabel(item),
+      }));
+      const { disableKeys, labels } = customFiltersConf;
+      setFiltersConfig(() =>
+        allConf.map(item => ({
+          key: item.id,
+          name: get(labels, item.id, item.label),
+          disabled: (disableKeys || []).includes(item.id),
+        }))
+      );
+    }
   });
+  // 表单项节点
+  const fieldsNodes = useMemo(
+    () =>
+      compact(
+        React.Children.map(validChidren, (child: any, i) => {
+          if (mode === Mode.Simple && i >= simpleModeCount) {
+            return null;
+          }
 
-  const getFields = () =>
-    compact(
-      React.Children.map(validChidren, (child: any, i) => {
-        if (mode === Mode.Simple && i >= simpleModeCount) {
-          return null;
-        }
-
-        if (FormItem === get(child, 'type')) {
-          return child;
-        }
-        return <Col span={8}>{child}</Col>;
-      })
-    );
+          if (FormItem === get(child, 'type')) {
+            return child;
+          }
+          return <Col span={8}>{child}</Col>;
+        })
+      ),
+    [validChidren, mode, simpleModeCount]
+  );
 
   // reset回调
   const reset = useCallback(() => {
@@ -188,32 +293,52 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     },
     [advancedKeys, dispatch, filtersDefault, historyHelper, mode]
   );
+  const actionSpanEx = useMemo(() => getActionSpanEx(validChidren, simpleModeCount, mode), [
+    validChidren,
+    simpleModeCount,
+    mode,
+  ]);
+  const actionLabelEx = useMemo(() => getActionLabelEx(validChidren, simpleModeCount, mode), [
+    validChidren,
+    simpleModeCount,
+    mode,
+  ]);
+  const actionStyleEx = useMemo(() => getActionStyleEx(validChidren, simpleModeCount, mode), [
+    validChidren,
+    simpleModeCount,
+    mode,
+  ]);
 
   return (
     <RootLayout>
       <Form layout="vertical">
         <Row type="flex" justify="start" gutter={24}>
-          {getFields()}
-          <Col
-            span={getActionSpanEx(validChidren, simpleModeCount, mode)}
-            style={{ textAlign: 'right' }}
-          >
-            {needReset || smEnable ? (
-              <Form.Item
-                label={getActionLabelEx(validChidren, simpleModeCount, mode)}
-                style={getActionStyleEx(validChidren, simpleModeCount, mode)}
-              >
+          {fieldsNodes}
+          <Col span={actionSpanEx} style={{ textAlign: 'right' }}>
+            {(needReset || smEnable) && (
+              <Form.Item label={actionLabelEx} style={actionStyleEx}>
                 {/* 是否需要重置操作 */}
-                {needReset ? (
+                {needReset && (
                   <a className="action" onClick={reset} role="button">
                     重置筛选条件
                   </a>
-                ) : null}
-                {/* 是否需要更多操作 */}
-                {smEnable && React.Children.count(validChidren) > simpleModeCount ? (
+                )}
+                {!!customFiltersConf && (
                   <>
                     {/* 分割线 */}
-                    {needReset && smEnable ? <Divider type="vertical" /> : null}
+                    <Divider type="vertical" />
+                    <CustomFilterController
+                      allConfigs={filtersConfig}
+                      activeKeys={showFiltersKeys}
+                      onChange={updateShowFiltersKeys}
+                    />
+                  </>
+                )}
+                {/* 是否需要更多操作 */}
+                {smEnable && React.Children.count(validChidren) > simpleModeCount && (
+                  <>
+                    {/* 分割线 */}
+                    {needReset && smEnable && <Divider type="vertical" />}
                     <a onClick={switchMode} role="button">
                       {mode === Mode.Simple ? (
                         <MoreSpan>
@@ -228,9 +353,9 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                       )}
                     </a>
                   </>
-                ) : null}
+                )}
               </Form.Item>
-            ) : null}
+            )}
           </Col>
         </Row>
       </Form>

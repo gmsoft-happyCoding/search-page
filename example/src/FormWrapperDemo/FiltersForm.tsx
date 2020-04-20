@@ -9,14 +9,19 @@ const { FormItem } = FormWrapper;
 
 const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, getFieldValue },
   } = props;
+  const name2 = getFieldValue('name2');
 
   return (
     <FormWrapper
       {...props}
       simpleMode={{ rows: 1 }}
-      storeKey="FormWrapperDemo"
+      customFiltersConf={{
+        storageKey: 'FormWrapperDemo',
+        disableKeys: ['orgName'],
+        labels: { orgName: '组织架构名称' },
+      }}
       resetRetainFiltersDefaultKeys={[]}
     >
       {/* 需要自定义栅格时请使用包装容器 */}
@@ -41,8 +46,138 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
           </Select>
         )}
       </Form.Item>
-      <Form.Item label="name3">
-        {getFieldDecorator('name3')(
+      {name2 === '1' && (
+        <Form.Item label="name3">
+          {getFieldDecorator('name3')(
+            <Select>
+              <Option value="1">选项一</Option>
+              <Option value="2">选项二</Option>
+            </Select>
+          )}
+        </Form.Item>
+      )}
+      <Form.Item label="name4">
+        {getFieldDecorator('name4')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name5">
+        {getFieldDecorator('name5')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name6">
+        {getFieldDecorator('name6')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name7">
+        {getFieldDecorator('name7')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name8">
+        {getFieldDecorator('name8')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name9">
+        {getFieldDecorator('name9')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name10">
+        {getFieldDecorator('name10')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name11">
+        {getFieldDecorator('name11')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name12">
+        {getFieldDecorator('name12')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name13">
+        {getFieldDecorator('name13')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name14">
+        {getFieldDecorator('name14')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name15">
+        {getFieldDecorator('name15')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name16">
+        {getFieldDecorator('name16')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name17">
+        {getFieldDecorator('name17')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name18">
+        {getFieldDecorator('name18')(
+          <Select>
+            <Option value="1">选项一</Option>
+            <Option value="2">选项二</Option>
+          </Select>
+        )}
+      </Form.Item>
+      <Form.Item label="name19">
+        {getFieldDecorator('name19')(
           <Select>
             <Option value="1">选项一</Option>
             <Option value="2">选项二</Option>

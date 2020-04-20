@@ -259,6 +259,29 @@ interface forceUpdateArgs {
 }
 ```
 
+
+#### 如果需要定制化筛选条件, 请设置 FromWraper props -> defaultCustomFiltersConf
+
+```ts
+ /**
+   * 定制化筛选条件
+   */
+  defaultCustomFiltersConf?: {
+    /**
+     * 存储在 localStorage 中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+     */
+    storageKey: string;
+    /**
+     * 禁止定制的项
+     */
+    notAllowCustomKeys?: string[];
+    /**
+     * 筛选配置面板label定制
+     */
+    labels?: { [key: string]: string };
+  };
+```
+
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example
 
 ---

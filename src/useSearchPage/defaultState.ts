@@ -1,8 +1,8 @@
 import { merge } from 'lodash';
+import HistoryHelper from 'history-helper';
 import fieldHelper from '../utils/fieldHelper';
 import { PaginationI } from '../typing';
 import { Mode } from '../filters/mode.enum';
-import HistoryHelper from 'history-helper';
 
 // ant design form field is object, transform {key: value} to {key: {value}}
 const { wrap } = fieldHelper;

@@ -259,7 +259,6 @@ interface forceUpdateArgs {
 }
 ```
 
-
 #### 如果需要定制化筛选条件, 请设置 FromWraper props -> defaultCustomFiltersConf
 
 ```ts
@@ -268,7 +267,7 @@ interface forceUpdateArgs {
    */
   defaultCustomFiltersConf?: {
     /**
-     * 存储在 localStorage 中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+     * 定制配置存储在 localStorage 中 key
      */
     storageKey: string;
     /**

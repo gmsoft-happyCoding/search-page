@@ -279,6 +279,15 @@ interface forceUpdateArgs {
      * 筛选配置面板label定制
      */
     labels?: { [key: string]: string };
+    /**
+     * Popover.props.getPopupContainer
+     */
+    getPopupContainer?: (triggerNode: HTMLElement) => HTMLElement;
+    /**
+     * Popover.props.overlayStyle
+     * @default { maxWidth: 450 }
+     */
+    popoverOverlayStyle?: CSSProperties;
   };
 ```
 

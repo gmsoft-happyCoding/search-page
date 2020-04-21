@@ -21,6 +21,7 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
         storageKey: 'FormWrapperDemo',
         notAllowCustomKeys: ['orgName'],
         labels: { orgName: '组织架构名称' },
+        popoverOverlayStyle: { maxWidth: 200 },
       }}
       resetRetainFiltersDefaultKeys={[]}
     >

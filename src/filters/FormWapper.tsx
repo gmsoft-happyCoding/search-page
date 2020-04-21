@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import React, { useCallback, Dispatch, useMemo, useEffect, useState } from 'react';
+import React, { useCallback, Dispatch, useMemo, useEffect, useState, CSSProperties } from 'react';
 import { Form, Row, Col, Icon, Divider } from 'antd';
 import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject, uniq, keys, difference } from 'lodash';
@@ -119,6 +119,15 @@ export interface WrapperProps {
      * 筛选配置面板label定制
      */
     labels?: { [key: string]: string };
+    /**
+     * Popover.props.getPopupContainer
+     */
+    getPopupContainer?: (triggerNode: HTMLElement) => HTMLElement;
+    /**
+     * Popover.props.overlayStyle
+     * @default { maxWidth: 450 }
+     */
+    popoverOverlayStyle?: CSSProperties;
   };
 }
 
@@ -334,6 +343,10 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                     <Divider type="vertical" />
                     <CustomFilterController
                       allConfigs={filtersConfig}
+                      getPopupContainer={defaultCustomFiltersConf.getPopupContainer}
+                      popoverOverlayStyle={
+                        defaultCustomFiltersConf.popoverOverlayStyle || { maxWidth: 450 }
+                      }
                       activeKeys={showFiltersKeys}
                       onChange={updateShowFiltersKeys}
                     />

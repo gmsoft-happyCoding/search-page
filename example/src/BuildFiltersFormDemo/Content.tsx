@@ -21,7 +21,7 @@ const Content = ({ data, forceUpdate, loading, filters, pagination }: ContentPro
       <br />
       filters: {JSON.stringify(filters)}
       <a style={{ float: 'right' }} onClick={update}>
-        强制刷新 update
+        强制刷新
       </a>
     </Wrap>
   );

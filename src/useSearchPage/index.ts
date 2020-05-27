@@ -1,4 +1,5 @@
-import { useEffect, useReducer, useCallback, useMemo } from 'react';
+/* eslint-disable function-paren-newline */
+import { useEffect, useReducer, useCallback } from 'react';
 import { debounce } from 'lodash';
 import defaultState from './defaultState';
 import actions from './actions';
@@ -9,11 +10,9 @@ import { fieldHelper } from '../utils';
 const DEBOUNCE_WAIT = 500;
 
 export default (filtersDefault, pageSize, defaultMode, getDataApi, historyHelper) => {
-  const initState = useMemo(
-    () => defaultState(filtersDefault, pageSize, defaultMode, historyHelper),
-    [filtersDefault, historyHelper, pageSize]
+  const [state, dispatch] = useReducer(reducer, undefined, () =>
+    defaultState(filtersDefault, pageSize, defaultMode, historyHelper)
   );
-  const [state, dispatch] = useReducer(reducer, initState);
 
   const debouncedGetDataApi = useCallback(
     debounce(

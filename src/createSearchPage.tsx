@@ -21,9 +21,10 @@ const { wrap } = fieldHelper;
 interface Args {
   filtersDefault?: FiltersDefault;
   defaultMode?: Mode;
+  noPagination?: boolean;
   pageSize?: number;
   pageSizeOptions?: Array<string>;
-  noPagination?: boolean;
+  hideOnSinglePage?: boolean;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
   loadingDelay?: number;
@@ -50,6 +51,7 @@ const createSearchPage = ({
   defaultMode = Mode.Simple,
   pageSize = 10,
   pageSizeOptions = ['5', '10', '20', '30', '40'],
+  hideOnSinglePage = true,
   noPagination = false,
   FiltersForm,
   getDataApi,
@@ -110,6 +112,7 @@ const createSearchPage = ({
         </ContentWrap>
         {noPagination ? null : (
           <Pagination
+            hideOnSinglePage={hideOnSinglePage}
             pagination={state.pagination}
             pageSizeOptions={pageSizeOptions}
             dispatch={dispatch}

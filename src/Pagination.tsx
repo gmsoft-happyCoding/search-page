@@ -28,11 +28,12 @@ interface DispatchProps {
 
 interface OwnProps {
   pageSizeOptions: Array<string>;
+  hideOnSinglePage: boolean;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-function Pagination({ dispatch, pagination, total, pageSizeOptions }: Props) {
+function Pagination({ dispatch, pagination, total, pageSizeOptions, hideOnSinglePage }: Props) {
   const showTotal = useMemo(() => createsShowTotal(pagination.pageSize), [pagination.pageSize]);
 
   const onPageChange = useCallback(
@@ -80,7 +81,7 @@ function Pagination({ dispatch, pagination, total, pageSizeOptions }: Props) {
       showSizeChanger
       pageSizeOptions={pageSizeOptions}
       defaultCurrent={1}
-      hideOnSinglePage
+      hideOnSinglePage={hideOnSinglePage}
       showTotal={showTotal}
       current={pagination.current}
       pageSize={pagination.pageSize}

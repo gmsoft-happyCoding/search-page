@@ -12,7 +12,7 @@ const Demo = () => {
 
   const getDataApi: GetDataApi = async (filters, pagination) => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
+    const result = await Promise.resolve({ data: { filters, pagination }, total: 1 });
     return result;
   };
 
@@ -24,6 +24,7 @@ const Demo = () => {
         noPagination: false,
         getDataApi,
         FiltersForm,
+        hideOnSinglePage: false,
         storeKey: 'BuildFiltersFormDemo',
       }),
     []

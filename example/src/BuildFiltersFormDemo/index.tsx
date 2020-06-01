@@ -1,5 +1,6 @@
 import React, { useRef, useCallback, useMemo } from 'react';
 import createSearchPage, { GetDataApi } from 'search-page';
+import { get } from 'lodash';
 import { Button } from 'antd';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
@@ -11,7 +12,10 @@ const Demo = () => {
   }, []);
 
   const getDataApi: GetDataApi = async (filters, pagination) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(
+      resolve => setTimeout(resolve, Math.max(5000 - get(filters, 'orgName.length', 0) * 500), 0)
+      // eslint-disable-next-line function-paren-newline
+    );
     const result = await Promise.resolve({ data: { filters, pagination }, total: 1 });
     return result;
   };

@@ -7,7 +7,18 @@ import actions from '../useSearchPage/actions';
 
 const { create } = Form;
 
-type Props = Pick<WrapperProps, 'filters' | 'dispatch' | 'mode' | 'filtersDefault' | 'storeKey' | 'storeHistory'> &
+type Props = Pick<
+  WrapperProps,
+  | 'filters'
+  | 'dispatch'
+  | 'mode'
+  | 'filtersDefault'
+  | 'storeKey'
+  | 'storeHistory'
+  | 'searchMode'
+  | 'forceUpdate'
+  | 'loadingCount'
+> &
   FormComponentProps;
 
 // 根据模式进行过滤性初始化，只初始化当前模式下显示的表单部分，多余的部分不初始化

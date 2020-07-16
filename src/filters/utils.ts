@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, isNil, isNumber } from 'lodash';
-import { Mode } from './mode.enum';
+import FilterMode from '../enums/FilterMode';
 
 export function checkChildren(chlidren) {
   try {
@@ -22,10 +22,14 @@ export function checkChildren(chlidren) {
  * @param simpleModeCount 精简模式下显示的元素数
  * @param mode 模式
  */
-export function getActionSpanEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
+export function getActionSpanEx(
+  fields: React.ReactNode,
+  simpleModeCount: number,
+  mode: FilterMode
+) {
   const childs: React.ReactNode[] = [];
   React.Children.forEach(fields, (child, index) => {
-    if (mode === Mode.Advance || index < simpleModeCount) {
+    if (mode === FilterMode.Advance || index < simpleModeCount) {
       childs.push(child);
     }
   });
@@ -51,7 +55,11 @@ export function getActionSpanEx(fields: React.ReactNode, simpleModeCount: number
  * @param simpleModeCount
  * @param mode
  */
-export function getActionLabelEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
+export function getActionLabelEx(
+  fields: React.ReactNode,
+  simpleModeCount: number,
+  mode: FilterMode
+) {
   return getActionSpanEx(fields, simpleModeCount, mode) === 24 ? null : '\u00A0';
 }
 /**
@@ -60,7 +68,11 @@ export function getActionLabelEx(fields: React.ReactNode, simpleModeCount: numbe
  * @param simpleModeCount
  * @param mode
  */
-export function getActionStyleEx(fields: React.ReactNode, simpleModeCount: number, mode: Mode) {
+export function getActionStyleEx(
+  fields: React.ReactNode,
+  simpleModeCount: number,
+  mode: FilterMode
+) {
   return getActionSpanEx(fields, simpleModeCount, mode) === 24 ? {} : { marginTop: 11 };
 }
 

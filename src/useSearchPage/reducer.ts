@@ -1,5 +1,5 @@
 import { Types } from './actions';
-import { Mode } from '../filters/mode.enum';
+import FilterMode from '../enums/FilterMode';
 
 export default (state, { type, payload }) => {
   // eslint-disable-next-line default-case
@@ -42,7 +42,10 @@ export default (state, { type, payload }) => {
       return { ...state, loadingCount: count };
     }
     case Types.switchMode: {
-      return { ...state, mode: state.mode === Mode.Simple ? Mode.Advance : Mode.Simple };
+      return {
+        ...state,
+        mode: state.mode === FilterMode.Simple ? FilterMode.Advance : FilterMode.Simple,
+      };
     }
     case Types.forceUpdate: {
       return { ...state, forceUpdate: state.forceUpdate + 1 };

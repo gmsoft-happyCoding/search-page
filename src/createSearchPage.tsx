@@ -6,7 +6,7 @@ import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
 import actions from './useSearchPage/actions';
 import fieldHelper from './utils/fieldHelper';
-import { Mode } from './filters/mode.enum';
+import FilterMode from './enums/FilterMode';
 import {
   FiltersFormType,
   GetDataApi,
@@ -15,12 +15,13 @@ import {
   forceUpdateArgs,
   ForceUpdate,
 } from './typing';
+import SearchMode from './enums/SearchMode';
 
 const { wrap } = fieldHelper;
 
 interface Args {
   filtersDefault?: FiltersDefault;
-  defaultMode?: Mode;
+  defaultMode?: FilterMode;
   noPagination?: boolean;
   pageSize?: number;
   pageSizeOptions?: Array<string>;
@@ -40,6 +41,10 @@ interface Args {
    * 存储数据使用的history对象, 默认为 top.history
    */
   storeHistory?: History;
+  /**
+   * 搜索模式, 即时搜索 or 按钮触发
+   */
+  searchMode?: SearchMode;
 }
 
 interface Props {
@@ -48,7 +53,7 @@ interface Props {
 
 const createSearchPage = ({
   filtersDefault = {},
-  defaultMode = Mode.Simple,
+  defaultMode = FilterMode.Simple,
   pageSize = 10,
   pageSizeOptions = ['5', '10', '20', '30', '40'],
   hideOnSinglePage = true,
@@ -59,11 +64,13 @@ const createSearchPage = ({
   alwaysRenderContent = false,
   storeKey,
   storeHistory,
+  searchMode = SearchMode.TIMELY,
 }: Args) => {
   const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
   const SearchPage: React.FC = ({ children }: Props, ref) => {
     const [state, dispatch] = useSearchPage(
+      searchMode,
       filtersDefault,
       pageSize,
       defaultMode,
@@ -98,6 +105,9 @@ const createSearchPage = ({
           filtersDefault={filtersDefault}
           storeKey={storeKey}
           storeHistory={storeHistory}
+          searchMode={searchMode}
+          forceUpdate={forceUpdate}
+          loadingCount={state.loadingCount}
         />
         <ContentWrap
           data={state.data}

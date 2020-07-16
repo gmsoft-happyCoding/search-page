@@ -2,7 +2,7 @@ import { merge } from 'lodash';
 import HistoryHelper from 'history-helper';
 import fieldHelper from '../utils/fieldHelper';
 import { PaginationI } from '../typing';
-import { Mode } from '../filters/mode.enum';
+import FilterMode from '../enums/FilterMode';
 
 // ant design form field is object, transform {key: value} to {key: {value}}
 const { wrap } = fieldHelper;
@@ -17,7 +17,7 @@ export const NO_DATA = '__no_data__';
 export default (
   filtersDefault: any,
   pageSize: number,
-  defaultMode: Mode,
+  defaultMode: FilterMode,
   historyHelper: HistoryHelper
 ) => ({
   filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),

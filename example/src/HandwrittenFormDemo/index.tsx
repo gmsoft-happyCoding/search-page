@@ -5,7 +5,7 @@ import FiltersForm from './FiltersForm';
 import Content from './Content';
 
 const getDataApi: GetDataApi = async (filters, pagination) => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 100));
   const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
   return result;
 };

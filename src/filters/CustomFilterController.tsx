@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /** 定制化筛选控制器 */
 import React, { useMemo, useCallback, CSSProperties } from 'react';
 import { Popover, Checkbox, Row, Col } from 'antd';

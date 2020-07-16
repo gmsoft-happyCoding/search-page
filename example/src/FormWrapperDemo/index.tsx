@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from 'react';
-import createSearchPage, { GetDataApi, Mode } from 'search-page';
+import createSearchPage, { GetDataApi, Mode, SearchMode } from 'search-page';
 import { Button } from 'antd';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
@@ -16,6 +16,7 @@ const SearchPage = createSearchPage({
   getDataApi,
   FiltersForm,
   storeKey: 'FormWrapperDemo',
+  searchMode: SearchMode.TRIGGER,
 });
 
 const Demo = () => {

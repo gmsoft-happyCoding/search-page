@@ -4,19 +4,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useCallback, Dispatch, useMemo, useEffect, useState, CSSProperties } from 'react';
-import { Form, Row, Col, Icon, Divider } from 'antd';
+import { Form, Row, Col, Icon, Divider, Button } from 'antd';
 import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject, uniq, keys, difference } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import HistoryHelper from 'history-helper';
 import { FormItemProps } from 'antd/lib/form/FormItem';
 
+import { ButtonProps } from 'antd/lib/button';
 import CustomFilterController from './CustomFilterController';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
 import { useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
-import { Mode } from './mode.enum';
+import FilterMode from '../enums/FilterMode';
+import { ForceUpdate } from '../../dist/typing';
 import {
   checkChildren,
   getValidChidren,
@@ -29,6 +31,7 @@ import {
   getCustomFiltersLocalStorage,
   setCustomFiltersLocalStorage,
 } from './utils';
+import SearchMode from '../enums/SearchMode';
 
 function FormItem({ span, ...rest }: WrapperFormItem) {
   return (
@@ -77,6 +80,9 @@ export interface WrapperProps {
   children: React.ReactNode | React.ReactNodeArray;
   filters: Filters;
   filtersDefault: FiltersDefault;
+  searchMode: SearchMode;
+  forceUpdate: ForceUpdate;
+  loadingCount: number;
   /**
    * default true
    */
@@ -90,7 +96,7 @@ export interface WrapperProps {
   /**
    * 显示模式
    */
-  mode: Mode;
+  mode: FilterMode;
   /**
    * 精简模式的配置
    */
@@ -129,12 +135,22 @@ export interface WrapperProps {
      */
     popoverOverlayStyle?: CSSProperties;
   };
+  /**
+   * 搜索按钮文字
+   */
+  searchButtonText?: string;
+  /**
+   * 搜索按钮props
+   */
+  searchButtonProps?: ButtonProps;
 }
 
 const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   const {
     dispatch,
     children,
+    forceUpdate,
+    loadingCount,
     needReset,
     resetRetainFiltersDefaultKeys,
     simpleMode,
@@ -143,10 +159,17 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     storeKey,
     storeHistory,
     defaultCustomFiltersConf,
+    searchMode,
+    searchButtonText,
+    searchButtonProps,
   } = props;
+
+  const doSearch = useCallback(() => forceUpdate(), [forceUpdate]);
+
   const [filtersConfig, setFiltersConfig] = useState<
     { key: string; name: string; disabled?: boolean }[]
   >([]);
+
   const [showFiltersKeys, setShowFiltersKeys] = useState<string[]>(() => {
     if (get(defaultCustomFiltersConf, 'storageKey')) {
       return getCustomFiltersLocalStorage(get(defaultCustomFiltersConf, 'storageKey'));
@@ -263,7 +286,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     () =>
       compact(
         React.Children.map(validChidren, (child: any, i) => {
-          if (mode === Mode.Simple && i >= simpleModeCount) {
+          if (mode === FilterMode.Simple && i >= simpleModeCount) {
             return null;
           }
 
@@ -297,11 +320,13 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
       // 存储模式状态
       dispatch(actions.switchMode());
       // 持久化模式状态
-      historyHelper.mergeState({ mode: prevMode === Mode.Simple ? Mode.Advance : Mode.Simple });
+      historyHelper.mergeState({
+        mode: prevMode === FilterMode.Simple ? FilterMode.Advance : FilterMode.Simple,
+      });
       // 重置更多部分的筛选条件
       const advanceDefault = pick(filtersDefault, advancedKeys);
       const advanceNull = zipObject(advancedKeys);
-      if (prevMode === Mode.Advance) {
+      if (prevMode === FilterMode.Advance) {
         dispatch(actions.storeFilters(wrap(merge(advanceNull, advanceDefault))));
       }
     },
@@ -358,7 +383,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                     {/* 分割线 */}
                     {needReset && smEnable && <Divider type="vertical" />}
                     <a onClick={switchMode} role="button">
-                      {mode === Mode.Simple ? (
+                      {mode === FilterMode.Simple ? (
                         <MoreSpan>
                           <Label>展开</Label>
                           <Icon type="down" />
@@ -370,6 +395,23 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                         </MoreSpan>
                       )}
                     </a>
+                  </>
+                )}
+                {searchMode === SearchMode.TRIGGER && (
+                  <>
+                    <Divider type="vertical" />
+                    <Button
+                      type="primary"
+                      style={{
+                        position: 'relative',
+                        top: '-7px',
+                      }}
+                      loading={loadingCount > 0}
+                      onClick={doSearch}
+                      {...searchButtonProps}
+                    >
+                      {searchButtonText}
+                    </Button>
                   </>
                 )}
               </Form.Item>
@@ -392,6 +434,7 @@ FormWrapper.defaultProps = {
     enable: true,
     rows: 2 / 3,
   },
+  searchButtonText: '查询',
 };
 
 FormWrapper.FormItem = FormItem;

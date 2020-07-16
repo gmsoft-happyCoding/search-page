@@ -229,10 +229,16 @@ export default FiltersForm;
 
 ---
 
-#### 如果同一个页面有多个 SearchPage
+#### 支持手动触发模式
 
 ```
-  请在 createSearchPage 中指定 [storeKey]
+请在 createSearchPage 中指定 [searchMode]
+```
+
+#### 如果同一个页面有多个 SearchPage 实例
+
+```
+请在 createSearchPage 中指定 [storeKey]
 ```
 
 #### 支持指定存储数据使用的 history 对象

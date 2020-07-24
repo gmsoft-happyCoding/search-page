@@ -17,10 +17,13 @@ yarn add search-page
 ## features
 
 - [x] 自动记住页面状态，刷新或 history.back()，不会丢失页面状态
-- [x] 数据请求自动节流，阈值 300ms
+- [x] 数据请求自动节流，阈值 500ms
 - [x] 自动显示 loading 状态， 为了避免闪烁默认 delay 500ms
 - [x] 支持高级搜索，展开收起，收起时重置高级搜索部分的条件为默认值(filtersDefault)
 - [x] 根据配置自动生成 form (目前只支持 input),非 input 组件或自定义组件使用 [FormWrapper](<#FiltersForm.tsx-(使用-FormWrapper)>)
+- [x] 支持用户自定义筛选条件
+- [x] 支持手动触发搜索
+- [x] 支持响应式布局
 
 ---
 

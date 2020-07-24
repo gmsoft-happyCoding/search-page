@@ -2,7 +2,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /** 定制化筛选控制器 */
 import React, { useMemo, useCallback, CSSProperties } from 'react';
-import { Popover, Checkbox, Row, Col } from 'antd';
+import { Popover, Checkbox } from 'antd';
+import styled from 'styled-components';
+
+const CheckboxGroupWrap = styled.div`
+  max-height: 260px;
+  overflow-y: scroll;
+`;
+
+const CheckboxWrap = styled.div`
+  margin: 4px;
+`;
 
 export interface CustomFilterControllerProps {
   allConfigs: { key: string; name: string; disabled?: boolean }[];
@@ -20,17 +30,14 @@ export default ({
   popoverOverlayStyle,
 }: CustomFilterControllerProps) => {
   const content = useMemo(
-    () => (
-      <Row type="flex" justify="start" gutter={24}>
-        {allConfigs.map(item => (
-          <Col span={8} key={item.key}>
-            <Checkbox value={item.key} disabled={item.disabled}>
-              {item.name}
-            </Checkbox>
-          </Col>
-        ))}
-      </Row>
-    ),
+    () =>
+      allConfigs.map(item => (
+        <CheckboxWrap key={item.key}>
+          <Checkbox value={item.key} disabled={item.disabled}>
+            {item.name}
+          </Checkbox>
+        </CheckboxWrap>
+      )),
     [allConfigs]
   );
   const proxyChange = useCallback(
@@ -45,9 +52,11 @@ export default ({
   return (
     <Popover
       content={
-        <Checkbox.Group value={activeKeys} onChange={proxyChange}>
-          {content}
-        </Checkbox.Group>
+        <CheckboxGroupWrap>
+          <Checkbox.Group value={activeKeys} onChange={proxyChange}>
+            {content}
+          </Checkbox.Group>
+        </CheckboxGroupWrap>
       }
       title="请勾选需要使用的筛选项"
       overlayStyle={popoverOverlayStyle}

@@ -10,8 +10,9 @@ import { compact, get, merge, pick, zipObject, uniq, keys, difference } from 'lo
 import { FormComponentProps } from 'antd/lib/form';
 import HistoryHelper from 'history-helper';
 import { FormItemProps } from 'antd/lib/form/FormItem';
-
 import { ButtonProps } from 'antd/lib/button';
+import { ColProps } from 'antd/lib/col';
+import { RowProps } from 'antd/lib/row';
 import CustomFilterController from './CustomFilterController';
 import { Filters, FiltersDefault } from '../typing';
 import actions from '../useSearchPage/actions';
@@ -25,17 +26,20 @@ import {
   getChildKey,
   getChildLabel,
   switchModeIsEnable,
-  getActionLabelEx,
-  getActionStyleEx,
-  getActionSpanEx,
   getCustomFiltersLocalStorage,
   setCustomFiltersLocalStorage,
 } from './utils';
 import SearchMode from '../enums/SearchMode';
 
-function FormItem({ span, ...rest }: WrapperFormItem) {
+interface WrapperFormItem extends FormItemProps {
+  span?: number;
+  colProps?: ColProps;
+  children: React.ReactNode;
+}
+
+function FormItem({ span, colProps, ...rest }: WrapperFormItem) {
   return (
-    <Col span={span || 8}>
+    <Col span={span || 8} {...colProps}>
       <Form.Item {...rest} />
     </Col>
   );
@@ -73,6 +77,11 @@ export interface SimpleMode {
    * 精简模式显示的搜索条件行数
    */
   rows?: number;
+}
+
+export interface ThemeI {
+  rowProps?: RowProps;
+  colProps?: ColProps;
 }
 
 export interface WrapperProps {
@@ -143,6 +152,10 @@ export interface WrapperProps {
    * 搜索按钮props
    */
   searchButtonProps?: ButtonProps;
+  /**
+   * 主题设置
+   */
+  theme?: ThemeI;
 }
 
 const FormWrapper = (props: WrapperProps & FormComponentProps) => {
@@ -162,6 +175,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     searchMode,
     searchButtonText,
     searchButtonProps,
+    theme,
   } = props;
 
   const doSearch = useCallback(() => forceUpdate(), [forceUpdate]);
@@ -215,7 +229,10 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   const simpleModeCount = useMemo(() => {
     if (smEnable) {
       // 默认显示 2 个搜索条件
-      return Math.min(validChidren.length, simpleMode.count || (simpleMode.rows || 2 / 3) * 3);
+      return Math.min(
+        validChidren.length,
+        simpleMode.count || Math.floor((simpleMode.rows || 2 / 3) * 3)
+      );
     }
     return validChidren.length;
   }, [validChidren.length, simpleMode, smEnable]);
@@ -249,6 +266,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
         updateShowFiltersKeys(uniq([...defaultKeys, ...notAllowCustomKeys]));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useWatch(showFiltersKeys, (preKeys, currentKeys) => {
@@ -293,10 +311,14 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
           if (FormItem === get(child, 'type')) {
             return child;
           }
-          return <Col span={8}>{child}</Col>;
+          return (
+            <Col span={8} {...theme!.colProps}>
+              {child}
+            </Col>
+          );
         })
       ),
-    [validChidren, mode, simpleModeCount]
+    [validChidren, mode, simpleModeCount, theme]
   );
 
   // reset回调
@@ -332,30 +354,19 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     },
     [advancedKeys, dispatch, filtersDefault, historyHelper, mode]
   );
-  const actionSpanEx = useMemo(() => getActionSpanEx(validChidren, simpleModeCount, mode), [
-    validChidren,
-    simpleModeCount,
-    mode,
-  ]);
-  const actionLabelEx = useMemo(() => getActionLabelEx(validChidren, simpleModeCount, mode), [
-    validChidren,
-    simpleModeCount,
-    mode,
-  ]);
-  const actionStyleEx = useMemo(() => getActionStyleEx(validChidren, simpleModeCount, mode), [
-    validChidren,
-    simpleModeCount,
-    mode,
-  ]);
 
   return (
     <RootLayout>
       <Form layout="vertical">
-        <Row type="flex" justify="start" gutter={24}>
+        <Row type="flex" justify="start" gutter={24} {...theme!.rowProps}>
           {fieldsNodes}
-          <Col span={actionSpanEx} style={{ textAlign: 'right' }}>
+          {/* hack 靠右,靠下对齐
+           * see: https://stackoverflow.com/questions/22429003/how-to-right-align-flex-item/22429853#22429853
+           * https://stackoverflow.com/questions/31000885/align-an-element-to-bottom-with-flexbox
+           */}
+          <Col style={{ textAlign: 'right', marginTop: 'auto', marginLeft: 'auto' }}>
             {(needReset || smEnable) && (
-              <Form.Item label={actionLabelEx} style={actionStyleEx}>
+              <Form.Item>
                 {/* 是否需要重置操作 */}
                 {needReset && (
                   <a className="action" onClick={reset} role="button">
@@ -402,10 +413,6 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                     <Divider type="vertical" />
                     <Button
                       type="primary"
-                      style={{
-                        position: 'relative',
-                        top: '-7px',
-                      }}
                       loading={loadingCount > 0}
                       onClick={doSearch}
                       {...searchButtonProps}
@@ -423,11 +430,6 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   );
 };
 
-interface WrapperFormItem extends FormItemProps {
-  span?: number;
-  children: React.ReactNode;
-}
-
 FormWrapper.defaultProps = {
   needReset: true,
   simpleMode: {
@@ -435,6 +437,10 @@ FormWrapper.defaultProps = {
     rows: 2 / 3,
   },
   searchButtonText: '查询',
+  theme: {
+    rowProps: {},
+    colProps: {},
+  },
 };
 
 FormWrapper.FormItem = FormItem;

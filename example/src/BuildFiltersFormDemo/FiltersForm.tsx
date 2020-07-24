@@ -20,5 +20,6 @@ export default buildFiltersForm(
     simpleMode: {
       count: 2,
     },
+    theme: { colProps: { lg: 6, md: 8, sm: 12, xs: 24 } },
   }
 );

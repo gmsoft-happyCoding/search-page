@@ -157,8 +157,8 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
       <FormItem span={8} label="orgName">
         {getFieldDecorator('orgName')(<Input placeholder="Please input your name" />)}
       </FormItem>
-      {/* 包装容器FormItem的栅格属性span默认为8 */}
-      <FormItem label="name1">
+      {/* 可设置为响应式布局 */}
+      <FormItem colProps={{ lg: 6, md: 8, sm: 12, xs: 24 }} label="name1">
         {getFieldDecorator('name1')(
           <Select>
             <Option value="1">选项一</Option>
@@ -294,6 +294,15 @@ interface forceUpdateArgs {
      */
     popoverOverlayStyle?: CSSProperties;
   };
+```
+
+#### 支持响应式布局, 请设置 FromWraper props -> theme, 或使用 FromWraper.FormItem props -> colProps
+
+```
+export interface ThemeI {
+  rowProps?: RowProps;
+  colProps?: ColProps;
+}
 ```
 
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example

@@ -1,34 +1,26 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { map } from 'lodash';
 import { Fields, FieldConfig, FiltersFormType } from '../typing';
-import FormWapper, { SimpleMode } from './FormWapper';
+import FormWapper, { WrapperProps } from './FormWapper';
 
-type Options = {
-  /**
-   * 是否需要重置按钮
-   */
-  needReset?: boolean;
-  /**
-   * 是否需要更多按钮
-   */
-  simpleMode?: Partial<SimpleMode>;
-  /**
-   * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
-   */
-  storeKey?: string;
-  /**
-   * 存储数据使用的history对象, 默认为 top.history
-   */
-  storeHistory?: History;
-};
+type Options = Omit<
+  WrapperProps,
+  | 'filters'
+  | 'dispatch'
+  | 'mode'
+  | 'filtersDefault'
+  | 'storeKey'
+  | 'storeHistory'
+  | 'searchMode'
+  | 'forceUpdate'
+  | 'loadingCount'
+  | 'children'
+>;
 
-export default (
-  fields: Fields,
-  options: Options = {
-    needReset: true,
-  }
-) => {
+export default (fields: Fields, options: Options) => {
   const FiltersForm: FiltersFormType = props => {
     const {
       form: { getFieldDecorator },

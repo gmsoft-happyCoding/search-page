@@ -23,7 +23,7 @@ yarn add search-page
 - [x] 根据配置自动生成 form (目前只支持 input),非 input 组件或自定义组件使用 [FormWrapper](<#FiltersForm.tsx-(使用-FormWrapper)>)
 - [x] 支持用户自定义筛选条件
 - [x] 支持手动触发搜索
-- [x] 支持响应式布局
+- [x] 支持响应式布局(default: { lg: 6, md: 8, sm: 12, xs: 24 })
 
 ---
 
@@ -309,6 +309,10 @@ export interface ThemeI {
 ```
 
 > 详见 https://github.com/gmsoft-happyCoding/search-page/tree/master/example
+
+> 如果你使用了 FromWraper.FormItem, 自定义了每个元素的栅格所占宽度,
+> 请不要使用 simpleMode.rows(直接使用 simpleMode.count) 设置默认显示的元素数量,
+> 因为这可能会导致默认显示的元素数量的计算错误
 
 ---
 

@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useCallback, Dispatch, useMemo, useEffect, useState, CSSProperties } from 'react';
-import { Form, Row, Col, Icon, Divider, Button } from 'antd';
+import { Form, Row, Col, Icon, Divider, Button, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { compact, get, merge, pick, zipObject, uniq, keys, difference } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
@@ -28,6 +28,7 @@ import {
   switchModeIsEnable,
   getCustomFiltersLocalStorage,
   setCustomFiltersLocalStorage,
+  getCountByRows,
 } from './utils';
 import SearchMode from '../enums/SearchMode';
 
@@ -39,7 +40,7 @@ interface WrapperFormItem extends FormItemProps {
 
 function FormItem({ span, colProps, ...rest }: WrapperFormItem) {
   return (
-    <Col span={span || 8} {...colProps}>
+    <Col span={!colProps && !span ? 8 : span} {...colProps}>
       <Form.Item {...rest} />
     </Col>
   );
@@ -180,6 +181,11 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
 
   const doSearch = useCallback(() => forceUpdate(), [forceUpdate]);
 
+  const defaultSimpleModeCount = useMemo(() => {
+    if (simpleMode.count) return simpleMode.count;
+    return getCountByRows(simpleMode.rows, theme && theme.colProps);
+  }, [simpleMode.count, simpleMode.rows, theme]);
+
   const [filtersConfig, setFiltersConfig] = useState<
     { key: string; name: string; disabled?: boolean }[]
   >([]);
@@ -229,13 +235,10 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   const simpleModeCount = useMemo(() => {
     if (smEnable) {
       // 默认显示 2 个搜索条件
-      return Math.min(
-        validChidren.length,
-        simpleMode.count || Math.floor((simpleMode.rows || 2 / 3) * 3)
-      );
+      return Math.min(validChidren.length, defaultSimpleModeCount);
     }
     return validChidren.length;
-  }, [validChidren.length, simpleMode, smEnable]);
+  }, [smEnable, validChidren.length, defaultSimpleModeCount]);
 
   const advancedKeys = useMemo<string[]>(() => {
     if (smEnable) {
@@ -312,7 +315,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
             return child;
           }
           return (
-            <Col span={8} {...theme!.colProps}>
+            <Col span={8} {...(theme && theme.colProps)}>
               {child}
             </Col>
           );
@@ -358,7 +361,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   return (
     <RootLayout>
       <Form layout="vertical">
-        <Row type="flex" justify="start" gutter={24} {...theme!.rowProps}>
+        <Row type="flex" justify="start" gutter={24} {...(theme && theme.rowProps)}>
           {fieldsNodes}
           {/* hack 靠右,靠下对齐
            * see: https://stackoverflow.com/questions/22429003/how-to-right-align-flex-item/22429853#22429853
@@ -369,9 +372,11 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
               <Form.Item>
                 {/* 是否需要重置操作 */}
                 {needReset && (
-                  <a className="action" onClick={reset} role="button">
-                    重置筛选条件
-                  </a>
+                  <Tooltip title="重置筛选条件" placement="bottomRight" mouseEnterDelay={0.3}>
+                    <a className="action" onClick={reset} role="button">
+                      重置
+                    </a>
+                  </Tooltip>
                 )}
                 {!!defaultCustomFiltersConf && (
                   <>
@@ -434,12 +439,12 @@ FormWrapper.defaultProps = {
   needReset: true,
   simpleMode: {
     enable: true,
-    rows: 2 / 3,
+    rows: 1,
   },
   searchButtonText: '查询',
   theme: {
     rowProps: {},
-    colProps: {},
+    colProps: { lg: 6, md: 8, sm: 12, xs: 24 },
   },
 };
 

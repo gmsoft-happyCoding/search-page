@@ -18,8 +18,7 @@ export default buildFiltersForm(
   {
     needReset: true, // 可选，是否需要清空操作
     simpleMode: {
-      count: 2,
+      rows: 1,
     },
-    theme: { colProps: { lg: 6, md: 8, sm: 12, xs: 24 } },
   }
 );

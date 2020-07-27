@@ -18,22 +18,21 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
   return (
     <FormWrapper
       {...props}
-      simpleMode={{ rows: 1 }}
+      simpleMode={{ count: 2 }}
       defaultCustomFiltersConf={{
         storageKey: 'FormWrapperDemo',
         notAllowCustomKeys: ['orgName'],
         labels: { orgName: '组织架构名称' },
-        popoverOverlayStyle: { maxWidth: 200 },
       }}
       resetRetainFiltersDefaultKeys={[]}
-      theme={{ rowProps: { gutter: 16 } }}
+      // theme={{ rowProps: { gutter: 16 } }}
     >
       {/* 需要自定义栅格时请使用包装容器 */}
-      <FormItem colProps={colProps} label="orgName">
+      <FormItem colProps={{ span: 12 }} label="orgName">
         {getFieldDecorator('orgName')(<Input placeholder="Please input your name" />)}
       </FormItem>
       {/* 包装容器FormItem的栅格属性span默认为8 */}
-      <FormItem colProps={colProps} label="name1">
+      <FormItem colProps={{ span: 12 }} label="name1">
         {getFieldDecorator('name1')(
           <Select>
             <Option value="1">选项一</Option>

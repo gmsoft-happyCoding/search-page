@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
+import { ColProps } from 'antd/lib/col';
 
 export function checkChildren(chlidren) {
   try {
@@ -80,3 +81,76 @@ export const setCustomFiltersLocalStorage = (key: string, value: any) => {
 /** 取出 localStorage 中缓存 定制化搜索项目数据 */
 export const getCustomFiltersLocalStorage = (key: string) =>
   getLocalStorage(customFiltersLocalStorageKey(key)) || [];
+
+// sm 屏幕 ≥ 576px 响应式栅格
+const SM_POINT = 576;
+// md 屏幕 ≥ 768px 响应式栅格
+const MD_POINT = 768;
+// lg 屏幕 ≥ 992px 响应式栅格
+const LG_POINT = 992;
+// xl 屏幕 ≥ 1200px 响应式栅格
+const XL_POINT = 1200;
+// xxl 屏幕 ≥ 1600px 响应式栅格
+const XXL_POINT = 1600;
+
+// 分隔点属性
+const pointProps = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'span'];
+
+/**
+ * 尝试依次向下取值
+ */
+function getGridSize(pointPropsIndex: number, colProps: ColProps) {
+  for (let i = pointPropsIndex; i < pointProps.length; i++) {
+    const size = get(colProps, pointProps[i]);
+    if (size) return size;
+  }
+  // default size
+  return 8;
+}
+
+/**
+ * 计算每一列显示多少个元素
+ */
+function calcPerRowCount(colProps: ColProps) {
+  const windowWidth = window.document.body.clientWidth;
+
+  let pointPropsIndex = 0;
+
+  if (windowWidth >= XXL_POINT) {
+    pointPropsIndex = 0;
+  } else if (windowWidth >= XL_POINT) {
+    pointPropsIndex = 1;
+  } else if (windowWidth >= LG_POINT) {
+    pointPropsIndex = 2;
+  } else if (windowWidth >= MD_POINT) {
+    pointPropsIndex = 3;
+  } else if (windowWidth >= SM_POINT) {
+    pointPropsIndex = 4;
+  } else if (windowWidth < SM_POINT) {
+    pointPropsIndex = 5;
+  }
+
+  return 24 / getGridSize(pointPropsIndex, colProps);
+}
+
+/**
+ * 根据设置的 行数 和 栅格 计算 simpleMode 下默认显示的筛选条件个数
+ * @param _rows 设置的行数
+ * @param colProps 设置的theme.colProps
+ */
+export const getCountByRows = (_rows: number = 1, colProps: ColProps = {}) => {
+  /**
+   * 兼容旧版允许设置rows为分数的情况例如，2/3
+   * 在响应式布局的情况下，分母不再固定为3，设置分数不再由意义
+   */
+  const rows = Math.round(_rows);
+
+  // 至少显示一个
+  if (rows === 0) return 1;
+
+  /**
+   * 操作按钮需要占用一个位置
+   * 至少要显示一个筛选条件
+   */
+  return calcPerRowCount(colProps) * rows - 1 || 1;
+};

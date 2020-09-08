@@ -6,7 +6,7 @@ import Content from './Content';
 
 const getDataApi: GetDataApi = async (filters, pagination) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
-  const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
+  const result = await Promise.resolve({ data: { filters, pagination }, total: 0 });
   return result;
 };
 
@@ -17,6 +17,7 @@ const SearchPage = createSearchPage({
   FiltersForm,
   storeKey: 'FormWrapperDemo',
   searchMode: SearchMode.TRIGGER,
+  hideOnSinglePage: false,
 });
 
 const Demo = () => {

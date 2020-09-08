@@ -81,7 +81,7 @@ function Pagination({ dispatch, pagination, total, pageSizeOptions, hideOnSingle
       showSizeChanger
       pageSizeOptions={pageSizeOptions}
       defaultCurrent={1}
-      hideOnSinglePage={hideOnSinglePage}
+      hideOnSinglePage={hideOnSinglePage || total === 0}
       showTotal={showTotal}
       current={pagination.current}
       pageSize={pagination.pageSize}

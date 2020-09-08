@@ -14,12 +14,11 @@ import { ButtonProps } from 'antd/lib/button';
 import { ColProps } from 'antd/lib/col';
 import { RowProps } from 'antd/lib/row';
 import CustomFilterController from './CustomFilterController';
-import { Filters, FiltersDefault } from '../typing';
+import { Filters, FiltersDefault, ForceUpdate } from '../typing';
 import actions from '../useSearchPage/actions';
 import { useWatch } from '../utils';
 import fieldHelper from '../utils/fieldHelper';
 import FilterMode from '../enums/FilterMode';
-import { ForceUpdate } from '../../dist/typing';
 import {
   checkChildren,
   getValidChidren,

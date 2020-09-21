@@ -29,11 +29,19 @@ interface DispatchProps {
 interface OwnProps {
   pageSizeOptions: Array<string>;
   hideOnSinglePage: boolean;
+  showSizeChanger: boolean;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-function Pagination({ dispatch, pagination, total, pageSizeOptions, hideOnSinglePage }: Props) {
+function Pagination({
+  dispatch,
+  pagination,
+  total,
+  pageSizeOptions,
+  hideOnSinglePage,
+  showSizeChanger,
+}: Props) {
   const showTotal = useMemo(() => createsShowTotal(pagination.pageSize), [pagination.pageSize]);
 
   const onPageChange = useCallback(
@@ -78,7 +86,7 @@ function Pagination({ dispatch, pagination, total, pageSizeOptions, hideOnSingle
     <StyledPagination
       style={{ textAlign: 'right', marginTop: 16 }}
       showQuickJumper
-      showSizeChanger
+      showSizeChanger={showSizeChanger}
       pageSizeOptions={pageSizeOptions}
       defaultCurrent={1}
       hideOnSinglePage={hideOnSinglePage || total === 0}

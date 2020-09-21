@@ -25,6 +25,10 @@ interface Args {
   noPagination?: boolean;
   pageSize?: number;
   pageSizeOptions?: Array<string>;
+  /**
+   * 是否可以改变 pageSize
+   */
+  showSizeChanger?: boolean;
   hideOnSinglePage?: boolean;
   getDataApi: GetDataApi;
   FiltersForm: FiltersFormType;
@@ -56,6 +60,7 @@ const createSearchPage = ({
   defaultMode = FilterMode.Simple,
   pageSize = 10,
   pageSizeOptions = ['5', '10', '20', '30', '40'],
+  showSizeChanger = true,
   hideOnSinglePage = true,
   noPagination = false,
   FiltersForm,
@@ -124,6 +129,7 @@ const createSearchPage = ({
           <Pagination
             hideOnSinglePage={hideOnSinglePage}
             pagination={state.pagination}
+            showSizeChanger={showSizeChanger}
             pageSizeOptions={pageSizeOptions}
             dispatch={dispatch}
             total={state.total}

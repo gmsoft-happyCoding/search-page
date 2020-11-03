@@ -111,13 +111,9 @@ export interface WrapperProps {
    */
   simpleMode: SimpleMode;
   /**
-   * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
+   * createSeachPage 传递过来的持久化帮助类
    */
-  storeKey?: string;
-  /**
-   * 存储数据使用的history对象, 默认为 top.history
-   */
-  storeHistory?: History;
+  historyHelper?: HistoryHelper
   /**
    * 定制化筛选条件
    */
@@ -169,8 +165,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     simpleMode,
     filtersDefault,
     mode,
-    storeKey,
-    storeHistory,
+    historyHelper,
     defaultCustomFiltersConf,
     searchMode,
     searchButtonText,
@@ -205,11 +200,6 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
     },
     [defaultCustomFiltersConf]
   );
-
-  const historyHelper = useMemo(() => new HistoryHelper(storeKey, storeHistory), [
-    storeHistory,
-    storeKey,
-  ]);
 
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
   const smEnable = useMemo(() => switchModeIsEnable(simpleMode.enable), [simpleMode]);
@@ -343,10 +333,12 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
       const prevMode = mode;
       // 存储模式状态
       dispatch(actions.switchMode());
-      // 持久化模式状态
-      historyHelper.mergeState({
-        mode: prevMode === FilterMode.Simple ? FilterMode.Advance : FilterMode.Simple,
-      });
+      if (historyHelper) {
+        // 持久化模式状态
+        historyHelper.mergeState({
+          mode: prevMode === FilterMode.Simple ? FilterMode.Advance : FilterMode.Simple,
+        });
+      }
       // 重置更多部分的筛选条件
       const advanceDefault = pick(filtersDefault, advancedKeys);
       const advanceNull = zipObject(advancedKeys);

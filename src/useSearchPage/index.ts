@@ -1,16 +1,25 @@
 /* eslint-disable function-paren-newline */
 import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { debounce } from 'lodash';
+import HistoryHelper from 'history-helper';
 import defaultState from './defaultState';
 import actions from './actions';
 import reducer from './reducer';
 import { fieldHelper, makeCancelable } from '../utils';
 import SearchMode from '../enums/SearchMode';
+import { FiltersDefault, GetDataApi } from '../typing';
+import FiliterMode from '../enums/FilterMode';
 
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
 
-export default (searchMode, filtersDefault, pageSize, defaultMode, getDataApi, historyHelper) => {
+export default (
+  searchMode: SearchMode,
+  filtersDefault: FiltersDefault,
+  pageSize: number,
+  defaultMode: FiliterMode,
+  getDataApi: GetDataApi,
+  historyHelper?: HistoryHelper) => {
   const [state, dispatch] = useReducer(reducer, undefined, () =>
     defaultState(filtersDefault, pageSize, defaultMode, historyHelper)
   );
@@ -37,12 +46,14 @@ export default (searchMode, filtersDefault, pageSize, defaultMode, getDataApi, h
             // 保存数据(包括total)
             dispatch(actions.storeData(data));
             // 保存查询条件到history, 用于刷新或路由返回时恢复
-            historyHelper.setState({
-              filters: storeFilters,
-              pagination: storePagination,
-              total: data.total,
-              mode: storeMode,
-            });
+            if (historyHelper) {
+              historyHelper.setState({
+                filters: storeFilters,
+                pagination: storePagination,
+                total: data.total,
+                mode: storeMode,
+              });
+            }
           })
           .catch(error => {
             // 捕获异常, 什么都不做, 避免UI崩溃
@@ -73,7 +84,7 @@ export default (searchMode, filtersDefault, pageSize, defaultMode, getDataApi, h
     if (searchMode === SearchMode.TIMELY) {
       debouncedGetDataApi(state.filters, state.pagination, state.mode);
     }
-  }, [state.filters, state.pagination, debouncedGetDataApi, state.mode, searchMode, historyHelper]);
+  }, [state.filters, state.pagination, debouncedGetDataApi, state.mode, searchMode]);
 
   /**
    * 手动触发模式, 分页, 显示模式改变时加载数据

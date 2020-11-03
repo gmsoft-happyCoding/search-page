@@ -20,33 +20,74 @@ import SearchMode from './enums/SearchMode';
 const { wrap } = fieldHelper;
 
 interface Args {
+  /**
+   * 默认显示条件
+   */
   filtersDefault?: FiltersDefault;
+  /**
+   * 默认的显示模式
+   * @default FilterMode.SimpleMode
+   */
   defaultMode?: FilterMode;
+  /**
+   * 是否显示分页
+   * @default false
+   */
   noPagination?: boolean;
+  /**
+   * 每页数量
+   * @default 10
+   */
   pageSize?: number;
+  /**
+   * 每页数量选项
+   * @default ['5', '10', '20', '30', '40']
+   */
   pageSizeOptions?: Array<string>;
   /**
    * 是否可以改变 pageSize
+   * @default true
    */
   showSizeChanger?: boolean;
+  /**
+   * 只有一页隐藏分页信息
+   * @default true
+   */
   hideOnSinglePage?: boolean;
+  /**
+   * 数据源api
+   */
   getDataApi: GetDataApi;
+  /**
+   * 过滤表单
+   */
   FiltersForm: FiltersFormType;
+  /**
+   * 显示loading的延迟毫秒数
+   * @default 500
+   */
   loadingDelay?: number;
   /**
    * 不论是否成功返回data, 总是渲染显示内容
    */
   alwaysRenderContent?: boolean;
   /**
+   * 不存储状态
+   * @default false
+   */
+  noStore?: boolean;
+  /**
    * 存储在history.state中key, 如果同一个页面有多个SearchPage, 需要避免重复时请指定
    */
   storeKey?: string;
   /**
    * 存储数据使用的history对象, 默认为 top.history
+   * @default top.history
    */
   storeHistory?: History;
   /**
    * 搜索模式, 即时搜索 or 按钮触发
+   * @default SearchMode.TIMELY
    */
   searchMode?: SearchMode;
 }
@@ -67,6 +108,7 @@ const createSearchPage = ({
   getDataApi,
   loadingDelay = 500,
   alwaysRenderContent = false,
+  noStore = false,
   storeKey,
   storeHistory,
   searchMode = SearchMode.TIMELY,
@@ -80,7 +122,7 @@ const createSearchPage = ({
       pageSize,
       defaultMode,
       getDataApi,
-      historyHelper
+      noStore ? undefined : historyHelper,
     );
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
@@ -108,8 +150,7 @@ const createSearchPage = ({
           dispatch={dispatch}
           mode={state.mode}
           filtersDefault={filtersDefault}
-          storeKey={storeKey}
-          storeHistory={storeHistory}
+          historyHelper={noStore ? undefined : historyHelper}
           searchMode={searchMode}
           forceUpdate={forceUpdate}
           loadingCount={state.loadingCount}

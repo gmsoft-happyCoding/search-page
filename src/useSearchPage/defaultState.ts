@@ -18,13 +18,13 @@ export default (
   filtersDefault: any,
   pageSize: number,
   defaultMode: FilterMode,
-  historyHelper: HistoryHelper
+  historyHelper?: HistoryHelper
 ) => ({
-  filters: merge({}, wrap(filtersDefault), historyHelper.getValue('filters')),
-  pagination: merge({}, pagination, { pageSize }, historyHelper.getValue('pagination')),
+  filters: merge({}, wrap(filtersDefault), historyHelper && historyHelper.getValue('filters')),
+  pagination: merge({}, pagination, { pageSize }, historyHelper && historyHelper.getValue('pagination')),
   data: NO_DATA,
-  total: historyHelper.getValue('total', 0),
-  mode: historyHelper.getValue('mode', defaultMode),
+  total: historyHelper ? historyHelper.getValue('total', 0) : 0,
+  mode: historyHelper ? historyHelper.getValue('mode', defaultMode) : defaultMode,
   // 请求计数器
   loadingCount: 0,
   // 强制刷新的计数器

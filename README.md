@@ -24,6 +24,8 @@ yarn add search-page
 - [x] 支持用户自定义筛选条件
 - [x] 支持手动触发搜索
 - [x] 支持响应式布局(default: { lg: 6, md: 8, sm: 12, xs: 24 })
+- [x] 支持同一页面显示多个实例, 请传递不同的 storeKey 
+- [x] 如果不想"记住"状态, 请传递 noStore = true
 
 ---
 

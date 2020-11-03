@@ -15,9 +15,11 @@ const SearchPage = createSearchPage({
   defaultMode: Mode.Simple,
   getDataApi,
   FiltersForm,
-  storeKey: 'FormWrapperDemo',
+  // storeKey: 'FormWrapperDemo',
+  noStore: true,
   searchMode: SearchMode.TRIGGER,
   hideOnSinglePage: false,
+
 });
 
 const Demo = () => {

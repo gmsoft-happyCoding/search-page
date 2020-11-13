@@ -5788,10 +5788,10 @@ he@1.2.x:
   resolved "https://registry.npm.taobao.org/he/download/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha1-hK5l+n6vsWX922FWauFLrwVmTw8=
 
-history-helper@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npm.taobao.org/history-helper/download/history-helper-1.0.2.tgz?cache=0&sync_timestamp=1567395589257&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhistory-helper%2Fdownload%2Fhistory-helper-1.0.2.tgz#ddde882a657338ff101dbc935fb91a19cf657aac"
-  integrity sha1-3d6IKmVzOP8QHbyTX7kaGc9leqw=
+history-helper@1.0.4:
+  version "1.0.4"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/history-helper/-/history-helper-1.0.4.tgz#828e5949370f5d29b693c24b8df9b922628a1fbe"
+  integrity sha512-V8E+WjFcy3u7pVaVrQbUD3nA7u/INdarwxZLyr0flSB/ENW66ZW3YOU5zpG0KMd/RS2YpAWNXDRki95dq+FFJg==
 
 history@^4.9.0:
   version "4.9.0"

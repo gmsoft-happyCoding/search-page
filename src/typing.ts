@@ -31,7 +31,7 @@ export interface GetDataApi {
 
 export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & WrapperProps & P>;
 
-export interface forceUpdateArgs {
+export interface ForceUpdateArgs {
   filters?: Filters;
   pagination?: Partial<PaginationI>;
 }
@@ -41,7 +41,7 @@ export interface ForceUpdate {
 }
 
 export interface ForceUpdate {
-  (args?: forceUpdateArgs): void;
+  (args?: ForceUpdateArgs): void;
 }
 
 export interface ContentProps<T = any> {

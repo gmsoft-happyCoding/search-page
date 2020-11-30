@@ -12,7 +12,7 @@ import {
   GetDataApi,
   Content,
   FiltersDefault,
-  forceUpdateArgs,
+  ForceUpdateArgs,
   ForceUpdate,
 } from './typing';
 import SearchMode from './enums/SearchMode';
@@ -122,13 +122,13 @@ const createSearchPage = ({
       pageSize,
       defaultMode,
       getDataApi,
-      noStore ? undefined : historyHelper,
+      noStore ? undefined : historyHelper
     );
     const Filters = useMemo(() => createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部
     const forceUpdate: ForceUpdate = useCallback(
-      (args?: forceUpdateArgs) => {
+      (args?: ForceUpdateArgs) => {
         // 更新filters, 页码会跳转到第一页
         if (args && args.filters) {
           return dispatch(actions.storeFilters(wrap(args.filters)));

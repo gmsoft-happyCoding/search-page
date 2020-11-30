@@ -264,7 +264,7 @@ export interface Filters {
   [key: string]: any;
 }
 
-interface forceUpdateArgs {
+interface ForceUpdateArgs {
   filters?: Filters;
   pagination?: Partial<PaginationI>;
 }

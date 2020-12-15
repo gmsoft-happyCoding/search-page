@@ -15,6 +15,12 @@ const SearchPage = createSearchPage({
   getDataApi,
   FiltersForm,
   storeKey: 'HandwrittenFormDemo',
+  paginationProps: {
+    size: 'small',
+    showQuickJumper: false,
+    showSizeChanger: false,
+    showTotal: () => null,
+  },
 });
 
 const Demo = () => {

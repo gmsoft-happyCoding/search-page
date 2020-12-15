@@ -1,5 +1,6 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
 import HistoryHelper from 'history-helper';
+import { PaginationProps } from 'antd/lib/pagination';
 import ContentWrap from './ContentWrap';
 import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
@@ -55,6 +56,10 @@ interface Args {
    */
   hideOnSinglePage?: boolean;
   /**
+   * 自定义分页
+   */
+  paginationProps?: PaginationProps;
+  /**
    * 数据源api
    */
   getDataApi: GetDataApi;
@@ -99,11 +104,12 @@ interface Props {
 const createSearchPage = ({
   filtersDefault = {},
   defaultMode = FilterMode.Simple,
+  noPagination = false,
   pageSize = 10,
   pageSizeOptions = ['5', '10', '20', '30', '40'],
   showSizeChanger = true,
   hideOnSinglePage = true,
-  noPagination = false,
+  paginationProps,
   FiltersForm,
   getDataApi,
   loadingDelay = 500,
@@ -174,6 +180,7 @@ const createSearchPage = ({
             pageSizeOptions={pageSizeOptions}
             dispatch={dispatch}
             total={state.total}
+            paginationProps={paginationProps}
           />
         )}
       </>

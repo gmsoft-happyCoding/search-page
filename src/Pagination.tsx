@@ -1,6 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useMemo, Dispatch, useCallback } from 'react';
 import { Pagination as AntdPagination } from 'antd';
 import styled from 'styled-components';
+import { PaginationProps } from 'antd/lib/pagination';
 import actions from './useSearchPage/actions';
 import { PaginationI } from './typing';
 
@@ -30,6 +32,7 @@ interface OwnProps {
   pageSizeOptions: Array<string>;
   hideOnSinglePage: boolean;
   showSizeChanger: boolean;
+  paginationProps?: PaginationProps;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -41,6 +44,7 @@ function Pagination({
   pageSizeOptions,
   hideOnSinglePage,
   showSizeChanger,
+  paginationProps,
 }: Props) {
   const showTotal = useMemo(() => createsShowTotal(pagination.pageSize), [pagination.pageSize]);
 
@@ -96,6 +100,7 @@ function Pagination({
       total={total}
       onChange={onPageChange}
       onShowSizeChange={onShowSizeChange}
+      {...paginationProps}
     />
   );
 }

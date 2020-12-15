@@ -1,4 +1,4 @@
-import { LocaleProvider } from 'antd';
+import { LocaleProvider, Divider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import React from 'react';
 import { Router } from 'react-router-dom';
@@ -16,7 +16,9 @@ const App = () => (
       <Router history={stateContainer._history}>
         <>
           <BuildFiltersFormDemo />
+          <Divider type="horizontal" />
           <FormWrapperDemo />
+          <Divider type="horizontal" />
           <HandwrittenFormDemo />
         </>
       </Router>

@@ -66,7 +66,7 @@ interface Args {
   /**
    * 过滤表单
    */
-  FiltersForm: FiltersFormType;
+  FiltersForm?: FiltersFormType;
   /**
    * 显示loading的延迟毫秒数
    * @default 500
@@ -130,7 +130,7 @@ const createSearchPage = ({
       getDataApi,
       noStore ? undefined : historyHelper
     );
-    const Filters = useMemo(() => createFilters(FiltersForm), []);
+    const Filters = useMemo(() => FiltersForm && createFilters(FiltersForm), []);
 
     // 强制刷新, 通过 ref 和 children render props 暴露给外部
     const forceUpdate: ForceUpdate = useCallback(
@@ -151,16 +151,18 @@ const createSearchPage = ({
 
     return (
       <>
-        <Filters
-          filters={state.filters}
-          dispatch={dispatch}
-          mode={state.mode}
-          filtersDefault={filtersDefault}
-          historyHelper={noStore ? undefined : historyHelper}
-          searchMode={searchMode}
-          forceUpdate={forceUpdate}
-          loadingCount={state.loadingCount}
-        />
+        {Filters && (
+          <Filters
+            filters={state.filters}
+            dispatch={dispatch}
+            mode={state.mode}
+            filtersDefault={filtersDefault}
+            historyHelper={noStore ? undefined : historyHelper}
+            searchMode={searchMode}
+            forceUpdate={forceUpdate}
+            loadingCount={state.loadingCount}
+          />
+        )}
         <ContentWrap
           data={state.data}
           loadingCount={state.loadingCount}

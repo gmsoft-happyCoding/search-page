@@ -1,3 +1,10 @@
+/*
+ * @Author: Gmsoft - WeiHong Ran
+ * @Date: 2021-05-11 22:18:24
+ * @LastEditors: Gmsoft - WeiHong Ran
+ * @LastEditTime: 2021-05-11 22:19:26
+ * @Description: Nothing
+ */
 import { LocaleProvider, Divider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import React from 'react';
@@ -25,7 +32,7 @@ const App = () => (
     </Provider>
   </LocaleProvider>
 );
-
+// Nothing
 export default App;
 
 // @ts-ignore

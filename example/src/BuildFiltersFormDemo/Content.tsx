@@ -12,12 +12,14 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-const Content = ({ data, forceUpdate, loading, filters, pagination }: ContentProps) => {
+const Content = ({ data, total, forceUpdate, loading, filters, pagination }: ContentProps) => {
   const update = useCallback(() => forceUpdate({ pagination: { current: 3 } }), [forceUpdate]);
 
   return (
     <Wrap>
       data: {JSON.stringify(data)}
+      <br />
+      total: {total}
       <br />
       filters: {JSON.stringify(filters)}
       <a style={{ float: 'right' }} onClick={update}>

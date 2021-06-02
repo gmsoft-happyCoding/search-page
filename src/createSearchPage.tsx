@@ -165,6 +165,7 @@ const createSearchPage = ({
         )}
         <ContentWrap
           data={state.data}
+          total={state.total}
           loadingCount={state.loadingCount}
           filters={state.filters}
           pagination={state.pagination}

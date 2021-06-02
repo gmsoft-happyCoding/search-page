@@ -46,6 +46,7 @@ export interface ForceUpdate {
 
 export interface ContentProps<T = any> {
   data: T;
+  total: number;
   forceUpdate: ForceUpdate;
   loading: boolean;
   filters: Filters;

@@ -7,6 +7,7 @@ import { NO_DATA } from './useSearchPage/defaultState';
 type Props = {
   children?: Content;
   data: any;
+  total: number;
   filters: Fields;
   pagination: PaginationI;
   loadingCount: number;
@@ -18,6 +19,7 @@ type Props = {
 const ContentWrap = ({
   children,
   data,
+  total,
   filters,
   pagination,
   loadingCount,
@@ -35,6 +37,7 @@ const ContentWrap = ({
         ) : (
           <ContentComponent
             data={data}
+            total={total}
             forceUpdate={forceUpdate}
             loading={loadingCount !== 0}
             filters={memoFilters}

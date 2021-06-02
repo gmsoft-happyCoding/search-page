@@ -16,7 +16,7 @@ const Demo = () => {
       resolve => setTimeout(resolve, Math.max(5000 - get(filters, 'orgName.length', 0) * 500), 0)
       // eslint-disable-next-line function-paren-newline
     );
-    const result = await Promise.resolve({ data: { filters, pagination }, total: 1 });
+    const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
     return result;
   };
 

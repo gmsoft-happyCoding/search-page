@@ -20,7 +20,7 @@
     "dva": "^2.4.1",
     "history": "^4.7.2",
     "immer": "1.8.0",
-    "lodash": "4.17.13",
+    "lodash": "4.17.19",
     "moment": "2.22.2",
     "ramda": "^0.26.1",
     "react": "link:../node_modules/react",

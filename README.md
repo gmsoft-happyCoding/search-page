@@ -244,6 +244,7 @@ export default FiltersForm;
 2. 列宽只能指定具体像素，**不能使用百分比**，插件实现问题
 3. 列宽数据存储行为与 Filter 条件一致
 4. dispatch、tableWidthConfs、storeKey 均为 SearchPage 内部属性，使用时可以直接透传 props 进行简写
+5. **最右侧**配置列的 **width 请留空**，不要写
 
 ```tsx
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
@@ -268,6 +269,7 @@ export default ({ data, forceUpdate, dispatch, tableWidthConfs, storeKey }: Cont
       width: 100,
     },
     {
+      // 所有配置列中，请保持有一个配置列的width不配置，否则会导致拖动自适应出现问题
       title: 'operate',
       key: 'operate',
       dataIndex: 'operate',

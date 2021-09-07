@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, Dispatch } from 'react';
 import { Spin, Empty } from 'antd';
 import { Content, PaginationI } from './typing';
 import fieldHelper, { Fields } from './utils/fieldHelper';
@@ -14,6 +14,9 @@ type Props = {
   loadingDelay: number;
   forceUpdate: () => void;
   alwaysRenderContent?: boolean;
+  dispatch: Dispatch<any>;
+  tableWidthConfs: { key: string; width: number }[];
+  storeKey?: string;
 };
 
 const ContentWrap = ({
@@ -26,6 +29,9 @@ const ContentWrap = ({
   loadingDelay,
   forceUpdate,
   alwaysRenderContent,
+  dispatch,
+  tableWidthConfs,
+  storeKey,
 }: Props) => {
   const memoFilters = useMemo(() => fieldHelper.unwrap(filters), [filters]);
   if (children) {
@@ -42,6 +48,9 @@ const ContentWrap = ({
             loading={loadingCount !== 0}
             filters={memoFilters}
             pagination={pagination}
+            dispatch={dispatch}
+            tableWidthConfs={tableWidthConfs}
+            storeKey={storeKey}
           />
         )}
       </Spin>

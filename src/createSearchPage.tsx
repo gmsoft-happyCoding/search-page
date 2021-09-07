@@ -166,12 +166,15 @@ const createSearchPage = ({
         <ContentWrap
           data={state.data}
           total={state.total}
+          tableWidthConfs={state.tableWidthConfs}
           loadingCount={state.loadingCount}
           filters={state.filters}
           pagination={state.pagination}
           loadingDelay={loadingDelay}
           forceUpdate={forceUpdate}
           alwaysRenderContent={alwaysRenderContent}
+          dispatch={dispatch}
+          storeKey={storeKey}
         >
           {children}
         </ContentWrap>

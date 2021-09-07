@@ -1,3 +1,6 @@
+import { pick } from 'lodash';
+import HistoryHelper from 'history-helper';
+import { map, omit } from 'ramda';
 import { Types } from './actions';
 import FilterMode from '../enums/FilterMode';
 
@@ -49,6 +52,20 @@ export default (state, { type, payload }) => {
     }
     case Types.forceUpdate: {
       return { ...state, forceUpdate: state.forceUpdate + 1 };
+    }
+    case Types.storeTableWidth: {
+      const { nextColumns, storeKey } = payload;
+      if (storeKey) {
+        const historyHelper = new HistoryHelper(storeKey);
+        historyHelper.setState({
+          ...pick(state, ['filters', 'pagination', 'total', 'mode']),
+          tableWidthConfs: map(omit(['__init']))(nextColumns),
+        });
+      }
+      return { ...state, tableWidthConfs: nextColumns };
+    }
+    case Types.removeTableWidth: {
+      return { ...state, tableWidthConfs: [] };
     }
   }
 };

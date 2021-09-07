@@ -1,6 +1,7 @@
 /* eslint-disable import/export */
 import { FormComponentProps } from 'antd/lib/form';
 import { WrapperProps } from './filters/FormWapper';
+import { Dispatch } from 'react';
 
 export interface PaginationI {
   current: number;
@@ -51,6 +52,9 @@ export interface ContentProps<T = any> {
   loading: boolean;
   filters: Filters;
   pagination: PaginationI;
+  dispatch: Dispatch<any>;
+  tableWidthConfs: { key: string; width: number }[];
+  storeKey?: string;
 }
 
 export type Content = React.ComponentType<ContentProps>;

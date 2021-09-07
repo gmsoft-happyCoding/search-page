@@ -9,12 +9,12 @@ import { LocaleProvider, Divider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import React from 'react';
 import { Router } from 'react-router-dom';
-// import { hot, setConfig } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { stateContainer } from './utils';
 import BuildFiltersFormDemo from './BuildFiltersFormDemo';
 import FormWrapperDemo from './FormWrapperDemo';
 import HandwrittenFormDemo from './HandwrittenFormDemo';
+import CustomWidthDemo from './CustomWidthDemo';
 import 'antd/dist/antd.css';
 
 const App = () => (
@@ -22,11 +22,14 @@ const App = () => (
     <Provider store={stateContainer._store}>
       <Router history={stateContainer._history}>
         <>
+          <Divider type="horizontal">CustomWidthDemo</Divider>
+          <CustomWidthDemo />
+          {/* <Divider type="horizontal">BuildFiltersFormDemo</Divider>
           <BuildFiltersFormDemo />
-          <Divider type="horizontal" />
+          <Divider type="horizontal">FormWrapperDemo</Divider>
           <FormWrapperDemo />
-          <Divider type="horizontal" />
-          <HandwrittenFormDemo />
+          <Divider type="horizontal">HandwrittenFormDemo</Divider>
+          <HandwrittenFormDemo /> */}
         </>
       </Router>
     </Provider>

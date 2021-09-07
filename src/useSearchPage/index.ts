@@ -19,7 +19,8 @@ export default (
   pageSize: number,
   defaultMode: FiliterMode,
   getDataApi: GetDataApi,
-  historyHelper?: HistoryHelper) => {
+  historyHelper?: HistoryHelper
+) => {
   const [state, dispatch] = useReducer(reducer, undefined, () =>
     defaultState(filtersDefault, pageSize, defaultMode, historyHelper)
   );
@@ -52,6 +53,7 @@ export default (
                 pagination: storePagination,
                 total: data.total,
                 mode: storeMode,
+                tableWidthConfs: state.tableWidthConfs,
               });
             }
           })

@@ -10,11 +10,11 @@
 yarn add search-page
 ```
 
-## screenshot
+## Sreenshot
 
 ![[example/screenshot.png]](https://raw.githubusercontent.com/gmsoft-happyCoding/search-page/master/example/screenshot.png)
 
-## features
+## Features
 
 - [x] 自动记住页面状态，刷新或 history.back()，不会丢失页面状态
 - [x] 数据请求自动节流，阈值 500ms
@@ -24,113 +24,117 @@ yarn add search-page
 - [x] 支持用户自定义筛选条件
 - [x] 支持手动触发搜索
 - [x] 支持响应式布局(default: { lg: 6, md: 8, sm: 12, xs: 24 })
-- [x] 支持同一页面显示多个实例, 请传递不同的 storeKey 
+- [x] 支持同一页面显示多个实例, 请传递不同的 storeKey
 - [x] 如果不想"记住"状态, 请传递 noStore = true
+- [x] 支持用户侧表头自定义宽度（不支持百分比设置，react-resizable 的属性缺陷，可以持续关注）（）
 
 ---
 
 ## Usage
 
-#### Demo.tsx
+### 一般性场景（简单使用）
 
-```tsx
-import React, { useRef, useCallback } from 'react';
-import createSearchPage, { GetDataApi } from 'search-page';
-import { Button } from 'antd';
-import FiltersForm from './FiltersForm';
-import Content from './Content';
+<details>
+  <summary>Demo.tsx</summary>
+  <pre>
+  import React, { useRef, useCallback } from &#x27;react&#x27;;
+  import createSearchPage, { GetDataApi } from &#x27;search-page&#x27;;
+  import { Button } from &#x27;antd&#x27;;
+  import FiltersForm from &#x27;./FiltersForm&#x27;;
+  import Content from &#x27;./Content&#x27;;
 
-const getDataApi: GetDataApi = async (filters, pagination) => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
-  return result;
+const getDataApi: GetDataApi = async (filters, pagination) =&gt; {
+await new Promise(resolve =&gt; setTimeout(resolve, 1000));
+const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
+return result;
 };
 
 const SearchPage = createSearchPage({
-  filtersDefault: { orgName: 'gmsoft' },
-  pageSize: 40,
-  noPagination: false,
-  getDataApi,
-  FiltersForm,
+filtersDefault: { orgName: &#x27;gmsoft&#x27; },
+pageSize: 40,
+noPagination: false,
+getDataApi,
+FiltersForm,
 });
 
-const Demo = () => {
-  const searchPageRef = useRef({ forceUpdate: () => undefined });
-  const forceUpdate = useCallback(() => {
-    searchPageRef.current.forceUpdate();
-  }, []);
-  return (
-    <div style={{ padding: 16 }}>
-      <SearchPage ref={searchPageRef}>{Content}</SearchPage>
-      <Button onClick={forceUpdate}>强制刷新</Button>
-    </div>
-  );
+const Demo = () =&gt; {
+const searchPageRef = useRef({ forceUpdate: () =&gt; undefined });
+const forceUpdate = useCallback(() =&gt; {
+searchPageRef.current.forceUpdate();
+}, []);
+return (
+&lt;div style={{ padding: 16 }}&gt;
+&lt;SearchPage ref={searchPageRef}&gt;{Content}&lt;/SearchPage&gt;
+&lt;Button onClick={forceUpdate}&gt;强制刷新&lt;/Button&gt;
+&lt;/div&gt;
+);
 };
 
 export default Demo;
-```
 
----
+  </pre>
+</details>
+<details>
+<summary>Content.tsx</summary>
+<pre>
+import React from &#x27;react&#x27;;
+import styled from &#x27;styled-components&#x27;;
+import { ContentProps } from &#x27;search-page&#x27;;
 
-#### Content.tsx
+const Wrap = styled.div&#x60;
+padding: 16px;
+border: 2px solid purple;
+background-color: #8000802e;
+color: purple;
+&#x60;;
 
-```tsx
-import React from 'react';
-import styled from 'styled-components';
-import { ContentProps } from 'search-page';
-
-const Wrap = styled.div`
-  padding: 16px;
-  border: 2px solid purple;
-  background-color: #8000802e;
-  color: purple;
-`;
-
-const Content = ({ data, forceUpdate, loading, filters }: ContentProps) => (
-  <Wrap>
-    data: {JSON.stringify(data)}
-    <br />
-    filters: {JSON.stringify(filters)}
-    <a style={{ float: 'right' }} onClick={forceUpdate}>
-      强制刷新
-    </a>
-  </Wrap>
+const Content = ({ data, forceUpdate, loading, filters }: ContentProps) =&gt; (
+&lt;Wrap&gt;
+data: {JSON.stringify(data)}
+&lt;br /&gt;
+filters: {JSON.stringify(filters)}
+&lt;a style={{ float: &#x27;right&#x27; }} onClick={forceUpdate}&gt;
+强制刷新
+&lt;/a&gt;
+&lt;/Wrap&gt;
 );
-
 export default Content;
-```
 
----
+</pre>
+</details>
 
-#### FiltersForm.tsx (使用 buildFiltersForm)
-
-```tsx
+</details>
+<details>
+<summary>FiltersForm.tsx (使用 buildFiltersForm)</summary>
+<pre>
 /**
  * buildFiltersForm 目前只支持 input 类型
  * 如果搜索条件复杂, 请使用FormWrapper
  */
-import { buildFiltersForm, Fields } from 'search-page';
+import { buildFiltersForm, Fields } from &#x27;search-page&#x27;;
 
 const fields: Fields = {
-  orgName: { type: 'input', label: '单位名称' },
-  orgCode1: { type: 'input', label: '组织机构代码1' },
-  orgCode2: { type: 'input', label: '组织机构代码2' },
-  orgCode3: { type: 'input', label: '组织机构代码3' },
-  orgCode4: { type: 'input', label: '组织机构代码4' },
+orgName: { type: &#x27;input&#x27;, label: &#x27;单位名称&#x27; },
+orgCode1: { type: &#x27;input&#x27;, label: &#x27;组织机构代码 1&#x27; },
+orgCode2: { type: &#x27;input&#x27;, label: &#x27;组织机构代码 2&#x27; },
+orgCode3: { type: &#x27;input&#x27;, label: &#x27;组织机构代码 3&#x27; },
+orgCode4: { type: &#x27;input&#x27;, label: &#x27;组织机构代码 4&#x27; },
 };
 
 export default buildFiltersForm(fields, {
-  // 可选，是否需要重置操作
-  needReset: true,
-  // 精简模式配置
-  simpleMode: {
-    enable: true,
-    count: 2,
-    // count 优先级高于 rows
-    // row: 1
-  },
+// 可选，是否需要重置操作
+needReset: true,
+// 精简模式配置
+simpleMode: {
+enable: true,
+count: 2,
+// count 优先级高于 rows
+// row: 1
+},
 });
-```
+
+</pre>
+</details>
 
 ---
 
@@ -230,6 +234,76 @@ const FiltersForm = ({ form }: FormComponentProps) => {
 };
 
 export default FiltersForm;
+```
+
+### 配置用户侧自定义表头列宽度（Content.tsx）
+
+**注意事项：**
+
+1. Table 列配置只能使用 Confs 数组配置模式，不能使用 Jsx 模式
+2. 列宽只能指定具体像素，**不能使用百分比**，插件实现问题
+3. 列宽数据存储行为与 Filter 条件一致
+4. dispatch、tableWidthConfs、storeKey 均为 SearchPage 内部属性，使用时可以直接透传 props 进行简写
+
+```tsx
+import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
+import styled from 'styled-components';
+import { ContentProps, ResizeableTitle, getColumnConfs } from 'search-page';
+import { Table, Button } from 'antd';
+
+const Wrap = styled.div`
+  padding: 16px;
+  border: 2px solid purple;
+`;
+
+const components = { header: { cell: ResizeableTitle } };
+
+export default ({ data, forceUpdate, dispatch, tableWidthConfs, storeKey }: ContentProps) => {
+  const tableRef = useRef<any>();
+  const [columnConfs, setColumnConfs] = useState([
+    {
+      title: 'id',
+      key: 'id',
+      dataIndex: 'id',
+      width: 100,
+    },
+    {
+      title: 'operate',
+      key: 'operate',
+      dataIndex: 'operate',
+    },
+  ]);
+
+  const renderColumnsConf = useMemo(
+    () =>
+      getColumnConfs({
+        columnConfs,
+        setConfs: setColumnConfs,
+        dispatch,
+        tableWidthConfs,
+        storeKey,
+      }),
+    [columnConfs, dispatch, storeKey, tableWidthConfs]
+  );
+
+  return (
+    <Wrap>
+      <Table
+        ref={tableRef}
+        rowKey="id"
+        dataSource={data.data}
+        columns={renderColumnsConf}
+        pagination={false}
+        components={components}
+        size="small"
+      />
+      {JSON.stringify(data)}
+      <Button style={{ float: 'right' }} type="link" onClick={forceUpdate}>
+        强制刷新
+      </Button>
+    </Wrap>
+  );
+};
 ```
 
 ---

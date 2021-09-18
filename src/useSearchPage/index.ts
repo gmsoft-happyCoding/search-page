@@ -1,4 +1,5 @@
 /* eslint-disable function-paren-newline */
+import { SWRConfiguration } from 'swr';
 import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { debounce } from 'lodash';
 import HistoryHelper from 'history-helper';
@@ -9,6 +10,7 @@ import { fieldHelper, makeCancelable } from '../utils';
 import SearchMode from '../enums/SearchMode';
 import { FiltersDefault, GetDataApi } from '../typing';
 import FiliterMode from '../enums/FilterMode';
+import { useSwrRequest } from '../utils/useSwrRequest';
 
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
@@ -19,7 +21,8 @@ export default (
   pageSize: number,
   defaultMode: FiliterMode,
   getDataApi: GetDataApi,
-  historyHelper?: HistoryHelper
+  historyHelper?: HistoryHelper,
+  swrOpt?: SWRConfiguration
 ) => {
   const [state, dispatch] = useReducer(reducer, undefined, () =>
     defaultState(filtersDefault, pageSize, defaultMode, historyHelper)
@@ -31,18 +34,21 @@ export default (
   const debouncedGetDataApi = useCallback(
     debounce(
       (storeFilters, storePagination, storeMode) => {
+        console.log('getDateApi run');
+
         // 取消之前发起的promise, 避免因为响应顺序引起的乱序
         if (cancelablePromise.current && cancelablePromise.current.cancel) {
           cancelablePromise.current.cancel();
         }
         // 请求发起, 计数+1
         dispatch(actions.loadingCount('+'));
+
         // 请求数据
         cancelablePromise.current = makeCancelable(
           getDataApi(fieldHelper.unwrap(storeFilters), storePagination)
         );
 
-        cancelablePromise.current.promise
+        return cancelablePromise.current.promise
           .then(data => {
             // 保存数据(包括total)
             dispatch(actions.storeData(data));
@@ -78,6 +84,15 @@ export default (
     ),
     [getDataApi]
   );
+
+  useSwrRequest({
+    fetcher: debouncedGetDataApi,
+    swrOpt,
+    params: {
+      filter: state.filters,
+      pagination: state.pagination,
+    },
+  });
 
   /**
    * 即时模式, 筛选条件, 分页, 显示模式改变时加载数据

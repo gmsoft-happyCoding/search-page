@@ -30,6 +30,10 @@ const SearchPage = createSearchPage({
   storeKey: 'CustomWidthDemo',
   searchMode: SearchMode.TRIGGER,
   hideOnSinglePage: false,
+  // 关闭聚焦重新请求
+  // swrConfiguration: { revalidateOnFocus: false },
+  // 启用5秒定时轮询
+  // swrConfiguration: { refreshInterval: 5000 },
 });
 
 const Demo = () => {

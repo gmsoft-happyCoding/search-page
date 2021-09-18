@@ -1,4 +1,5 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
+import { SWRConfiguration, SWRConfig } from 'swr';
 import HistoryHelper from 'history-helper';
 import { PaginationProps } from 'antd/lib/pagination';
 import ContentWrap from './ContentWrap';
@@ -95,6 +96,7 @@ interface Args {
    * @default SearchMode.TIMELY
    */
   searchMode?: SearchMode;
+  swrConfiguration?: SWRConfiguration;
 }
 
 interface Props {
@@ -118,6 +120,7 @@ const createSearchPage = ({
   storeKey,
   storeHistory,
   searchMode = SearchMode.TIMELY,
+  swrConfiguration = {},
 }: Args) => {
   const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
@@ -128,7 +131,8 @@ const createSearchPage = ({
       pageSize,
       defaultMode,
       getDataApi,
-      noStore ? undefined : historyHelper
+      noStore ? undefined : historyHelper,
+      swrConfiguration
     );
     const Filters = useMemo(() => FiltersForm && createFilters(FiltersForm), []);
 
@@ -150,7 +154,12 @@ const createSearchPage = ({
     if (ref) ref.current = { forceUpdate };
 
     return (
-      <>
+      <SWRConfig
+        value={{
+          // 错误重试次数
+          errorRetryCount: 3,
+        }}
+      >
         {Filters && (
           <Filters
             filters={state.filters}
@@ -189,7 +198,7 @@ const createSearchPage = ({
             paginationProps={paginationProps}
           />
         )}
-      </>
+      </SWRConfig>
     );
   };
 

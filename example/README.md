@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [可用的脚本](#%E5%8F%AF%E7%94%A8%E7%9A%84%E8%84%9A%E6%9C%AC)
+  - [`yarn start`](#yarn-start)
+  - [`yarn test`](#yarn-test)
+  - [`yarn run docz:dev`](#yarn-run-doczdev)
+  - [`yarn run bad`](#yarn-run-bad)
+  - [`yarn gen:api`](#yarn-genapi)
+- [路径别名](#%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D)
+- [其他](#%E5%85%B6%E4%BB%96)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 这项目使用 [stormrage](https://github.com/gmsoft-happyCoding/stormrage) 初始化
 
 ## 可用的脚本

@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "history-helper": "1.0.4",
-    "react-resizable": "^3.0.4"
+    "react-resizable": "^3.0.4",
+    "swr": "^1.0.1"
   },
   "peerDependencies": {
     "antd": "^3.19.2",

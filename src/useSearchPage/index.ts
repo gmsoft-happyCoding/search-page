@@ -34,8 +34,6 @@ export default (
   const debouncedGetDataApi = useCallback(
     debounce(
       (storeFilters, storePagination, storeMode) => {
-        console.log('getDateApi run');
-
         // 取消之前发起的promise, 避免因为响应顺序引起的乱序
         if (cancelablePromise.current && cancelablePromise.current.cancel) {
           cancelablePromise.current.cancel();
@@ -47,7 +45,6 @@ export default (
         cancelablePromise.current = makeCancelable(
           getDataApi(fieldHelper.unwrap(storeFilters), storePagination)
         );
-
         return cancelablePromise.current.promise
           .then(data => {
             // 保存数据(包括total)

@@ -14,7 +14,7 @@ export function useSwrRequest({ fetcher, swrOpt = {}, params }: SwrRequestProps)
   const forceUpdate = useCallback(() => setForceUpdateKey(forceUpdateKey + 1), [forceUpdateKey]);
 
   const { data, error } = useSWR(
-    [`/${forceUpdateKey}`, JSON.stringify(params)],
+    [`/${forceUpdateKey}`],
     () => fetcher(get(params, 'filter'), get(params, 'pagination')),
     swrOpt
   );

@@ -50,7 +50,7 @@ yarn add search-page
 - [x] 支持响应式布局(default: { lg: 6, md: 8, sm: 12, xs: 24 })
 - [x] 支持同一页面显示多个实例, 请传递不同的 storeKey
 - [x] 如果不想"记住"状态, 请传递 noStore = true
-- [x] 支持用户侧表头自定义宽度（不支持百分比设置，react-resizable 的属性缺陷，可以持续关注）（）
+- [x] 支持用户侧表头自定义宽度（不支持百分比设置，react-resizable 的属性缺陷，可以持续关注）
 - [x] 加入聚焦自动刷新，页面数据能在页签聚焦时自动刷新
 
 ---

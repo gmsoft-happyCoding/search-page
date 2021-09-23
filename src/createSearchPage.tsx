@@ -1,5 +1,4 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
-import { SWRConfiguration, SWRConfig } from 'swr';
 import HistoryHelper from 'history-helper';
 import { PaginationProps } from 'antd/lib/pagination';
 import ContentWrap from './ContentWrap';
@@ -16,6 +15,7 @@ import {
   FiltersDefault,
   ForceUpdateArgs,
   ForceUpdate,
+  RefreshOpt,
 } from './typing';
 import SearchMode from './enums/SearchMode';
 
@@ -96,7 +96,8 @@ interface Args {
    * @default SearchMode.TIMELY
    */
   searchMode?: SearchMode;
-  swrConfiguration?: SWRConfiguration;
+  /** 页签切换时自动刷新机制 */
+  autoRefresh?: RefreshOpt;
 }
 
 interface Props {
@@ -120,7 +121,7 @@ const createSearchPage = ({
   storeKey,
   storeHistory,
   searchMode = SearchMode.TIMELY,
-  swrConfiguration = {},
+  autoRefresh = { enable: true, interval: 3000 },
 }: Args) => {
   const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
@@ -131,8 +132,8 @@ const createSearchPage = ({
       pageSize,
       defaultMode,
       getDataApi,
-      noStore ? undefined : historyHelper,
-      swrConfiguration
+      autoRefresh,
+      noStore ? undefined : historyHelper
     );
     const Filters = useMemo(() => FiltersForm && createFilters(FiltersForm), []);
 
@@ -154,12 +155,7 @@ const createSearchPage = ({
     if (ref) ref.current = { forceUpdate };
 
     return (
-      <SWRConfig
-        value={{
-          // 错误重试次数
-          errorRetryCount: 3,
-        }}
-      >
+      <>
         {Filters && (
           <Filters
             filters={state.filters}
@@ -198,7 +194,7 @@ const createSearchPage = ({
             paginationProps={paginationProps}
           />
         )}
-      </SWRConfig>
+      </>
     );
   };
 

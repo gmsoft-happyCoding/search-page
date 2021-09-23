@@ -72,3 +72,10 @@ export interface FieldConfig {
 export interface Fields {
   [key: string]: FieldConfig;
 }
+
+export interface RefreshOpt {
+  /** 只要没有显示传递false，都默认true */
+  enable?: boolean;
+  /** 切换刷新的间隔时间，间隔时间内切换页签不会进行刷新 */
+  interval?: number;
+}

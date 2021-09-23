@@ -1,5 +1,4 @@
 /* eslint-disable function-paren-newline */
-import { SWRConfiguration } from 'swr';
 import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { debounce } from 'lodash';
 import HistoryHelper from 'history-helper';
@@ -8,9 +7,9 @@ import actions from './actions';
 import reducer from './reducer';
 import { fieldHelper, makeCancelable } from '../utils';
 import SearchMode from '../enums/SearchMode';
-import { FiltersDefault, GetDataApi } from '../typing';
+import { FiltersDefault, GetDataApi, RefreshOpt } from '../typing';
 import FiliterMode from '../enums/FilterMode';
-import { useSwrRequest } from '../utils/useSwrRequest';
+import { useAutoRefresh } from '../utils/useAutoRefresh.hook';
 
 // 节流函数阈值
 const DEBOUNCE_WAIT = 500;
@@ -21,8 +20,8 @@ export default (
   pageSize: number,
   defaultMode: FiliterMode,
   getDataApi: GetDataApi,
-  historyHelper?: HistoryHelper,
-  swrOpt?: SWRConfiguration
+  refreshOpt: RefreshOpt,
+  historyHelper?: HistoryHelper
 ) => {
   const [state, dispatch] = useReducer(reducer, undefined, () =>
     defaultState(filtersDefault, pageSize, defaultMode, historyHelper)
@@ -82,14 +81,10 @@ export default (
     [getDataApi]
   );
 
-  useSwrRequest({
-    fetcher: debouncedGetDataApi,
-    swrOpt,
-    params: {
-      filter: state.filters,
-      pagination: state.pagination,
-    },
-  });
+  useAutoRefresh(
+    () => debouncedGetDataApi(state.filters, state.pagination, state.mode),
+    refreshOpt
+  );
 
   /**
    * 即时模式, 筛选条件, 分页, 显示模式改变时加载数据

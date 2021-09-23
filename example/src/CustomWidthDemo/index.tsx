@@ -2,11 +2,18 @@ import React, { useRef, useCallback } from 'react';
 import createSearchPage, { GetDataApi, Mode, SearchMode } from 'search-page';
 import { Button } from 'antd';
 import { repeat } from 'lodash';
+import Axios from 'axios';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
 
 const getDataApi: GetDataApi = async (filters, pagination) => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  const {
+    data,
+  } = await Axios.get(
+    'http://easy-mock.gm/mock/5ecf521686d71f0b2fed836a/test/yw-gateway/zcjstockexe/flow-uis',
+    { params: filters }
+  );
+  await new Promise(resolve => setTimeout(resolve, 0));
   const result = await Promise.resolve({
     data: {
       data: repeat('*', 5)
@@ -30,10 +37,7 @@ const SearchPage = createSearchPage({
   storeKey: 'CustomWidthDemo',
   searchMode: SearchMode.TRIGGER,
   hideOnSinglePage: false,
-  // 关闭聚焦重新请求
-  // swrConfiguration: { revalidateOnFocus: false },
-  // 启用5秒定时轮询
-  // swrConfiguration: { refreshInterval: 5000 },
+  autoRefresh: { enable: false },
 });
 
 const Demo = () => {

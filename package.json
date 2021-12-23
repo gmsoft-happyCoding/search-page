@@ -9,6 +9,7 @@
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "engines": {
@@ -78,9 +79,6 @@
     "rollup-plugin-url": "^1.4.0",
     "styled-components": "^4.2.0",
     "typescript": "3.5.1"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "files": [
     "dist"

@@ -1,7 +1,7 @@
 import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { fieldHelper } from '../utils';
-import { WrapperProps } from './FormWapper';
+import { WrapperProps } from './FormWrapper';
 import { FiltersFormType } from '../typing';
 import actions from '../useSearchPage/actions';
 

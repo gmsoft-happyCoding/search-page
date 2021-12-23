@@ -1,7 +1,7 @@
 /* eslint-disable import/export */
 import { FormComponentProps } from 'antd/lib/form';
-import { WrapperProps } from './filters/FormWapper';
 import { Dispatch } from 'react';
+import { WrapperProps } from './filters/FormWrapper';
 
 export interface PaginationI {
   current: number;

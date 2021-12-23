@@ -1,8 +1,8 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable function-paren-newline */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, Dispatch, useMemo, useEffect, useState, CSSProperties } from 'react';
 import { Form, Row, Col, Icon, Divider, Button, Tooltip } from 'antd';
 import styled from 'styled-components';
@@ -113,7 +113,7 @@ export interface WrapperProps {
   /**
    * createSeachPage 传递过来的持久化帮助类
    */
-  historyHelper?: HistoryHelper
+  historyHelper?: HistoryHelper;
   /**
    * 定制化筛选条件
    */

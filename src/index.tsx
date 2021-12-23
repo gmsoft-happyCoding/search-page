@@ -1,7 +1,7 @@
 import createSearchPage from './createSearchPage';
 import buildFiltersForm from './filters/buildFiltersForm';
-import FormWrapper from './filters/FormWapper';
-import FiliterMode from './enums/FilterMode';
+import FormWrapper from './filters/FormWrapper';
+import FilterMode from './enums/FilterMode';
 import SearchMode from './enums/SearchMode';
 import { NO_DATA } from './useSearchPage/defaultState';
 import ResizeableTitle, { getColumnConfs } from './components/ResizeableTitle';
@@ -13,7 +13,7 @@ export * from './typing';
 export {
   buildFiltersForm,
   FormWrapper,
-  FiliterMode as Mode,
+  FilterMode as Mode,
   SearchMode,
   NO_DATA,
   ResizeableTitle,

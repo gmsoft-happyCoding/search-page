@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { map } from 'lodash';
 import { Fields, FieldConfig, FiltersFormType } from '../typing';
-import FormWapper, { WrapperProps } from './FormWapper';
+import FormWrapper, { WrapperProps } from './FormWrapper';
 
 type Options = Omit<
   WrapperProps,
@@ -37,9 +37,9 @@ export default (fields: Fields, options: Options) => {
     );
 
     return (
-      <FormWapper {...options} {...props}>
+      <FormWrapper {...options} {...props}>
         {getFields()}
-      </FormWapper>
+      </FormWrapper>
     );
   };
 

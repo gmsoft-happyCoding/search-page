@@ -24,12 +24,12 @@ const App = () => (
         <>
           <Divider type="horizontal">CustomWidthDemo</Divider>
           <CustomWidthDemo />
-          {/* <Divider type="horizontal">BuildFiltersFormDemo</Divider>
+          <Divider type="horizontal">BuildFiltersFormDemo</Divider>
           <BuildFiltersFormDemo />
           <Divider type="horizontal">FormWrapperDemo</Divider>
           <FormWrapperDemo />
           <Divider type="horizontal">HandwrittenFormDemo</Divider>
-          <HandwrittenFormDemo /> */}
+          <HandwrittenFormDemo />
         </>
       </Router>
     </Provider>

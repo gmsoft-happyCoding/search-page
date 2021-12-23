@@ -62,19 +62,19 @@ function Pagination({
       /**
        * 当前页(分页改变之前)第一条数据的索引
        */
-      const preFristIndex = (prePage - 1) * prePageSize + 1;
+      const preFirstIndex = (prePage - 1) * prePageSize + 1;
 
       switch (true) {
-        case preFristIndex > pageSize:
+        case preFirstIndex > pageSize:
           dispatch(
             actions.storePagination({
-              current: Math.ceil(preFristIndex / pageSize),
+              current: Math.ceil(preFirstIndex / pageSize),
               pageSize,
             })
           );
           break;
         default:
-          // 包含 preFristIndex < 和 ===  pageSize 的情况
+          // 包含 preFirstIndex < 和 ===  pageSize 的情况
           dispatch(
             actions.storePagination({
               current: 1,

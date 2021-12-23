@@ -79,6 +79,9 @@
     "styled-components": "^4.2.0",
     "typescript": "3.5.1"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ]

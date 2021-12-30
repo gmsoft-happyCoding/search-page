@@ -1,6 +1,6 @@
-enum FiliterMode {
+enum FilterMode {
   Simple = 'simple',
   Advance = 'advance',
 }
 
-export default FiliterMode;
+export default FilterMode;

@@ -8,7 +8,7 @@ import reducer from './reducer';
 import { fieldHelper, makeCancelable } from '../utils';
 import SearchMode from '../enums/SearchMode';
 import { FiltersDefault, GetDataApi, RefreshOpt } from '../typing';
-import FiliterMode from '../enums/FilterMode';
+import FilterMode from '../enums/FilterMode';
 import { useAutoRefresh } from '../utils/useAutoRefresh.hook';
 
 // 节流函数阈值
@@ -18,7 +18,7 @@ export default (
   searchMode: SearchMode,
   filtersDefault: FiltersDefault,
   pageSize: number,
-  defaultMode: FiliterMode,
+  defaultMode: FilterMode,
   getDataApi: GetDataApi,
   refreshOpt: RefreshOpt,
   historyHelper?: HistoryHelper

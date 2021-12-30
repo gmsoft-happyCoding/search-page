@@ -2,18 +2,18 @@ import React from 'react';
 import { get } from 'lodash';
 import { ColProps } from 'antd/lib/col';
 
-export function checkChildren(chlidren) {
+export function checkChildren(children) {
   try {
-    if (chlidren.length) {
+    if (children.length) {
       // eslint-disable-next-line no-unused-expressions
-      chlidren[0].props.children.props.id;
+      children[0].props.children.props.id;
     }
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log('chlidren', chlidren);
+    console.log('children', children);
 
     // eslint-disable-next-line no-console
-    console.error('请确保Form.Item 是 FormWrapper 的 Chlidren!');
+    console.error('请确保Form.Item 是 FormWrapper 的 Children!');
   }
 }
 
@@ -26,20 +26,20 @@ export function switchModeIsEnable(enable) {
 }
 
 /**
- * 过滤无效的chilrd
+ * 过滤无效的 child
  */
-export function getValidChidren(children) {
-  const validChidren: any[] = [];
+export function getValidChildren(children) {
+  const validChildren: any[] = [];
   if (children) {
     // 去除无效元素 @like false|null|undefined
     React.Children.forEach(children, child => {
       if (React.isValidElement(child)) {
-        validChidren.push(child);
+        validChildren.push(child);
       }
     });
   }
 
-  return validChidren;
+  return validChildren;
 }
 
 /**

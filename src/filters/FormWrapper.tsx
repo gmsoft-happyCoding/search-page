@@ -21,7 +21,7 @@ import fieldHelper from '../utils/fieldHelper';
 import FilterMode from '../enums/FilterMode';
 import {
   checkChildren,
-  getValidChidren,
+  getValidChildren,
   getChildKey,
   getChildLabel,
   switchModeIsEnable,
@@ -111,7 +111,7 @@ export interface WrapperProps {
    */
   simpleMode: SimpleMode;
   /**
-   * createSeachPage 传递过来的持久化帮助类
+   * createSearchPage 传递过来的持久化帮助类
    */
   historyHelper?: HistoryHelper;
   /**
@@ -204,41 +204,41 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   // 只要 enable 不为 false 即为真, 主要是为了兼容undefined
   const smEnable = useMemo(() => switchModeIsEnable(simpleMode.enable), [simpleMode]);
 
-  /** 取出有效的 chilrd */
-  const validChidren = useMemo(() => {
+  /** 取出有效的 child */
+  const validChildren = useMemo(() => {
     if (defaultCustomFiltersConf) {
-      return getValidChidren(children).filter(child =>
+      return getValidChildren(children).filter(child =>
         showFiltersKeys.includes(getChildKey(child))
       );
     }
-    return getValidChidren(children);
+    return getValidChildren(children);
   }, [children, showFiltersKeys, defaultCustomFiltersConf]);
   useEffect(() => {
     if (smEnable) {
       // 检查children的结构是否满足要求
-      checkChildren(validChidren);
+      checkChildren(validChildren);
     }
-  }, [validChidren, smEnable]);
+  }, [validChildren, smEnable]);
 
   /** 有效子节点个数 */
   const simpleModeCount = useMemo(() => {
     if (smEnable) {
       // 默认显示 2 个搜索条件
-      return Math.min(validChidren.length, defaultSimpleModeCount);
+      return Math.min(validChildren.length, defaultSimpleModeCount);
     }
-    return validChidren.length;
-  }, [smEnable, validChidren.length, defaultSimpleModeCount]);
+    return validChildren.length;
+  }, [smEnable, validChildren.length, defaultSimpleModeCount]);
 
   const advancedKeys = useMemo<string[]>(() => {
     if (smEnable) {
-      return validChidren.slice(simpleModeCount).map(getChildKey);
+      return validChildren.slice(simpleModeCount).map(getChildKey);
     }
     return [];
-  }, [smEnable, validChidren, simpleModeCount]);
+  }, [smEnable, validChildren, simpleModeCount]);
 
   useEffect(() => {
     if (defaultCustomFiltersConf && defaultCustomFiltersConf.storageKey) {
-      const allConf = getValidChidren(children).map(item => ({
+      const allConf = getValidChildren(children).map(item => ({
         id: getChildKey(item),
         label: getChildLabel(item),
       }));
@@ -270,14 +270,14 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
 
   useWatch(children, (preChildren, currentChildren) => {
     // 子项个数变化时，将原有filters中对应缺失的值清空
-    const preValidChildKeys = getValidChidren(preChildren).map(getChildKey);
-    const currentValidChildKeys = getValidChidren(currentChildren).map(getChildKey);
+    const preValidChildKeys = getValidChildren(preChildren).map(getChildKey);
+    const currentValidChildKeys = getValidChildren(currentChildren).map(getChildKey);
     const removeKeys = preValidChildKeys.filter(key => !currentValidChildKeys.includes(key));
     if (removeKeys.length) {
       dispatch(actions.removeFilters(removeKeys));
     }
     if (defaultCustomFiltersConf) {
-      const allConf = getValidChidren(children).map(item => ({
+      const allConf = getValidChildren(children).map(item => ({
         id: getChildKey(item),
         label: getChildLabel(item),
       }));
@@ -295,7 +295,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
   const fieldsNodes = useMemo(
     () =>
       compact(
-        React.Children.map(validChidren, (child: any, i) => {
+        React.Children.map(validChildren, (child: any, i) => {
           if (mode === FilterMode.Simple && i >= simpleModeCount) {
             return null;
           }
@@ -310,7 +310,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
           );
         })
       ),
-    [validChidren, mode, simpleModeCount, theme]
+    [validChildren, mode, simpleModeCount, theme]
   );
 
   // reset回调
@@ -385,7 +385,7 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
                   </>
                 )}
                 {/* 是否需要更多操作 */}
-                {smEnable && React.Children.count(validChidren) > simpleModeCount && (
+                {smEnable && React.Children.count(validChildren) > simpleModeCount && (
                   <>
                     {/* 分割线 */}
                     {needReset && smEnable && <Divider type="vertical" />}

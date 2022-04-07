@@ -301,8 +301,13 @@ const FormWrapper = (props: WrapperProps & FormComponentProps) => {
           }
 
           if (FormItem === get(child, 'type')) {
-            return child;
+            return React.cloneElement(
+              child,
+              { ...child.props, colProps: theme?.colProps },
+              ...child.props.children
+            );
           }
+
           return (
             <Col span={8} {...(theme && theme.colProps)}>
               {child}

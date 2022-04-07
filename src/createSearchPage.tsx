@@ -125,7 +125,7 @@ const createSearchPage = ({
 }: Args) => {
   const historyHelper = new HistoryHelper(storeKey, storeHistory);
 
-  const SearchPage: React.FC = ({ children }: Props, ref) => {
+  const SearchPage: React.FC<Props> = ({ children }: Props, ref) => {
     const [state, dispatch] = useSearchPage(
       searchMode,
       filtersDefault,

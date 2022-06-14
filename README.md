@@ -184,7 +184,6 @@ const FiltersForm: FiltersFormType<RouteComponentProps<any>> = props => {
     <FormWrapper
       {...props}
       simpleMode={{ rows: 1 }}
-      storeKey="FormWrapperDemo"
       resetRetainFiltersDefaultKeys={[]}
     >
       {/* 需要自定义栅格时请使用包装容器 */}

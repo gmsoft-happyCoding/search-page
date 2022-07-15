@@ -27,7 +27,7 @@ export interface State {
 }
 
 export interface GetDataApi {
-  (filters: Filters, pagination: PaginationI): Promise<ApiResult>;
+  (filters: Filters, pagination: PaginationI, abortSignal?: AbortSignal): Promise<ApiResult>;
 }
 
 export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & WrapperProps & P>;

@@ -1432,9 +1432,9 @@
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
 "@gmsoft/dva-theme-plugin@^1.0.5":
-  version "1.0.5"
-  resolved "http://192.168.2.10:8081/repository/npm.gm/@gmsoft/dva-theme-plugin/-/dva-theme-plugin-1.0.5.tgz#59a07ebe83ca8d0db1cd3d48956e42ca75390352"
-  integrity sha512-y4WrDDZgVhiHdhg0Da8gXRiKF8L105r9Adc/7y/rKFLAPpoz28QaN1Txrqha3SKd5hLcrs6HGUwRMu+jd3WNrg==
+  version "1.4.0"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/@gmsoft/dva-theme-plugin/-/dva-theme-plugin-1.4.0.tgz#7fc067ab54934e05c3b54ab0ae49cd15b983a63b"
+  integrity sha512-IriQonDVNxdn2aHu2W94hpYm+JXMdmpZJzwaPvD901zH0R+JIFDT4XTs2eVZL4s70duEo7jSDq0lwf+JKK6txg==
 
 "@hutson/parse-repository-url@^3.0.0":
   version "3.0.2"
@@ -2630,13 +2630,13 @@ aws4@^1.8.0:
   resolved "http://192.168.2.10:8081/repository/npm.gm/aws4/-/aws4-1.10.1.tgz#e1e82e4f3e999e2cfd61b161280d16a111f86428"
   integrity sha512-zg7Hz2k5lI8kb7U32998pRRFin7zJlkfezGJjUc2heaD4Pw2wObakCDVzkKztTm/Ln7eiVvYsjqak0Ed4LkMDA==
 
-axios@0.18.1:
-  version "0.18.1"
-  resolved "http://192.168.2.10:8081/repository/npm.gm/axios/-/axios-0.18.1.tgz#ff3f0de2e7b5d180e757ad98000f1081b87bcea3"
-  integrity sha512-0BfJq4NSfQXd+SkFdrvFbG7addhYSBA2mQwISr46pD6E5iqkWg02RAs8vyTT/j0RTnoYmeXauBuSv1qKwR179g==
+axios@^0.27.2:
+  version "0.27.2"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
+  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
   dependencies:
-    follow-redirects "1.5.10"
-    is-buffer "^2.0.2"
+    follow-redirects "^1.14.9"
+    form-data "^4.0.0"
 
 axobject-query@^2.0.1:
   version "2.2.0"
@@ -3863,6 +3863,11 @@ clone-deep@^2.0.1:
     kind-of "^6.0.0"
     shallow-clone "^1.0.0"
 
+clsx@^1.1.1:
+  version "1.2.1"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "http://192.168.2.10:8081/repository/npm.gm/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -3959,7 +3964,7 @@ colorette@^1.2.1:
   resolved "http://192.168.2.10:8081/repository/npm.gm/colorette/-/colorette-1.2.1.tgz#4d0b921325c14faf92633086a536db6e89564b1b"
   integrity sha512-puCDz0CzydiSYOrnXpz/PKd69zRrribezjtE9yd4zvytoRc8+RY/KJPvtPFKZS3E3wP6neGyMe0vOTlHO5L3Pw==
 
-combined-stream@^1.0.6, combined-stream@~1.0.6:
+combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "http://192.168.2.10:8081/repository/npm.gm/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
@@ -4622,13 +4627,6 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.6, debug@^2.6.
   version "2.6.9"
   resolved "http://192.168.2.10:8081/repository/npm.gm/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
-  dependencies:
-    ms "2.0.0"
-
-debug@=3.1.0:
-  version "3.1.0"
-  resolved "http://192.168.2.10:8081/repository/npm.gm/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   dependencies:
     ms "2.0.0"
 
@@ -6201,17 +6199,15 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@1.5.10:
-  version "1.5.10"
-  resolved "http://192.168.2.10:8081/repository/npm.gm/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
-  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
-  dependencies:
-    debug "=3.1.0"
-
 follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "http://192.168.2.10:8081/repository/npm.gm/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
+
+follow-redirects@^1.14.9:
+  version "1.15.1"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
+  integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -6263,6 +6259,15 @@ form-data@^2.3.2:
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
+    mime-types "^2.1.12"
+
+form-data@^4.0.0:
+  version "4.0.0"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
 form-data@~2.3.2:
@@ -6844,10 +6849,10 @@ hex-color-regex@^1.1.0:
   resolved "http://192.168.2.10:8081/repository/npm.gm/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-history-helper@1.0.2:
-  version "1.0.2"
-  resolved "http://192.168.2.10:8081/repository/npm.gm/history-helper/-/history-helper-1.0.2.tgz#ddde882a657338ff101dbc935fb91a19cf657aac"
-  integrity sha512-sp7xclP/CFO85LcBIcHBuKoOUdnIuCCn8d8WOpp1HvA7jl9fIYqtvuSyzezDu9IIkACD8m2oPRQ8gWSdZh57+g==
+history-helper@1.0.4:
+  version "1.0.4"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/history-helper/-/history-helper-1.0.4.tgz#828e5949370f5d29b693c24b8df9b922628a1fbe"
+  integrity sha512-V8E+WjFcy3u7pVaVrQbUD3nA7u/INdarwxZLyr0flSB/ENW66ZW3YOU5zpG0KMd/RS2YpAWNXDRki95dq+FFJg==
 
 history@^4.6.3, history@^4.7.2:
   version "4.10.1"
@@ -7421,7 +7426,7 @@ is-buffer@^1.0.2, is-buffer@^1.1.5:
   resolved "http://192.168.2.10:8081/repository/npm.gm/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
 
-is-buffer@^2.0.0, is-buffer@^2.0.2:
+is-buffer@^2.0.0:
   version "2.0.4"
   resolved "http://192.168.2.10:8081/repository/npm.gm/is-buffer/-/is-buffer-2.0.4.tgz#3e572f23c8411a5cfd9557c849e3665e0b290623"
   integrity sha512-Kq1rokWXOPXWuaMAqZiJW4XxsmD9zGx9q4aePabbn3qCRGedtH7Cm+zV8WETitMfu1wdh+Rvd6w5egwSngUX2A==
@@ -8755,7 +8760,7 @@ lodash.templatesettings@^4.0.0:
 lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "http://192.168.2.10:8081/repository/npm.gm/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
-  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 lodash.unescape@4.0.1:
   version "4.0.1"
@@ -10984,6 +10989,15 @@ prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, pr
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
+prop-types@^15.8.1:
+  version "15.8.1"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 proxy-addr@~2.0.5:
   version "2.0.6"
   resolved "http://192.168.2.10:8081/repository/npm.gm/proxy-addr/-/proxy-addr-2.0.6.tgz#fdc2336505447d3f2f2c638ed272caf614bbb2bf"
@@ -11340,6 +11354,14 @@ react-dom@^16.7.0:
   version "0.0.0"
   uid ""
 
+react-draggable@^4.0.3:
+  version "4.4.5"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/react-draggable/-/react-draggable-4.4.5.tgz#9e37fe7ce1a4cf843030f521a0a4cc41886d7e7c"
+  integrity sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==
+  dependencies:
+    clsx "^1.1.1"
+    prop-types "^15.8.1"
+
 react-error-overlay@^5.1.0, react-error-overlay@^5.1.4:
   version "5.1.6"
   resolved "http://192.168.2.10:8081/repository/npm.gm/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
@@ -11390,7 +11412,7 @@ react-imported-component@^5.2.4:
     prop-types "15.6.2"
     scan-directory "^1.0.0"
 
-react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.2:
+react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.2:
   version "16.13.1"
   resolved "http://192.168.2.10:8081/repository/npm.gm/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -11458,6 +11480,14 @@ react-redux@6.0.1:
     loose-envify "^1.4.0"
     prop-types "^15.7.2"
     react-is "^16.8.2"
+
+react-resizable@^3.0.4:
+  version "3.0.4"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/react-resizable/-/react-resizable-3.0.4.tgz#aa20108eff28c52c6fddaa49abfbef8abf5e581b"
+  integrity sha512-StnwmiESiamNzdRHbSSvA65b0ZQJ7eVQpPusrSmcpyGKzC0gojhtO62xxH6YOBmepk9dQTBi9yxidL3W4s3EBA==
+  dependencies:
+    prop-types "15.x"
+    react-draggable "^4.0.3"
 
 react-router-dom@4.3.1, react-router-dom@^4.1.2, react-router-dom@^4.3.1:
   version "4.3.1"
@@ -12867,9 +12897,10 @@ stackframe@^1.1.1:
   resolved "http://192.168.2.10:8081/repository/npm.gm/stackframe/-/stackframe-1.2.0.tgz#52429492d63c62eb989804c11552e3d22e779303"
   integrity sha512-GrdeshiRmS1YLMYgzF16olf2jJ/IzxXY9lhKOskuVziubpTYcYqyOwYeJKzQkwy7uN0fYSsbsC4RQaXf9LCrYA==
 
-"state-container@https://github.com/gmsoft-happyCoding/state-container":
+state-container@1.1.0:
   version "1.1.0"
-  resolved "https://github.com/gmsoft-happyCoding/state-container#c1ba1e6b1e32ecd6b7ee209e9758d679b7b35ddb"
+  resolved "http://192.168.2.10:8081/repository/npm.gm/state-container/-/state-container-1.1.0.tgz#2a34b592702368b6702beed62e9d9e0e546aca68"
+  integrity sha512-G5v7pHVqw+eWgzjOIiF5ib/Jndo/aewAWte3cW/KMfqPSx5lvG2/LHgCvntmxR27AybVORCWPhVBYVnIwtmdkQ==
   dependencies:
     "@gmsoft/dva-theme-plugin" "^1.0.5"
     dva-core "^2.0.1"

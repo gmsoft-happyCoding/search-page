@@ -1,18 +1,34 @@
 /* eslint-disable prefer-promise-reject-errors */
-const makeCancelable = (promise: Promise<any>) => {
-  let hasCanceled_ = false;
+interface FetchFunctionI {
+  (...args: any): Promise<any>;
+}
+
+const makeCancelable = (fetch: FetchFunctionI, argsArray: Array<any> = []) => {
+  let _hasCanceled = false;
+  let _done = false;
+
+  const abortController = new AbortController();
 
   const wrappedPromise = new Promise((resolve, reject) => {
-    promise.then(
-      val => (hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)),
-      error => (hasCanceled_ ? reject({ isCanceled: true }) : reject(error))
-    );
+    fetch
+      .apply(null, [...argsArray, abortController.signal])
+      .then(
+        val => (_hasCanceled ? reject({ isCanceled: true }) : resolve(val)),
+        error => (_hasCanceled ? reject({ isCanceled: true }) : reject(error))
+      )
+      .finally(() => {
+        _done = true;
+      });
   });
 
   return {
     promise: wrappedPromise,
-    cancel() {
-      hasCanceled_ = true;
+    cancel(callback: Function) {
+      if (!_done && !_hasCanceled) {
+        _hasCanceled = true;
+        abortController.abort();
+        if (callback) callback();
+      }
     },
   };
 };

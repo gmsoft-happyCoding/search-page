@@ -6,12 +6,12 @@ import Axios from 'axios';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
 
-const getDataApi: GetDataApi = async (filters, pagination) => {
+const getDataApi: GetDataApi = async (filters, pagination, cancelSignal) => {
   const {
     data,
   } = await Axios.get(
     'http://easy-mock.gm/mock/5ecf521686d71f0b2fed836a/test/yw-gateway/zcjstockexe/flow-uis',
-    { params: filters }
+    { params: filters, signal: cancelSignal }
   );
   await new Promise(resolve => setTimeout(resolve, 0));
   const result = await Promise.resolve({
@@ -35,7 +35,7 @@ const SearchPage = createSearchPage({
   getDataApi,
   FiltersForm,
   storeKey: 'CustomWidthDemo',
-  searchMode: SearchMode.TRIGGER,
+  searchMode: SearchMode.TIMELY,
   hideOnSinglePage: false,
   autoRefresh: { enable: false },
 });

@@ -35,17 +35,24 @@ export default (
       (storeFilters, storePagination, storeMode) => {
         // 取消之前发起的promise, 避免因为响应顺序引起的乱序
         if (cancelablePromise.current && cancelablePromise.current.cancel) {
-          cancelablePromise.current.cancel();
+          // 请求取消, 成功取消: 计数-1
+          cancelablePromise.current.cancel(() => {
+            dispatch(actions.loadingCount('-'));
+          });
         }
         // 请求发起, 计数+1
         dispatch(actions.loadingCount('+'));
 
         // 请求数据
-        cancelablePromise.current = makeCancelable(
-          getDataApi(fieldHelper.unwrap(storeFilters), storePagination)
-        );
+        cancelablePromise.current = makeCancelable(getDataApi, [
+          fieldHelper.unwrap(storeFilters),
+          storePagination,
+        ]);
+
         return cancelablePromise.current.promise
           .then(data => {
+            // 请求完成, 计数-1
+            dispatch(actions.loadingCount('-'));
             // 保存数据(包括total)
             dispatch(actions.storeData(data));
             // 保存查询条件到history, 用于刷新或路由返回时恢复
@@ -60,16 +67,15 @@ export default (
             }
           })
           .catch(error => {
-            // 捕获异常, 什么都不做, 避免UI崩溃
-            // eslint-disable-next-line no-console
-            if (console && console.log) {
-              // eslint-disable-next-line no-console
-              console.log(error);
+            // 请求异常, 非取消时: 计数-1
+            if (!error || !error.isCanceled) {
+              dispatch(actions.loadingCount('-'));
             }
-          })
-          .finally(() => {
-            // 请求完成, 计数-1
-            dispatch(actions.loadingCount('-'));
+            // eslint-disable-next-line no-console
+            if (console && console.error) {
+              // eslint-disable-next-line no-console
+              console.error(error);
+            }
           });
       },
       DEBOUNCE_WAIT,

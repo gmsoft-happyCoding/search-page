@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable max-lines */
 
 const fs = require('fs');
 const path = require('path');
@@ -20,6 +20,7 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const externals = require('./externals');
@@ -59,13 +60,16 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
-  const loaders = [{
+  const loaders = [
+    {
       loader: MiniCssExtractPlugin.loader,
-      options: Object.assign({},
-        shouldUseRelativeAssetPaths ? {
-          publicPath: '../../'
-        } : undefined
-      ),
+      options: {
+        ...(shouldUseRelativeAssetPaths
+          ? {
+              publicPath: '../../',
+            }
+          : undefined),
+      },
     },
     {
       loader: require.resolve('css-loader'),
@@ -178,14 +182,16 @@ const webpackConfig = {
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           parser: safePostCssParser,
-          map: shouldUseSourceMap ? {
-            // `inline: false` forces the sourcemap to be output into a
-            // separate file
-            inline: false,
-            // `annotation: true` appends the sourceMappingURL to the end of
-            // the css file, helping the browser find the sourcemap
-            annotation: true,
-          } : false,
+          map: shouldUseSourceMap
+            ? {
+                // `inline: false` forces the sourcemap to be output into a
+                // separate file
+                inline: false,
+                // `annotation: true` appends the sourceMappingURL to the end of
+                // the css file, helping the browser find the sourcemap
+                annotation: true,
+              }
+            : false,
         },
       }),
     ],
@@ -250,24 +256,10 @@ const webpackConfig = {
       {
         parser: {
           requireEnsure: false,
-          system: false
-        }
+          system: false,
+        },
       },
 
-      // First, run the linter.
-      // It's important to do this before Babel processes the JS.
-      {
-        test: /\.(js|mjs|jsx|ts|tsx)$/,
-        enforce: 'pre',
-        use: [{
-          options: {
-            formatter: require.resolve('react-dev-utils/eslintFormatter'),
-            eslintPath: require.resolve('eslint'),
-          },
-          loader: require.resolve('eslint-loader'),
-        }, ],
-        include: paths.appSrc,
-      },
       {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
@@ -322,9 +314,12 @@ const webpackConfig = {
               configFile: false,
               compact: false,
               presets: [
-                [require.resolve('babel-preset-react-app/dependencies'), {
-                  helpers: true
-                }],
+                [
+                  require.resolve('babel-preset-react-app/dependencies'),
+                  {
+                    helpers: true,
+                  },
+                ],
               ],
               cacheDirectory: true,
               // Save disk space when time isn't as important
@@ -374,7 +369,8 @@ const webpackConfig = {
           {
             test: sassRegex,
             exclude: sassModuleRegex,
-            loader: getStyleLoaders({
+            loader: getStyleLoaders(
+              {
                 importLoaders: 2,
                 sourceMap: shouldUseSourceMap,
               },
@@ -390,7 +386,8 @@ const webpackConfig = {
           // using the extension .module.scss or .module.sass
           {
             test: sassModuleRegex,
-            loader: getStyleLoaders({
+            loader: getStyleLoaders(
+              {
                 importLoaders: 2,
                 sourceMap: shouldUseSourceMap,
                 modules: true,
@@ -492,32 +489,44 @@ const webpackConfig = {
     }),
     // TypeScript type checking
     fs.existsSync(paths.appTsConfig) &&
-    new ForkTsCheckerWebpackPlugin({
-      typescript: resolve.sync('typescript', {
-        basedir: paths.appNodeModules,
+      new ForkTsCheckerWebpackPlugin({
+        typescript: resolve.sync('typescript', {
+          basedir: paths.appNodeModules,
+        }),
+        async: false,
+        checkSyntacticErrors: true,
+        tsconfig: paths.appTsConfig,
+        compilerOptions: {
+          module: 'esnext',
+          moduleResolution: 'node',
+          resolveJsonModule: true,
+          isolatedModules: true,
+          noEmit: true,
+          jsx: 'preserve',
+        },
+        reportFiles: [
+          '**',
+          '!**/*.json',
+          '!**/__tests__/**',
+          '!**/?(*.)(spec|test).*',
+          '!src/setupProxy.js',
+          '!src/setupTests.*',
+        ],
+        watch: paths.appSrc,
+        silent: true,
+        formatter: typescriptFormatter,
       }),
-      async: false,
-      checkSyntacticErrors: true,
-      tsconfig: paths.appTsConfig,
-      compilerOptions: {
-        module: 'esnext',
-        moduleResolution: 'node',
-        resolveJsonModule: true,
-        isolatedModules: true,
-        noEmit: true,
-        jsx: 'preserve',
-      },
-      reportFiles: [
-        '**',
-        '!**/*.json',
-        '!**/__tests__/**',
-        '!**/?(*.)(spec|test).*',
-        '!src/setupProxy.js',
-        '!src/setupTests.*',
-      ],
-      watch: paths.appSrc,
-      silent: true,
-      formatter: typescriptFormatter,
+    new ESLintPlugin({
+      // Plugin options
+      extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+      formatter: require.resolve('react-dev-utils/eslintFormatter'),
+      eslintPath: require.resolve('eslint'),
+      context: paths.appSrc,
+      cache: true,
+      cacheLocation: path.resolve(paths.appNodeModules, '.cache/.eslintcache'),
+      // ESLint class options
+      cwd: paths.appPath,
+      resolvePluginsRelativeTo: __dirname,
     }),
   ].filter(Boolean),
   // Some libraries import Node modules but don't use them in the browser.

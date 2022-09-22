@@ -1,9 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { ContentProps } from 'search-page';
+import { useSearchPageContent } from 'search-page';
 
 const Wrap = styled.div`
   padding: 16px;
@@ -12,11 +9,17 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-export default ({ data, forceUpdate }: ContentProps) => (
-  <Wrap>
-    {JSON.stringify(data)}
-    <a style={{ float: 'right' }} onClick={forceUpdate}>
-      强制刷新
-    </a>
-  </Wrap>
-);
+export default () => {
+  const { data, forceUpdate } = useSearchPageContent();
+
+  const update = useCallback(() => forceUpdate(), [forceUpdate]);
+
+  return (
+    <Wrap>
+      {JSON.stringify(data)}
+      <a style={{ float: 'right' }} onClick={update}>
+        强制刷新
+      </a>
+    </Wrap>
+  );
+};

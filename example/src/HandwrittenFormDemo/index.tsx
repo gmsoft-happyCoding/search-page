@@ -5,6 +5,7 @@ import FiltersForm from './FiltersForm';
 import Content from './Content';
 
 const getDataApi: GetDataApi = async (filters, pagination) => {
+  // eslint-disable-next-line no-promise-executor-return
   await new Promise(resolve => setTimeout(resolve, 100));
   const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
   return result;
@@ -30,7 +31,9 @@ const Demo = () => {
   }, []);
   return (
     <div style={{ padding: 16 }}>
-      <SearchPage ref={searchPageRef}>{Content}</SearchPage>
+      <SearchPage ref={searchPageRef}>
+        <Content />
+      </SearchPage>
       <Button onClick={forceUpdate}>强制刷新</Button>
     </div>
   );

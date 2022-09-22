@@ -7,14 +7,15 @@ import Content from './Content';
 
 const Demo = () => {
   const searchPageRef = useRef({ forceUpdate: () => undefined });
+
   const forceUpdate = useCallback(() => {
     searchPageRef.current.forceUpdate();
   }, []);
 
   const getDataApi: GetDataApi = async (filters, pagination) => {
-    await new Promise(
-      resolve => setTimeout(resolve, Math.max(5000 - get(filters, 'orgName.length', 0) * 500), 0)
-      // eslint-disable-next-line function-paren-newline
+    await new Promise(resolve =>
+      // eslint-disable-next-line no-promise-executor-return
+      setTimeout(resolve, Math.max(5000 - get(filters, 'orgName.length', 0) * 500), 0)
     );
     const result = await Promise.resolve({ data: { filters, pagination }, total: 100 });
     return result;

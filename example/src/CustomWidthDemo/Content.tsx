@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
+import React, { useRef, useMemo, useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { ContentProps, ResizeableTitle, getColumnConfs } from 'search-page';
+import { useSearchPageContent, ResizeableTitle, getColumnConfs } from 'search-page';
 import { Table, Button } from 'antd';
 
 const Wrap = styled.div`
@@ -10,7 +10,16 @@ const Wrap = styled.div`
 
 const components = { header: { cell: ResizeableTitle } };
 
-export default ({ data, forceUpdate, dispatch, tableWidthConfs, storeKey }: ContentProps) => {
+export default () => {
+  const {
+    data,
+    forceUpdate,
+    dispatch,
+    tableWidthConfs,
+    storeKey,
+    filters,
+  } = useSearchPageContent();
+
   const tableRef = useRef<any>();
   const [columnConfs, setColumnConfs] = useState([
     {
@@ -38,6 +47,8 @@ export default ({ data, forceUpdate, dispatch, tableWidthConfs, storeKey }: Cont
     [columnConfs, dispatch, storeKey, tableWidthConfs]
   );
 
+  const update = useCallback(() => forceUpdate(), [forceUpdate]);
+
   return (
     <Wrap>
       <Table
@@ -49,8 +60,8 @@ export default ({ data, forceUpdate, dispatch, tableWidthConfs, storeKey }: Cont
         components={components}
         size="small"
       />
-      {JSON.stringify(data)}
-      <Button style={{ float: 'right' }} type="link" onClick={forceUpdate}>
+      {JSON.stringify(filters)}
+      <Button style={{ float: 'right' }} type="link" onClick={update}>
         强制刷新
       </Button>
     </Wrap>

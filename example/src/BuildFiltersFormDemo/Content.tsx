@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ContentProps } from 'search-page';
@@ -12,7 +9,7 @@ const Wrap = styled.div`
   color: purple;
 `;
 
-const Content = ({ data, total, forceUpdate, loading, filters, pagination }: ContentProps) => {
+const Content = ({ data, total, forceUpdate, filters }: ContentProps) => {
   const update = useCallback(() => forceUpdate({ pagination: { current: 3 } }), [forceUpdate]);
 
   return (

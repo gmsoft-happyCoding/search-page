@@ -2,18 +2,19 @@ import React, { useRef, useCallback } from 'react';
 import createSearchPage, { GetDataApi, Mode, SearchMode } from 'search-page';
 import { Button } from 'antd';
 import { repeat } from 'lodash';
-import Axios from 'axios';
+// import Axios from 'axios';
 import FiltersForm from './FiltersForm';
 import Content from './Content';
 
-const getDataApi: GetDataApi = async (filters, pagination, cancelSignal) => {
-  const {
-    data,
-  } = await Axios.get(
-    'http://easy-mock.gm/mock/5ecf521686d71f0b2fed836a/test/yw-gateway/zcjstockexe/flow-uis',
-    { params: filters, signal: cancelSignal }
-  );
-  await new Promise(resolve => setTimeout(resolve, 0));
+const getDataApi: GetDataApi = async (filters, pagination) => {
+  // const {
+  //   data,
+  // } = await Axios.get(
+  //   'http://easy-mock.gm/mock/5ecf521686d71f0b2fed836a/test/yw-gateway/zcjstockexe/flow-uis',
+  //   { params: filters, signal: cancelSignal }
+  // );
+  // eslint-disable-next-line no-promise-executor-return
+  await new Promise(resolve => setTimeout(resolve, 5000));
   const result = await Promise.resolve({
     data: {
       data: repeat('*', 5)
@@ -47,7 +48,9 @@ const Demo = () => {
   }, []);
   return (
     <div style={{ padding: 16 }}>
-      <SearchPage ref={searchPageRef}>{Content}</SearchPage>
+      <SearchPage ref={searchPageRef}>
+        <Content />
+      </SearchPage>
       <Button onClick={forceUpdate}>强制刷新</Button>
     </div>
   );

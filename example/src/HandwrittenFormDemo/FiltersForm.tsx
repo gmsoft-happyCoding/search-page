@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useCallback } from 'react';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import { Row, Col, Input } from 'antd';
@@ -20,7 +17,7 @@ const FiltersForm = ({ form }: FormComponentProps) => {
         </Col>
         <Col span={16} style={{ textAlign: 'right' }}>
           <Form.Item label="&nbsp;">
-            <a className="action" onClick={reset} role="button">
+            <a className="action" onClick={reset} role="button" tabIndex={0}>
               重置筛选条件
             </a>
           </Form.Item>

@@ -1,7 +1,7 @@
 import React, { useMemo, forwardRef, useCallback } from 'react';
 import HistoryHelper from 'history-helper';
 import { PaginationProps } from 'antd/lib/pagination';
-import ContentWrap from './ContentWrap';
+import ContentWrap from './content/ContentWrap';
 import createFilters from './filters/createFilters';
 import Pagination from './Pagination';
 import useSearchPage from './useSearchPage';
@@ -11,11 +11,11 @@ import FilterMode from './enums/FilterMode';
 import {
   FiltersFormType,
   GetDataApi,
-  Content,
   FiltersDefault,
   ForceUpdateArgs,
   ForceUpdate,
   RefreshOpt,
+  ContentI,
 } from './typing';
 import SearchMode from './enums/SearchMode';
 
@@ -96,12 +96,14 @@ interface Args {
    * @default SearchMode.TIMELY
    */
   searchMode?: SearchMode;
-  /** 页签切换时自动刷新机制 */
+  /**
+   * 浏览器窗口(标签页)切换时自动刷新机制
+   **/
   autoRefresh?: RefreshOpt;
 }
 
 interface Props {
-  children?: Content;
+  children?: ContentI;
 }
 
 const createSearchPage = ({

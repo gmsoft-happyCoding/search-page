@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select } from 'antd';
+import { Input, Select } from 'antd';
 import { FormWrapper, FiltersFormType } from 'search-page';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 

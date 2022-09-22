@@ -38,10 +38,6 @@ export interface ForceUpdateArgs {
 }
 
 export interface ForceUpdate {
-  (): void;
-}
-
-export interface ForceUpdate {
   (args?: ForceUpdateArgs): void;
 }
 
@@ -57,7 +53,9 @@ export interface ContentProps<T = any> {
   storeKey?: string;
 }
 
-export type Content = React.ComponentType<ContentProps>;
+export type SearchPageContentContextI<T = any> = ContentProps<T>;
+
+export type ContentI = React.ReactElement<any> | React.ComponentType<ContentProps>;
 
 export interface FieldConfig {
   /**

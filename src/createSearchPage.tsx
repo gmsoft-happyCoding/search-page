@@ -98,7 +98,7 @@ interface Args {
   searchMode?: SearchMode;
   /**
    * 浏览器窗口(标签页)切换时自动刷新机制
-   **/
+   */
   autoRefresh?: RefreshOpt;
 }
 
@@ -146,14 +146,25 @@ const createSearchPage = ({
         if (args && args.filters) {
           return dispatch(actions.storeFilters(wrap(args.filters)));
         }
+
         if (args && args.pagination) {
           return dispatch(actions.storePagination(args.pagination));
         }
+
+        if (args?.delCount) {
+          const newTotal = state.total - args.delCount;
+          const lastPage = Math.ceil(newTotal / state.pagination.pageSize);
+          if(lastPage < state.pagination.current) {
+            dispatch(actions.storePagination({ ...state.pagination, current: lastPage }));
+          }
+        }
+
         dispatch(actions.forceUpdate());
       },
-      [dispatch]
+      [dispatch, state.pagination, state.total]
     );
 
+    // eslint-disable-next-line no-param-reassign
     if (ref) ref.current = { forceUpdate };
 
     return (

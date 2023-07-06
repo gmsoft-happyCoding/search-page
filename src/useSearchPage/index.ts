@@ -30,6 +30,7 @@ export default (
   // 保存已发起请求的 promise
   const cancelablePromise = useRef<any>();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedGetDataApi = useCallback(
     debounce(
       (storeFilters, storePagination, storeMode) => {

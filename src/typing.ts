@@ -35,6 +35,10 @@ export type FiltersFormType<P = {}> = React.ComponentType<FormComponentProps & W
 export interface ForceUpdateArgs {
   filters?: Filters;
   pagination?: Partial<PaginationI>;
+  /**
+   * 删除数据的条数, 会根据删除的条数, 重新计算页码
+   */
+  delCount?: number;
 }
 
 export interface ForceUpdate {

@@ -16,8 +16,8 @@ const SearchPage = createSearchPage({
   defaultMode: Mode.Simple,
   getDataApi,
   FiltersForm,
-  // storeKey: 'FormWrapperDemo',
-  noStore: true,
+  storeKey: 'FormWrapperDemo',
+  // noStore: true
   searchMode: SearchMode.TIMELY,
   hideOnSinglePage: false,
   pageSize: 20,

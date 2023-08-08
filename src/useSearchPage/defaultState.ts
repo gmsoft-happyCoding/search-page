@@ -20,13 +20,14 @@ export default (
   defaultMode: FilterMode,
   historyHelper?: HistoryHelper
 ) => ({
-  filters: merge({}, wrap(filtersDefault), historyHelper && historyHelper.getValue('filters')),
-  pagination: merge(
-    {},
-    pagination,
-    { pageSize },
+  filters:
+    historyHelper && historyHelper.getValue('filters')
+      ? historyHelper.getValue('filters')
+      : wrap(filtersDefault),
+  pagination:
     historyHelper && historyHelper.getValue('pagination')
-  ),
+      ? historyHelper.getValue('pagination')
+      : merge({}, pagination, { pageSize }),
   data: NO_DATA,
   total: historyHelper ? historyHelper.getValue('total', 0) : 0,
   mode: historyHelper ? historyHelper.getValue('mode', defaultMode) : defaultMode,
